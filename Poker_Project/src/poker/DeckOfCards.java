@@ -14,7 +14,6 @@ public class DeckOfCards {
 	//Constructor for the DeckOfCards object which creates an empty deck and then fills it with the cards of each suit
 	public DeckOfCards(){
 		char s = PlayingCard.HEARTS;
-		int z = 0;
 
 		for(int a = 0; a<4;a++){
 			switch (a) {
@@ -40,7 +39,6 @@ public class DeckOfCards {
 			for(x=0;x<13;x++){
 				deck.add(new PlayingCard(PlayingCard.typeFaces[x], s, fVal, gVal));
 				fVal++;
-				z++;
 
 				//because of the unusual case where Ace has the highest gamevalue this if statement 
 				//resets gVal to 2 so it is correct for the rest of the cards
