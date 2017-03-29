@@ -1,11 +1,11 @@
 package poker;
 
 public class HandOfCards {
-	// Test 
 
 	//constant to represent the number of cards in a hand(5)
 	static public final int HAND_SIZE = 5;
 	//Array to hold the playing card objects representing the hand
+	
 
 	static private final int ROYAL_FLUSH = 9000000;
 	static private final int STRAIGHT_FLUSH = 8000000;
