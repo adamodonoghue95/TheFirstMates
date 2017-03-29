@@ -1,7 +1,7 @@
 package poker;
 
 public class HandOfCards {
-	// Test 
+	// Test Boobs
 
 	//constant to represent the number of cards in a hand(5)
 	static public final int HAND_SIZE = 5;
