@@ -4,24 +4,9 @@ import java.util.Random;
 public class PokerPlayer {
 
 	private HandOfCards playerHand;
-	private int chips;
 
-	public PokerPlayer(DeckOfCards cardDeck){
+	public PokerPlayer(DeckOfCards cardDeck ){
 		playerHand = new HandOfCards(cardDeck);
-		chips = 20;
-	}
-	
-	public void bet(int chipsBet) {
-		if (chips > 0) {
-			chips -= chipsBet;
-		}
-		else {
-			System.out.println("Bankrupt");
-		}
-	}
-	
-	public void chipsWon(int noOfChips) {
-		chips += noOfChips;
 	}
 
 	//this is a new method for discarding the cards
@@ -37,8 +22,7 @@ public class PokerPlayer {
 		//I don't need to check that no more than 3 cards will be discarded because my getDiscardProbability() ensures that does not happen.
 		for(int i = 0; i < HandOfCards.HAND_SIZE; i++){
 				int randomNumber = rand.nextInt(99) + 1;
-				// Test Purposes
-				// System.out.println("Rand = " + randomNumber + "   <  Discard Probability = " + playerHand.getDiscardProbability(i));
+				System.out.println("Rand = " + randomNumber + "   <  Discard Probability = " + playerHand.getDiscardProbability(i));
 				if(randomNumber < playerHand.getDiscardProbability(i)){
 					
 					discardCards[noDiscardCards] = i;
