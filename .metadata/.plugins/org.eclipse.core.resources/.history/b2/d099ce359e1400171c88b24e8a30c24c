@@ -3,9 +3,9 @@ import java.util.Random;
 
 public class PokerPlayer {
 
-	protected HandOfCards playerHand;
-	protected String name;
-	protected int chips;
+	private HandOfCards playerHand;
+	private String name;
+	private int chips;
 
 	public PokerPlayer(DeckOfCards cardDeck){
 		playerHand = new HandOfCards(cardDeck);
@@ -55,18 +55,10 @@ public class PokerPlayer {
 	{
 		DeckOfCards theDeck = new DeckOfCards();
 		theDeck.shuffle();
-		HumanPokerPlayer player = new HumanPokerPlayer(theDeck);
-		System.out.println("Hello " + player.name);
-
-		
-		System.out.println(player.playerHand);
-		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
-			System.out.print(player.playerHand.getDiscardProbability(i) + "% ");
-		}
-		System.out.println();
-		player.discard();
-		System.out.println(player.playerHand);
-		
-		
+		PokerPlayer Luke = new PokerPlayer(theDeck);
+		System.out.println(Luke.playerHand);
+		System.out.print(Luke.playerHand.getDiscardProbability(0) + "% " + Luke.playerHand.getDiscardProbability(1) + "% " + Luke.playerHand.getDiscardProbability(2)+ "% " + Luke.playerHand.getDiscardProbability(3)+ "% " + Luke.playerHand.getDiscardProbability(4)+ "% \n");
+		Luke.discard();
+		System.out.println(Luke.playerHand);
 	}
 }

@@ -56,9 +56,6 @@ public class PokerPlayer {
 		DeckOfCards theDeck = new DeckOfCards();
 		theDeck.shuffle();
 		HumanPokerPlayer player = new HumanPokerPlayer(theDeck);
-		System.out.println("Hello " + player.name);
-
-		
 		System.out.println(player.playerHand);
 		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
 			System.out.print(player.playerHand.getDiscardProbability(i) + "% ");
@@ -66,7 +63,6 @@ public class PokerPlayer {
 		System.out.println();
 		player.discard();
 		System.out.println(player.playerHand);
-		
 		
 	}
 }

@@ -55,18 +55,10 @@ public class PokerPlayer {
 	{
 		DeckOfCards theDeck = new DeckOfCards();
 		theDeck.shuffle();
-		HumanPokerPlayer player = new HumanPokerPlayer(theDeck);
-		System.out.println("Hello " + player.name);
-
-		
+		HumanPokerPlayer player = new HumanPokerPlayer(theDeck, "Luke");
 		System.out.println(player.playerHand);
-		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
-			System.out.print(player.playerHand.getDiscardProbability(i) + "% ");
-		}
-		System.out.println();
+		System.out.print(player.playerHand.getDiscardProbability(0) + "% " + player.playerHand.getDiscardProbability(1) + "% " + player.playerHand.getDiscardProbability(2)+ "% " + player.playerHand.getDiscardProbability(3)+ "% " + player.playerHand.getDiscardProbability(4)+ "% \n");
 		player.discard();
 		System.out.println(player.playerHand);
-		
-		
 	}
 }
