@@ -50,6 +50,7 @@ public class DeckOfCards {
 				}
 			}
 		}
+		this.shuffle();
 	}
 
 	//dealNext method which deals the card at the top of the deck 
