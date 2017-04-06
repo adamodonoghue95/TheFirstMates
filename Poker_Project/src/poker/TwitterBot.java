@@ -1,7 +1,11 @@
 package poker;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -16,18 +20,17 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterBot {
 
-	static Keys keys = new Keys();
-
-	private final String CONSUMER_KEY = keys.consumer_Key;
-	private final String CONSUMER_SECRET = keys.consumerSecret;
-	private final String ACCESS_TOKEN= keys.accessToken;
-	private final String ACCESS_TOKEN_SECRET = keys.accessTokenSecret;
+	private String CONSUMER_KEY;
+	private  String CONSUMER_SECRET;
+	private  String ACCESS_TOKEN;
+	private  String ACCESS_TOKEN_SECRET;
 	
 	Twitter twitter;
 
 
 	public void authentication() {
 		try{
+			this.load_keys();
 			ConfigurationBuilder builder = new ConfigurationBuilder();
 			builder.setOAuthConsumerKey(CONSUMER_KEY);
 			builder.setOAuthConsumerSecret(CONSUMER_SECRET);
@@ -42,6 +45,23 @@ public class TwitterBot {
 			e.printStackTrace();
 		}
 	}
+	
+	private void load_keys(){
+		try {
+			FileInputStream fis=new FileInputStream("data"+File.separator+"keys.txt");
+			BufferedReader br=new BufferedReader(new InputStreamReader(fis, "utf-8"));
+			String line;
+			while((line=br.readLine())!=null){
+				String keys[]=line.trim().split("\t");
+				this.ACCESS_TOKEN=keys[2];
+				this.ACCESS_TOKEN_SECRET=keys[3];
+				this.CONSUMER_KEY=keys[0];
+				this.CONSUMER_SECRET=keys[1];
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void tweet(String post){
 		try {
 			twitter.updateStatus(post);
@@ -52,7 +72,7 @@ public class TwitterBot {
 
 	public static void main(String args[]) throws Exception{
 		TwitterBot tbot = new TwitterBot();
-//		tbot.authentication();
+		tbot.authentication();
 //		tbot.tweet("FIDDY BUCKS");
 		
 		System.out.println(tbot.ACCESS_TOKEN);
