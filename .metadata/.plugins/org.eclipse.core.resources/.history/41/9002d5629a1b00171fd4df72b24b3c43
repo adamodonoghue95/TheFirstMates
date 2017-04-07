@@ -22,62 +22,58 @@ public class HandOfPoker {
 		for (int i = 0; i < hand.HAND_SIZE; i++) {
 			switch(hand.getCard(i).getFaceValue()) {
 			case 1:
-				System.out.print(i + ". Ace of ");
+				System.out.print("Ace of ");
 				break;
 			case 2:
-				System.out.print(i + ". Two of ");
+				System.out.print("Two of ");
 				break;
 			case 3:
-				System.out.print(i + ". Three of ");
+				System.out.print("Three of ");
 				break;
 			case 4:
-				System.out.print(i + ". Four of ");
+				System.out.print("Four of ");
 				break;
 			case 5:
-				System.out.print(i + ". Five of ");
+				System.out.print("Five of ");
 				break;
 			case 6:
-				System.out.print(i + ". Six of ");
+				System.out.print("Six of ");
 				break;
 			case 7:
-				System.out.print(i + ". Seven of ");
+				System.out.print("Seven of ");
 				break;
 			case 8:
-				System.out.print(i + ". Eight of ");
+				System.out.print("Eight of ");
 				break;
 			case 9:
-				System.out.print(i + ". Nine of ");
+				System.out.print("Nine of ");
 				break;
 			case 10:
-				System.out.print(i + ". Ten of ");
+				System.out.print("Ten of ");
 				break;
 			case 11:
-				System.out.print(i + ". Jack of ");
+				System.out.print("Jack of ");
 				break;
 			case 12:
-				System.out.print(i + ". Queen of ");
+				System.out.print("Queen of ");
 				break;
 			case 13:
-				System.out.print(i + ". King of ");
+				System.out.print("King of ");
 				break;
 			}
 			
 			for (int j = 0; j < 4; j++) {
 				if (hand.getCard(i).getSuit() == 'H') {
 					System.out.println("Hearts");
-					break;
 				}
 				else if (hand.getCard(i).getSuit() == 'S') {
 					System.out.println("Spades");
-					break;
 				}
 				else if (hand.getCard(i).getSuit() == 'D') {
 					System.out.println("Diamonds");
-					break;
 				}
 				else if (hand.getCard(i).getSuit() == 'C') {
 					System.out.println("Clubs");
-					break;
 				}
 			}
 
