@@ -1,10 +1,12 @@
 package poker;
 
 public class AutomatedPokerPlayer extends PokerPlayer{
-		
-	public AutomatedPokerPlayer(DeckOfCards deck, String botName) {
+	
+	protected String botName;
+	
+	public AutomatedPokerPlayer(DeckOfCards deck, String name) {
 		super(deck);
-		name = botName;
+		botName = name;
 	}
 	
 	// returns amount of chips to bet according to hand held
