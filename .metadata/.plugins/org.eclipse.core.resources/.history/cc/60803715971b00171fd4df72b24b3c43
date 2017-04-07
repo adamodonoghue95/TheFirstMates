@@ -586,39 +586,6 @@ public class HandOfCards {
 		return val;
 
 	}
-	
-	public String getHandType() {
-		if(isRoyalFlush()){
-			return "Royal Flush";
-		}
-		else if(isStraightFlush()){
-			return "Straight Flush";
-		}
-		else if(isFourOfAKind()){
-			return "Four of a Kind";
-		}
-		else if(isFullHouse()){
-			return "Full House";
-		}
-		else if(isFlush()){
-			return "Flush";
-		}
-		else if(isStraight()){
-			return "Straight";
-		}
-		else if(isThreeOfAKind()){
-			return "Three of a Kind";
-		}
-		else if(isTwoPair()){
-			return "Two Pair";
-		}
-		else if(isOnePair()){
-			return "One Pair";
-		}
-		else {
-			return "High Hand";
-		}
-	}
 
 	public int getDiscardProbability(int cardPosition){
 		int probability = 0;

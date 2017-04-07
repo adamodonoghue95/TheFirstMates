@@ -23,7 +23,7 @@ public class GameOfPoker {
 		HandOfPoker hand = new HandOfPoker(players);
 		hand.printChips();
 		
-		System.out.println("\nYour Hand: -> " + players.get(0).playerHand.getHandType());
+		System.out.println("\nYour Hand: -> " + players.get(0).playerHand.getGameValue());
 		hand.printHumanHand();
 		
 	}
