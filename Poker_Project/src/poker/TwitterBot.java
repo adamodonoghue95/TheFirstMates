@@ -73,7 +73,7 @@ public class TwitterBot {
 	public static void main(String args[]) throws Exception{
 		TwitterBot tbot = new TwitterBot();
 		tbot.authentication();
-		tbot.tweet("FIDDY BUCKS");
+		tbot.tweet("#TonyMate");
 
 
 	}
