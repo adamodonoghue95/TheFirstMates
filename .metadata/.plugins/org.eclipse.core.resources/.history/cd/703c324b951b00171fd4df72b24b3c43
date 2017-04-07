@@ -19,7 +19,7 @@ public class GameOfPoker {
 
 		GameOfPoker game = new GameOfPoker(4);		
 		
-		System.out.println("\nLet's Play Poker " + players.get(0).name + "!");
+		System.out.println("Let's Play Poker " + players.get(0).name + "!");
 		HandOfPoker hand = new HandOfPoker(players);
 		hand.printChips();
 		

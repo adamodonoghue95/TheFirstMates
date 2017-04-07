@@ -15,13 +15,12 @@ public class GameOfPoker {
 	}
 	
 	public static void main(String [] args) {
-		System.out.println("Welcome to TheFirstMates Poker Game!\n");
+		System.out.println("Welcome to TheFirstMates Poker Game!");
 
 		GameOfPoker game = new GameOfPoker(4);		
 		
-		System.out.println("\nLet's Play Poker " + players.get(0).name + "!");
-		HandOfPoker hand = new HandOfPoker(players);
-		hand.printChips();
+		System.out.println("Let's Play Poker " + players.get(0).name + "!");
+
 		
 	}
 	
