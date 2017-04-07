@@ -20,26 +20,26 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterBot {
 
-	private String CONSUMER_KEY;
-	private  String CONSUMER_SECRET;
-	private  String ACCESS_TOKEN;
-	private  String ACCESS_TOKEN_SECRET;
+	private  String CONSUMER_KEY = "UIZBccUM2LOyjYpia65Z9yeyS";
+	private  String CONSUMER_SECRET = "mDpio22pTE1qX2yn2nHaQNSr30htSV4QiyDynuaP9ViuWfHZpH";
+	private  String ACCESS_TOKEN = "849639962328825859-uzQlvvcwxWC6IHuru0SFoGJqdP9Fm6u";
+	private  String ACCESS_TOKEN_SECRET = "w36Xh2cpskF5bLHjLbK9rIBEVINXQX9qYB9IfRYeJn3F7";
 	
 	Twitter twitter;
 
 
 	public void authentication() {
 		try{
-			this.load_keys();
+			//this.load_keys();
 			ConfigurationBuilder builder = new ConfigurationBuilder();
 			builder.setOAuthConsumerKey(CONSUMER_KEY);
 			builder.setOAuthConsumerSecret(CONSUMER_SECRET);
+			builder.setOAuthAccessToken(ACCESS_TOKEN);
+			builder.setOAuthAccessTokenSecret(ACCESS_TOKEN_SECRET);
 			Configuration configuration = builder.build();
+			
 			TwitterFactory factory = new TwitterFactory(configuration);
 			this.twitter = factory.getInstance();
-			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
-			AccessToken oathAccessToken = new AccessToken(ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
-			twitter.setOAuthAccessToken(oathAccessToken);
 			
 		}catch (Exception e){
 			e.printStackTrace();
@@ -73,12 +73,8 @@ public class TwitterBot {
 	public static void main(String args[]) throws Exception{
 		TwitterBot tbot = new TwitterBot();
 		tbot.authentication();
-//		tbot.tweet("FIDDY BUCKS");
-		
-		System.out.println(tbot.ACCESS_TOKEN);
-		System.out.println(tbot.ACCESS_TOKEN_SECRET);
-		System.out.println(tbot.CONSUMER_KEY);
-		System.out.println(tbot.CONSUMER_SECRET);
+		tbot.tweet("FIDDY BUCKS");
+
 
 	}
 
