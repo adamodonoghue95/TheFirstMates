@@ -49,10 +49,10 @@ public class HumanPokerPlayer extends PokerPlayer {
 
 		do {
 			if (input.equals("y") || input.equals("Y")) {
-				System.out.println("You have folded\n");
 				return true;
 			}
 			else if (input.equals("n") || input.equals("N")) {
+				System.out.println("You have folded\n");
 				return false;
 			}
 			else {

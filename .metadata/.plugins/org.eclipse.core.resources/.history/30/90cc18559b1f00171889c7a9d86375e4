@@ -85,12 +85,20 @@ public class HandOfPoker {
 	public void checkFold() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
-		// Deals with Human player
-		if (human.fold()) {
-			pokerPlayers.remove(0);
+		// Deals with Human PLayer
+		System.out.println("\nWould you like to bet? (y/n to fold) ");
+		String input = human.prompt();
+
+		if (input.equals("y")) {
+			roundOfBetting(); // Start betting
+		}
+		else if (input.equals("n")) {
+			System.out.println("You have folded\n");
+			pokerPlayers.remove(0); // Remove human player from the hand
 		}
 		else {
-			roundOfBetting();
+			System.out.println("Wrong input");
+			checkFold(); // restart checkFold()
 		}
 
 		// Deals with Automated Players

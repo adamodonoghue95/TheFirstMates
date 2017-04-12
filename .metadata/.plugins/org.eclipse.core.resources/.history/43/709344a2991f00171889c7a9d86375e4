@@ -22,7 +22,24 @@ public class HandOfPoker {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
 		// Deals with Human Player
-		pot += human.getChipsToBet();
+		System.out.println("How much would you like to bet? (< " + human.chips + ")");
+		try {
+			int chipsBet = Integer.parseInt(human.prompt());
+
+			if (chipsBet > human.chips) { // Cannot bet more than chips held by player
+				System.out.println("You only have " + human.chips + " chip(s)");
+				roundOfBetting(); // restart betting 
+			}
+			else {
+				human.bet(chipsBet); // take chips away from player
+				System.out.println("> You have bet " + chipsBet + " chip(s)");
+				pot += chipsBet; // add chips bet to pot
+			}
+		}
+		catch (NumberFormatException e){ // String entered is not a valid integer
+			System.out.println("Bet must be a number!");
+			roundOfBetting(); // restart betting
+		}
 
 		// Deals with Automated Players
 		for (int i = 1; i < pokerPlayers.size(); i++) {
@@ -85,12 +102,20 @@ public class HandOfPoker {
 	public void checkFold() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
-		// Deals with Human player
-		if (human.fold()) {
-			pokerPlayers.remove(0);
+		// Deals with Human PLayer
+		System.out.println("\nWould you like to bet? (y/n to fold) ");
+		String input = human.prompt();
+
+		if (input.equals("y")) {
+			roundOfBetting(); // Start betting
+		}
+		else if (input.equals("n")) {
+			System.out.println("You have folded\n");
+			pokerPlayers.remove(0); // Remove human player from the hand
 		}
 		else {
-			roundOfBetting();
+			System.out.println("Wrong input");
+			checkFold(); // restart checkFold()
 		}
 
 		// Deals with Automated Players

@@ -362,6 +362,8 @@ public class HandOfCards {
 		}
 	}
 
+
+
 	private boolean isBustedFlush(){
 		int suitCount = 0;
 		for (int i=1;i<HAND_SIZE;i++){

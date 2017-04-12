@@ -26,9 +26,6 @@ public class HumanPokerPlayer extends PokerPlayer {
 				if (chipsBet > chips) { // Cannot bet more than chips held by player
 					System.out.println("You only have " + chips + " chip(s)");
 				}
-				else if (chipsBet < 0) {
-					System.out.println("Must be a positive number!");
-				}
 				else {
 					bet(chipsBet); // take chips away from player
 					System.out.println("> You have bet " + chipsBet + " chip(s)");
@@ -41,23 +38,5 @@ public class HumanPokerPlayer extends PokerPlayer {
 
 		} while (!correctInput);
 		return chipsBet;
-	}
-	
-	public boolean fold() {
-		System.out.println("\nWould you like to fold?");
-		String input = prompt();
-
-		do {
-			if (input.equals("y") || input.equals("Y")) {
-				System.out.println("You have folded\n");
-				return true;
-			}
-			else if (input.equals("n") || input.equals("N")) {
-				return false;
-			}
-			else {
-				System.out.println("Wrong input");
-			}
-		} while (true);
 	}
 }

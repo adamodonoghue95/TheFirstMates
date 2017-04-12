@@ -46,18 +46,22 @@ public class HumanPokerPlayer extends PokerPlayer {
 	public boolean fold() {
 		System.out.println("\nWould you like to fold?");
 		String input = prompt();
+		boolean correctInput = false;
 
 		do {
 			if (input.equals("y") || input.equals("Y")) {
-				System.out.println("You have folded\n");
+				correctInput = true;
 				return true;
 			}
 			else if (input.equals("n") || input.equals("N")) {
+				System.out.println("You have folded\n");
+				correctInput = true;
 				return false;
 			}
 			else {
 				System.out.println("Wrong input");
 			}
-		} while (true);
+		} while (!correctInput);
+		return false;
 	}
 }

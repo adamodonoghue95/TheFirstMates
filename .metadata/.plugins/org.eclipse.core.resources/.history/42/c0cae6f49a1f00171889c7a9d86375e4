@@ -42,22 +42,4 @@ public class HumanPokerPlayer extends PokerPlayer {
 		} while (!correctInput);
 		return chipsBet;
 	}
-	
-	public boolean fold() {
-		System.out.println("\nWould you like to fold?");
-		String input = prompt();
-
-		do {
-			if (input.equals("y") || input.equals("Y")) {
-				System.out.println("You have folded\n");
-				return true;
-			}
-			else if (input.equals("n") || input.equals("N")) {
-				return false;
-			}
-			else {
-				System.out.println("Wrong input");
-			}
-		} while (true);
-	}
 }
