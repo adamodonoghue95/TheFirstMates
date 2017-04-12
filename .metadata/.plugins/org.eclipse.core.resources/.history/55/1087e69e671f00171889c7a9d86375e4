@@ -32,7 +32,6 @@ public class HandOfPoker {
 			}
 			else {
 				human.bet(chipsBet); // take chips away from player
-				System.out.println("> You have bet " + chipsBet + " chip(s)");
 				pot += chipsBet; // add chips bet to pot
 			}
 		}
@@ -47,16 +46,8 @@ public class HandOfPoker {
 			
 			int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
 			pokerPlayers.get(i).bet(chipsBet);
-			System.out.println("> " + bot.name + " has bet "  + chipsBet + " chip(s)");
 			pot += chipsBet; // add chips to pot
 		}
-	}
-	
-	public void discardCards() {
-		// Deals with Human Player
-		
-		
-		// Deals with Automated Player
 	}
 	
 	// Removes any players that want to fold

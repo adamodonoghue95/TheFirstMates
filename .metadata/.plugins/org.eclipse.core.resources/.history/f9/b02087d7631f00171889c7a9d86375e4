@@ -19,26 +19,25 @@ public class HandOfPoker {
 	}
 	
 	public void roundOfBetting() {
+		// Deals with Human Player
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
-		// Deals with Human Player
-		System.out.println("How much would you like to bet? (< " + human.chips + ")");
+		System.out.println("How much would you like to bet?");
 		try {
 			int chipsBet = Integer.parseInt(human.prompt());
 			
 			if (chipsBet > human.chips) { // Cannot bet more than chips held by player
 				System.out.println("You only have " + human.chips + " chip(s)");
-				roundOfBetting(); // restart betting 
+				roundOfBetting(); // start betting again
 			}
 			else {
 				human.bet(chipsBet); // take chips away from player
-				System.out.println("> You have bet " + chipsBet + " chip(s)");
 				pot += chipsBet; // add chips bet to pot
 			}
 		}
-		catch (NumberFormatException e){ // String entered is not a valid integer
+		catch (NumberFormatException e){ // String entered is not a valid int
 			System.out.println("Bet must be a number!");
-			roundOfBetting(); // restart betting
+			roundOfBetting();
 		}
 		
 		// Deals with Automated Players
@@ -47,28 +46,18 @@ public class HandOfPoker {
 			
 			int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
 			pokerPlayers.get(i).bet(chipsBet);
-			System.out.println("> " + bot.name + " has bet "  + chipsBet + " chip(s)");
 			pot += chipsBet; // add chips to pot
 		}
 	}
 	
-	public void discardCards() {
-		// Deals with Human Player
-		
-		
-		// Deals with Automated Player
-	}
-	
-	// Removes any players that want to fold
+	// Returns true if the player wants to bet
 	public void checkFold() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-		
 		// Deals with Human PLayer
 		System.out.println("\nWould you like to bet? (y/n to fold) ");
 		String input = human.prompt();
-		
 		if (input.equals("y")) {
-			roundOfBetting(); // Start betting
+			roundOfBetting();
 		}
 		else if (input.equals("n")) {
 			System.out.println("You have folded\n");
@@ -76,13 +65,14 @@ public class HandOfPoker {
 		}
 		else {
 			System.out.println("Wrong input");
-			checkFold(); // restart checkFold()
+			checkFold();
 		}
 			
 		// Deals with Automated Players
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
 			// If bot.fold() returns true remove from hand
+			//System.out.println(bot.fold());
 			if (bot.fold()) {
 				System.out.println("> " + bot.name + " has folded");
 				pokerPlayers.remove(i);
@@ -92,7 +82,7 @@ public class HandOfPoker {
 
 	public void printHumanHand() {
 		HandOfCards hand = pokerPlayers.get(0).playerHand;
-		
+		System.out.println(hand.toString());
 		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
 			switch(hand.getCard(i).getGameValue()) {
 			case 14:

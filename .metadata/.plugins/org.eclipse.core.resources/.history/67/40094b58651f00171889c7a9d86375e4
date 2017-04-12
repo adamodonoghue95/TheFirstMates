@@ -22,7 +22,7 @@ public class HandOfPoker {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
 		// Deals with Human Player
-		System.out.println("How much would you like to bet? (< " + human.chips + ")");
+		System.out.println("How much would you like to bet?");
 		try {
 			int chipsBet = Integer.parseInt(human.prompt());
 			
@@ -32,11 +32,10 @@ public class HandOfPoker {
 			}
 			else {
 				human.bet(chipsBet); // take chips away from player
-				System.out.println("> You have bet " + chipsBet + " chip(s)");
 				pot += chipsBet; // add chips bet to pot
 			}
 		}
-		catch (NumberFormatException e){ // String entered is not a valid integer
+		catch (NumberFormatException e){ // String entered is not a valid int
 			System.out.println("Bet must be a number!");
 			roundOfBetting(); // restart betting
 		}
@@ -47,16 +46,8 @@ public class HandOfPoker {
 			
 			int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
 			pokerPlayers.get(i).bet(chipsBet);
-			System.out.println("> " + bot.name + " has bet "  + chipsBet + " chip(s)");
 			pot += chipsBet; // add chips to pot
 		}
-	}
-	
-	public void discardCards() {
-		// Deals with Human Player
-		
-		
-		// Deals with Automated Player
 	}
 	
 	// Removes any players that want to fold

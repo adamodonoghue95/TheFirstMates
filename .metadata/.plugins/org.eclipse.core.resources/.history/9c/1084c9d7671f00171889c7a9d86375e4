@@ -52,13 +52,6 @@ public class HandOfPoker {
 		}
 	}
 	
-	public void discardCards() {
-		// Deals with Human Player
-		
-		
-		// Deals with Automated Player
-	}
-	
 	// Removes any players that want to fold
 	public void checkFold() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
