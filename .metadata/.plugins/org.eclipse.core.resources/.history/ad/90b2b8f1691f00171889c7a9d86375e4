@@ -6,7 +6,7 @@ public class HandOfPoker {
 
 	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
 	protected int pot = 0; // Amount of chips stored in the pot
-
+	
 	public HandOfPoker(ArrayList<PokerPlayer> players) {
 		pokerPlayers = players;
 		System.out.println("New Deal:\n");
@@ -17,7 +17,7 @@ public class HandOfPoker {
 			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).chips + " chip(s)");
 		}
 	}
-
+	
 	public void roundOfBetting() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
@@ -25,7 +25,7 @@ public class HandOfPoker {
 		System.out.println("How much would you like to bet? (< " + human.chips + ")");
 		try {
 			int chipsBet = Integer.parseInt(human.prompt());
-
+			
 			if (chipsBet > human.chips) { // Cannot bet more than chips held by player
 				System.out.println("You only have " + human.chips + " chip(s)");
 				roundOfBetting(); // restart betting 
@@ -40,18 +40,18 @@ public class HandOfPoker {
 			System.out.println("Bet must be a number!");
 			roundOfBetting(); // restart betting
 		}
-
+		
 		// Deals with Automated Players
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-
+			
 			int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
 			pokerPlayers.get(i).bet(chipsBet);
 			System.out.println("> " + bot.name + " has bet "  + chipsBet + " chip(s)");
 			pot += chipsBet; // add chips to pot
 		}
 	}
-
+	
 	public void discardCards() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
 
@@ -60,41 +60,39 @@ public class HandOfPoker {
 		String input = human.prompt();
 		String [] cards = input.split(" ");
 		int [] discard = new int[cards.length];
-
-		for (int i = 0; i < cards.length; i++) {
-			try {
-				discard[i] = Integer.parseInt(cards[i]);
-
-				if (discard.length > 3) {
-					System.out.println("Maximum cards you can discard is three");
+		if (cards.length > 3) {
+			System.out.println("Maximum cards you can discard is three");
+		}
+		else {
+			for (int i = 0; i < cards.length; i++) {
+				try {
+					discard[i] = Integer.parseInt(cards[i]);
+				}
+				catch (NumberFormatException e) {
+					System.out.println("Invalid input (must be integers)");
 					discardCards();
 				}
 			}
-			catch (NumberFormatException e) {
-				System.out.println("Invalid input (must be integers)");
-				discardCards();
-			}
 		}
-
 		for (int i = 0; i < discard.length; i++) {
 			System.out.println(discard[i]);
 		}
-
+		
 		// Deals with Automated Player
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-
+			
 		}
 	}
-
+	
 	// Removes any players that want to fold
 	public void checkFold() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-
+		
 		// Deals with Human PLayer
 		System.out.println("\nWould you like to bet? (y/n to fold) ");
 		String input = human.prompt();
-
+		
 		if (input.equals("y")) {
 			roundOfBetting(); // Start betting
 		}
@@ -106,7 +104,7 @@ public class HandOfPoker {
 			System.out.println("Wrong input");
 			checkFold(); // restart checkFold()
 		}
-
+			
 		// Deals with Automated Players
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
@@ -120,7 +118,7 @@ public class HandOfPoker {
 
 	public void printHumanHand() {
 		HandOfCards hand = pokerPlayers.get(0).playerHand;
-
+		
 		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
 			switch(hand.getCard(i).getGameValue()) {
 			case 14:
@@ -163,7 +161,7 @@ public class HandOfPoker {
 				System.out.print(i + ". King of ");
 				break;
 			}
-
+			
 			for (int j = 0; j < 4; j++) {
 				if (hand.getCard(i).getSuit() == 'H') {
 					System.out.println("Hearts");

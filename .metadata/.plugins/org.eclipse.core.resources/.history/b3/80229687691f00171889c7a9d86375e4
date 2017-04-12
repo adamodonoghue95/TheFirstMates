@@ -28,7 +28,6 @@ public class GameOfPoker {
 		
 		// Let players fold and start betting
 		hand.checkFold();
-		hand.discardCards();
 		
 		//hand.printChips();
 		

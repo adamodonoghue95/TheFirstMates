@@ -65,7 +65,7 @@ public class HandOfPoker {
 			try {
 				discard[i] = Integer.parseInt(cards[i]);
 
-				if (discard.length > 3) {
+				if (cards.length > 3) {
 					System.out.println("Maximum cards you can discard is three");
 					discardCards();
 				}
