@@ -37,43 +37,7 @@ public class HandOfPoker {
 
 	public void discardCards() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-
-		// Deals with Human Player
-		boolean correctInput = false;
-		String input = "";
-		String [] cards = input.split(" ");
-		int [] discard = new int[cards.length];
-		
-		do {
-			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
-			input = human.prompt();
-			cards = input.split(" ");
-			discard = new int[cards.length];
-			
-			if (discard.length > 3) {
-				System.out.println("Maximum cards you can discard is three");
-			}
-			else {
-				try {
-					// Assigns and parses discarded cards to integers
-					for (int i = 0; i < cards.length; i++) {
-						discard[i] = Integer.parseInt(cards[i]);
-					}	
-					correctInput = true;
-				}
-				catch (NumberFormatException e) {
-					System.out.println("Invalid input (must be integers)");
-				}
-			}
-			
-		} while (!correctInput);
-
-		for (int i1 = 0; i1 < discard.length; i1++) {
-			System.out.println(discard[i1]);
-		}
-		
-		
-
+		human.humanDiscard();
 		// Deals with Automated Player
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
