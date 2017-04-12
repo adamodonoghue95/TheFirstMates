@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class HandOfPoker {
 
 	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
-
+	protected int pot = 0; // Amount of chips stored in the pot
+	
 	public HandOfPoker(ArrayList<PokerPlayer> players) {
 		pokerPlayers = players;
 		System.out.println("New Deal:\n");
@@ -16,12 +17,75 @@ public class HandOfPoker {
 			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).chips + " chip(s)");
 		}
 	}
+	
+	public void roundOfBetting() {
+		// Deals with Human Player
+		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
+
+		System.out.println("How much would you like to bet?");
+		try {
+			int chipsBet = Integer.parseInt(human.prompt());
+			
+			if (chipsBet > human.chips) { // Cannot bet more than chips held by player
+				System.out.println("You only have " + human.chips + " chip(s)");
+				roundOfBetting(); // start betting again
+			}
+			else {
+				human.bet(chipsBet); // take chips away from player
+				pot += chipsBet; // add chips bet to pot
+			}
+		}
+		catch (NumberFormatException e){ // String entered is not a valid int
+			System.out.println("Bet must be a number!");
+			roundOfBetting();
+		}
+		
+		// Deals with Automated Players
+		for (int i = 1; i < pokerPlayers.size(); i++) {
+			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			
+			int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
+			pokerPlayers.get(i).bet(chipsBet);
+			pot += chipsBet; // add chips to pot
+		}
+	}
+	
+	// Returns true if the player wants to bet
+	public void checkFold() {
+		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
+		// Deals with Human PLayer
+		System.out.println("\nWould you like to bet? (y/n to fold) ");
+		String input = human.prompt();
+		if (input.equals("y")) {
+			roundOfBetting();
+		}
+		else if (input.equals("n")) {
+			System.out.println("You have folded\n");
+			pokerPlayers.remove(0); // Remove human player from the hand
+		}
+		else {
+			System.out.println("Wrong input");
+			checkFold();
+		}
+			
+		// Deals with Automated Players
+		for (int i = 1; i < pokerPlayers.size(); i++) {
+			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			// If bot.fold() returns true remove from hand
+			//System.out.println(bot.fold());
+			if (bot.fold()) {
+				System.out.println("> " + bot.name + " has folded");
+				pokerPlayers.remove(i);
+			}
+		}
+	}
 
 	public void printHumanHand() {
 		HandOfCards hand = pokerPlayers.get(0).playerHand;
-		for (int i = 0; i < hand.HAND_SIZE; i++) {
-			switch(hand.getCard(i).getFaceValue()) {
-			case 1:
+		System.out.println(hand.toString());
+		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
+			switch(hand.getCard(i).getGameValue()) {
+			case 14:
 				System.out.print(i + ". Ace of ");
 				break;
 			case 2:
@@ -80,9 +144,6 @@ public class HandOfPoker {
 					break;
 				}
 			}
-
 		}
-
 	}
-
 }

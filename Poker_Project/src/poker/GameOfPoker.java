@@ -17,7 +17,7 @@ public class GameOfPoker {
 	public static void main(String [] args) {
 		System.out.println("Welcome to TheFirstMates Poker Game!\n");
 
-		GameOfPoker game = new GameOfPoker(4);		
+		GameOfPoker game = new GameOfPoker(4);
 		
 		System.out.println("\nLet's Play Poker " + players.get(0).name + "!");
 		HandOfPoker hand = new HandOfPoker(players);
@@ -25,6 +25,11 @@ public class GameOfPoker {
 		
 		System.out.println("\nYour Hand: -> " + players.get(0).playerHand.getHandType());
 		hand.printHumanHand();
+		
+		hand.checkFold();
+		
+		hand.printChips();
+		
 		
 	}
 	

@@ -1,9 +1,0 @@
-package poker;
-
-public class HumanPokerPlayer extends PokerPlayer {
-	
-	public HumanPokerPlayer(DeckOfCards deck, String pokerName) {
-		super(deck);
-		name = pokerName;
-	}
-}
