@@ -57,15 +57,12 @@ public class HandOfPoker {
 
 		// Deals with Human Player
 		boolean correctInput = false;
-		String input = "";
+		String input = human.prompt();
 		String [] cards = input.split(" ");
 		int [] discard = new int[cards.length];
-		
 		do {
 			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
-			input = human.prompt();
-			cards = input.split(" ");
-			discard = new int[cards.length];
+			
 			
 			if (discard.length > 3) {
 				System.out.println("Maximum cards you can discard is three");
