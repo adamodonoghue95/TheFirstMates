@@ -61,28 +61,31 @@ public class HandOfPoker {
 		String [] cards = input.split(" ");
 		int [] discard = new int[cards.length];
 
-		for (int i = 0; i < cards.length; i++) {
-			try {
+		try {
+			for (int i = 0; i < cards.length; i++) {
+				discard[i] = Integer.parseInt(cards[i]);
+
 				
-				// Checks if player exceeded max three cards
 				if (discard.length > 3) {
 					System.out.println("Maximum cards you can discard is three");
-					discardCards(); // repeat method
+					System.out.println(discard.length);
+					
+					//discardCards();
 				}
-				else {
-					// Assigns and parses discarded cards to integers
-					discard[i] = Integer.parseInt(cards[i]);	
-				}
+			}	
+			for (int i1 = 0; i1 < discard.length; i1++) {
+				System.out.println(discard[i1]);
 			}
-			catch (NumberFormatException e) {
-				System.out.println("Invalid input (must be integers)");
-				discardCards();
-			}
-		}	
-		System.out.println(discard.length + "\n\n");
-		for (int i1 = 0; i1 < discard.length; i1++) {
-			System.out.println(discard[i1]);
 		}
+		catch (NumberFormatException e) {
+			System.out.println("Invalid input (must be integers)");
+			for (int i1 = 0; i1 < discard.length; i1++) {
+				System.out.println(discard[i1]);
+			}
+
+			discardCards();
+		}
+		
 
 		
 		// Deals with Automated Player

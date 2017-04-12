@@ -76,7 +76,6 @@ public class HandOfPoker {
 			}
 			catch (NumberFormatException e) {
 				System.out.println("Invalid input (must be integers)");
-				discardCards();
 			}
 		}	
 		System.out.println(discard.length + "\n\n");
