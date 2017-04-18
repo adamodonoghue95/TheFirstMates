@@ -3,18 +3,18 @@ package poker;
 import java.util.Scanner;
 
 public class HumanPokerPlayer extends PokerPlayer {
-	
+
 	public HumanPokerPlayer(DeckOfCards deck) {
 		super(deck);
 		System.out.println("What is your name?");
 		name = prompt();
 	}
-	
+
 	public String prompt() {
 		Scanner scanner = new Scanner(System.in);
 		return scanner.nextLine();
 	}
-	
+
 	public int getChipsToBet() {
 		boolean correctInput = false;
 		int chipsBet = 0;
@@ -42,7 +42,7 @@ public class HumanPokerPlayer extends PokerPlayer {
 		} while (!correctInput);
 		return chipsBet;
 	}
-	
+
 	public boolean fold() {
 		System.out.println("\nWould you like to fold?");
 		String input = prompt();
@@ -60,40 +60,40 @@ public class HumanPokerPlayer extends PokerPlayer {
 			}
 		} while (true);
 	}
-	
+
 	public void humanDiscard(){
 		// Deals with Human Player
-				boolean correctInput = false;
-				String input = "";
-				String [] cards = input.split(" ");
-				int [] discard = new int[cards.length];
-				
-				do {
-					System.out.println("What cards would you like to discard? (e.g 0 2 3)");
-					input = prompt();
-					cards = input.split(" ");
-					discard = new int[cards.length];
-					
-					if (discard.length > 3) {
-						System.out.println("Maximum cards you can discard is three");
-					}
-					else {
-						try {
-							// Assigns and parses discarded cards to integers
-							for (int i = 0; i < cards.length; i++) {
-								discard[i] = Integer.parseInt(cards[i]);
-							}	
-							correctInput = true;
-						}
-						catch (NumberFormatException e) {
-							System.out.println("Invalid input (must be integers)");
-						}
-					}
-					
-				} while (!correctInput);
+		boolean correctInput = false;
+		String input = "";
+		String [] cards = input.split(" ");
+		int [] discard = new int[cards.length];
 
-				for (int i1 = 0; i1 < discard.length; i1++) {
-					System.out.println(discard[i1]);
+		do {
+			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
+			input = prompt();
+			cards = input.split(" ");
+			discard = new int[cards.length];
+
+			if (discard.length > 3) {
+				System.out.println("Maximum cards you can discard is three");
+			}
+			else {
+				try {
+					// Assigns and parses discarded cards to integers
+					for (int i = 0; i < cards.length; i++) {
+						discard[i] = Integer.parseInt(cards[i]);
+					}	
+					correctInput = true;
 				}
+				catch (NumberFormatException e) {
+					System.out.println("Invalid input (must be integers)");
+				}
+			}
+
+		} while (!correctInput);
+
+		for (int i1 = 0; i1 < discard.length; i1++) {
+			System.out.println(discard[i1]);
+		}
 	}
 }

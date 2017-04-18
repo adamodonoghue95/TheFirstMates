@@ -6,6 +6,7 @@ public class GameOfPoker {
 	private static ArrayList<PokerPlayer> players = new ArrayList<PokerPlayer>();
 	private static ArrayList<PokerPlayer> inactivePlayers = new ArrayList<PokerPlayer>();
 	private DeckOfCards deck = new DeckOfCards();
+	private int STATUS_ID;
 	
 	public GameOfPoker(int numberOfPlayers) {
 		players.add(new HumanPokerPlayer(deck));
