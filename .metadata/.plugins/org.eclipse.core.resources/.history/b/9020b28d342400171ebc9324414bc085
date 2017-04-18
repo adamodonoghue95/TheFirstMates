@@ -55,7 +55,7 @@ public class HandOfPoker {
 
 	public void discardCards() {
 		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-
+<<<<<<< HEAD
 
 		// Deals with Human Player
 		boolean correctInput = false;
@@ -94,8 +94,9 @@ public class HandOfPoker {
 
 
 
-		//human.humanDiscard();
-
+=======
+		human.humanDiscard();
+>>>>>>> a608c3b33f9c713c3aab45e74eb517abce6e4c94
 		// Deals with Automated Player
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
