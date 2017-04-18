@@ -10,8 +10,8 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	// returns amount of chips to bet according to hand held
 	public int getChipsToBet() {
 		// TODO
-		if (chips > 0) {
-			return 2;
+		if (chips > 2) {
+			return 0;
 		}
 		else {
 			return 0;
@@ -19,9 +19,9 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	}
 	
 	// returns whether Bot folds or not
-	public boolean fold() {
+	public boolean fold(int lastBet) {
 		// TODO
-		if (chips <= 0) {
+		if (chips <= lastBet) {
 			return true;
 		}
 		else {

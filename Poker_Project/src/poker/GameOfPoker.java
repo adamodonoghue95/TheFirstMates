@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class GameOfPoker {
 	private static ArrayList<PokerPlayer> players = new ArrayList<PokerPlayer>();
+	private static ArrayList<PokerPlayer> inactivePlayers = new ArrayList<PokerPlayer>();
 	private DeckOfCards deck = new DeckOfCards();
 	
 	public GameOfPoker(int numberOfPlayers) {
@@ -23,12 +24,23 @@ public class GameOfPoker {
 		HandOfPoker hand = new HandOfPoker(players);
 		hand.printChips();
 		
-		System.out.println("\nYour Hand: -> " + players.get(0).playerHand.getHandType());
+		System.out.println("\nYour Current Hand: -> " + players.get(0).playerHand.getHandType());
 		hand.printHumanHand();
 		
 		// Let players fold and start betting
 		hand.checkFold();
 		hand.discardCards();
+		
+		System.out.println("\nYour Current Hand: -> " + players.get(0).playerHand.getHandType());
+		hand.printHumanHand();
+		//Complete second round of betting
+		hand.checkFold();
+		
+		//Show Cards
+		System.out.println("\nYour Current Hand: -> " + players.get(0).playerHand.getHandType());
+		hand.showCards();
+		hand.decideWinner();
+		
 		
 		//hand.printChips();
 		
