@@ -27,8 +27,6 @@ public class GameOfPoker {
 		System.out.println("\nYour Current Hand: -> " + players.get(0).playerHand.getHandType());
 		hand.printHumanHand();
 		
-		hand.showCards();
-		
 		// Let players fold and start betting
 		hand.checkFold();
 		hand.discardCards();

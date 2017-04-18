@@ -99,7 +99,7 @@ public class HandOfPoker {
 		// Deals with Automated Player
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-			bot.discard();
+
 		}
 	}
 
