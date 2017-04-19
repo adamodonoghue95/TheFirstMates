@@ -21,7 +21,6 @@ public class HandOfPoker {
 
 	public void roundOfBetting() {
 		lastBet = 0;
-		
 		int lastToRaise = 0;
 
 		for(int i = 0; i < pokerPlayers.size();i++){
@@ -35,9 +34,12 @@ public class HandOfPoker {
 					int chipsBet = player.getChipsToBet(); // gets chips bet by player
 					player.chips -= lastBet;
 					//pokerPlayers.get(i).bet(chipsBet);
-					if(chipsBet > 0){	
-						System.out.println(" and has raised by "  + chipsBet + " chip(s)");
-						lastBet += chipsBet;
+					if(chipsBet == 0){
+						System.out.println("> " + player.name + " has called");
+					}
+					else{
+						System.out.println("> " + player.name + " has raised by "  + chipsBet + " chip(s)");
+						lastBet = chipsBet;
 						pot += lastBet;
 						lastToRaise = i;
 					}
@@ -60,7 +62,10 @@ public class HandOfPoker {
 				if(!player.fold(lastBet)){
 					//player has called the last bet
 					pot += lastBet;
-					
+					//see how many chips the player wants to raise by, if any
+					int chipsBet = player.getChipsToBet(); // gets chips bet by player
+					player.chips -= lastBet;
+					//pokerPlayers.get(i).bet(chipsBet);
 					// add chips to pot
 					System.out.println("> Pot = " + pot);
 

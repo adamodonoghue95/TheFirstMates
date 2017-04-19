@@ -12,8 +12,9 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	public int getChipsToBet() {
 		// TODO
 		Random rand = new Random();
-		int num = rand.nextInt(2);
+		int num = rand.nextInt(4);
 		if (chips > 2 && num == 0) {
+			
 			return 2;
 		}
 		else {
@@ -31,7 +32,6 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 		}
 		else {
 			//this.chips -= lastBet;
-			System.out.println(this.name + " has called");
 			return false;
 		}
 		

@@ -11,10 +11,8 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	// returns amount of chips to bet according to hand held
 	public int getChipsToBet() {
 		// TODO
-		Random rand = new Random();
-		int num = rand.nextInt(2);
-		if (chips > 2 && num == 0) {
-			return 2;
+		if (chips > 2) {
+			return 0;
 		}
 		else {
 			return 0;
@@ -31,7 +29,6 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 		}
 		else {
 			//this.chips -= lastBet;
-			System.out.println(this.name + " has called");
 			return false;
 		}
 		
