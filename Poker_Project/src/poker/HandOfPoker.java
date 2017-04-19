@@ -20,111 +20,53 @@ public class HandOfPoker {
 	}
 
 	public void roundOfBetting() {
-		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
+		lastBet = 0;
 
-		// Deals with Human Player
-		lastBet = human.getChipsToBet();
-		pot += lastBet;
-		System.out.println("> Pot = " + pot);
-
-
+		//		int numActivePlayers = pokerPlayers.size();
 		// Deals with Automated Players
-		for (int i = 1; i < pokerPlayers.size(); i++) {
-			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-			//first check if the bot is going to fold or call
-			if(!bot.fold(lastBet)){
-				//bot has called the last bet
-				pot += lastBet;
-				//see how many chips the bot wants to raise by, if any
-				int chipsBet = bot.getChipsToBet(); // gets chips bet by bot
-				//pokerPlayers.get(i).bet(chipsBet);
-				if(chipsBet == 0){
-					System.out.println("> " + bot.name + " has called");
-				}
-				else{
-					System.out.println("> " + bot.name + " has raised by "  + chipsBet + " chip(s)");
-					lastBet = chipsBet;
+		//for (int i = 0; i < pokerPlayers.size(); i++) {
+		for(int i = 0; i < pokerPlayers.size();i++){
+			PokerPlayer player = pokerPlayers.get(i);
+			if(player.inHand){
+				//first check if the player is going to fold or call
+				if(!player.fold(lastBet)){
+					//player has called the last bet
 					pot += lastBet;
-				}
-				// add chips to pot
-				System.out.println("> Pot = " + pot);
+					//see how many chips the player wants to raise by, if any
+					int chipsBet = player.getChipsToBet(); // gets chips bet by player
+					player.chips -= lastBet;
+					//pokerPlayers.get(i).bet(chipsBet);
+					if(chipsBet == 0){
+						System.out.println("> " + player.name + " has called");
+					}
+					else{
+						System.out.println("> " + player.name + " has raised by "  + chipsBet + " chip(s)");
+						lastBet = chipsBet;
+						pot += lastBet;
+					}
+					// add chips to pot
+					System.out.println("> Pot = " + pot);
 
+				}	
+				else{
+					System.out.println("> " + player.name + " has folded");
+					pokerPlayers.get(i).inHand = false;
+				}
 			}
 		}
+
 	}
 
 	public void discardCards() {
-		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-
-
-		// Deals with Human Player
-		boolean correctInput = false;
-		String input = "";
-		String [] cards = input.split(" ");
-		int [] discard = new int[cards.length];
-
-		do {
-			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
-			input = human.prompt();
-			cards = input.split(" ");
-			discard = new int[cards.length];
-
-			if (discard.length > 3) {
-				System.out.println("Maximum cards you can discard is three");
-			}
-			else {
-				try {
-					// Assigns and parses discarded cards to integers
-					for (int i = 0; i < cards.length; i++) {
-						discard[i] = Integer.parseInt(cards[i]);
-					}	
-					correctInput = true;
-				}
-				catch (NumberFormatException e) {
-					System.out.println("Invalid input (must be integers)");
-				}
-			}
-
-		} while (!correctInput);
-
-		for (int i1 = 0; i1 < discard.length; i1++) {
-			System.out.println(discard[i1]);
-		}
-		human.playerHand.discardCards(discard, discard.length);
-
-
-
-		//human.humanDiscard();
 
 		// Deals with Automated Player
-		for (int i = 1; i < pokerPlayers.size(); i++) {
-			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-			bot.discard();
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			player.discard();
 		}
 	}
 
 	// Removes any players that want to fold
-	public void checkFold() {
-		HumanPokerPlayer human = (HumanPokerPlayer)pokerPlayers.get(0);
-
-		// Deals with Human player
-		if (human.fold()) {
-			pokerPlayers.remove(0);
-		}
-		else {
-			roundOfBetting();
-		}
-
-		// Deals with Automated Players
-		for (int i = 1; i < pokerPlayers.size(); i++) {
-			AutomatedPokerPlayer bot = (AutomatedPokerPlayer)pokerPlayers.get(i);
-			// If bot.fold() returns true remove from hand
-			if (bot.fold(lastBet)) {
-				System.out.println("> " + bot.name + " has folded");
-				pokerPlayers.remove(i);
-			}
-		}
-	}
 
 	public void printHumanHand() {
 		HandOfCards hand = pokerPlayers.get(0).playerHand;
@@ -273,8 +215,9 @@ public class HandOfPoker {
 				winningPlayer = z;
 			}
 		}
-		
+
 		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
+		pokerPlayers.get(winningPlayer).chips += pot;
 
 
 	}
