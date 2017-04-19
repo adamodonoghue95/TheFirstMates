@@ -6,7 +6,7 @@ public class PokerPlayer {
 
 	protected HandOfCards playerHand;
 	protected String name;
-	protected int chips;
+	private int chips;
 	protected boolean inHand = true;
 
 	public PokerPlayer(DeckOfCards cardDeck, String playerName){
@@ -34,7 +34,7 @@ public class PokerPlayer {
 		chips += noOfChips;
 	}
 	
-	public int getChipsToBet() {
+	public int getChipsToRaise() {
 		boolean correctInput = false;
 		int chipsBet = 0;
 		do {
@@ -49,8 +49,6 @@ public class PokerPlayer {
 					System.out.println("Must be a positive number!");
 				}
 				else {
-					bet(chipsBet); // take chips away from player
-					System.out.println("> You have bet " + chipsBet + " chip(s)");
 					return chipsBet;
 				}
 			}
@@ -61,15 +59,12 @@ public class PokerPlayer {
 		} while (!correctInput);
 		return chipsBet;
 	}
-	
-	
+		
 	public boolean fold(int lastBet) {
-		System.out.println("\nWould you like to fold? (The cost to call is " + lastBet +" chips)");
 
 		do {
 			String input = prompt();
 			if (input.equals("y") || input.equals("Y")) {
-				System.out.println("You have folded\n");
 				return true;
 			}
 			else if (input.equals("n") || input.equals("N")) {
@@ -79,6 +74,10 @@ public class PokerPlayer {
 				System.out.println("Wrong input");
 			}
 		} while (true);
+	}
+	
+	public int getChips() {
+		return chips;
 	}
 	
 	public void discard(){
@@ -123,8 +122,7 @@ public class PokerPlayer {
 
 		} while (!correctInput);
 
-		playerHand.discardCards(discard, discard.length);
-		
+		playerHand.discardCards(discard, discard.length);	
 	}
 	
 	public static void main(String [ ] args)

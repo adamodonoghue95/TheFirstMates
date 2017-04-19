@@ -1,7 +1,7 @@
 package poker;
 
 public class HandOfCards {
-//fix
+	//fix
 
 	//constant to represent the number of cards in a hand(5)
 	static public final int HAND_SIZE = 5;
@@ -35,18 +35,18 @@ public class HandOfCards {
 		}
 		this.sort();
 	}
-	
+
 	public PlayingCard getCard(int cardNumber){
 		return hand[cardNumber];
 	}
-	
+
 	public void discardCards(int[] discarded, int noDiscardedCards){
 		for(int i = 0; i<noDiscardedCards;i++){
-		System.out.println("Discarding: " + hand[discarded[i]]);
-		deck.returnCard(hand[discarded[i]]);
-		hand[discarded[i]] = deck.dealNext();
+			System.out.println("Discarding: " + hand[discarded[i]]);
+			deck.returnCard(hand[discarded[i]]);
+			hand[discarded[i]] = deck.dealNext();
 		}
-		
+
 		this.sort();
 	}
 
@@ -279,7 +279,7 @@ public class HandOfCards {
 		if(count==2)return true;
 		else return false;
 	}
-	
+
 	//Method to recognise if a hand can be turned into a straight
 	private boolean isBustedStraight() {
 		int diff = 0;
@@ -291,7 +291,7 @@ public class HandOfCards {
 			}
 			else if (isBustCardInStraight(3)) {
 				diff += hand[2].getGameValue() - hand[1].getGameValue();
-				
+
 				diff += hand[1].getGameValue() - hand[0].getGameValue();
 				diff += hand[0].getGameValue() - hand[4].getFaceValue();
 			}
@@ -300,17 +300,17 @@ public class HandOfCards {
 					diff += hand[i+1].getGameValue() - hand[i].getGameValue();
 				}
 			}
-			
+
 			// if difference is 4 then the hand is an inside straight
 			// if difference is 3 then the hand is an outside straight
 			if (diff == 4 || diff == 3) {
 				return true;
 			}
-			
+
 			else if (isOnePair() && diff == 2) {
 				return true;
 			}
-			
+
 			else return false;
 		}
 		else {
@@ -321,16 +321,16 @@ public class HandOfCards {
 	private boolean isBustCardInStraight(int cardPosition) {
 		int Card1Difference = hand[1].getGameValue()-hand[0].getGameValue();
 		int Card2Difference = hand[4].getGameValue()-hand[3].getGameValue();
-		
+
 		//This checks if the busted card is part of a one pair as well. If this is the case 1 but not both of the cards should be discarded.
 		//I achieved this using cardPosition+1 and the modulus HAND_SIZE(5) deals with the arrayOutOfBounds exception
 		if(isOnePair()&& isPartOfPair((cardPosition+1)%HAND_SIZE)){
 			return true;	
 		}
-		
+
 		// Checks if cardPosition is the busted card (the busted card can only be at the top or bottom of the hand)
 		else if(hand[4].getGameValue()==14 &&(hand[0].getGameValue()==2||hand[0].getGameValue()==3)){
-			
+
 			if(hand[0].getGameValue()==2&& hand[1].getGameValue()==3 && hand[2].getGameValue()==5 &&cardPosition ==3){
 				return true;
 			}
@@ -584,7 +584,7 @@ public class HandOfCards {
 		return val;
 
 	}
-	
+
 	public String getHandType() {
 		if(isRoyalFlush()){
 			return "Royal Flush";
@@ -681,7 +681,7 @@ public class HandOfCards {
 					probability = 100;
 				}
 			}
-			
+
 			//Also if you have a pair but one of the cards in the pair is the bust card in a potential straight then the player may or may not decide whether take a chance
 			else if(isBustedStraight()){
 				if(isPartOfPair(cardPosition)&&isBustCardInStraight(cardPosition)){
@@ -722,14 +722,14 @@ public class HandOfCards {
 		deck.shuffle();
 		HandOfCards hand = new HandOfCards(deck);
 		//small stub for creating hands to test
-//		hand.hand[0] = new PlayingCard("4",'H',4,4);
-//		hand.hand[1] = new PlayingCard("5",'C',5,5);
-//		hand.hand[2] = new PlayingCard("5",'H',5,5);
-//		hand.hand[3] = new PlayingCard("2",'C',2,2);
-//		hand.hand[4] = new PlayingCard("3",'D',3,3);
+		//		hand.hand[0] = new PlayingCard("4",'H',4,4);
+		//		hand.hand[1] = new PlayingCard("5",'C',5,5);
+		//		hand.hand[2] = new PlayingCard("5",'H',5,5);
+		//		hand.hand[3] = new PlayingCard("2",'C',2,2);
+		//		hand.hand[4] = new PlayingCard("3",'D',3,3);
 		hand.sort();
 
-		
+
 		//another stub just for creating random hands for testing
 		HandOfCards hand1 = new HandOfCards(deck);
 		hand1.hand[0] = new PlayingCard("9",'D',9,9);
@@ -738,7 +738,7 @@ public class HandOfCards {
 		hand1.hand[3] = new PlayingCard("5",'H',5,5);
 		hand1.hand[4] = new PlayingCard("6",'H',6,6);
 		hand1.sort();
-		
+
 		HandOfCards hand2 = new HandOfCards(deck);
 		//small stub for creating hands to test
 		hand2.hand[0] = new PlayingCard("4",'H',4,4);
@@ -747,7 +747,7 @@ public class HandOfCards {
 		hand2.hand[3] = new PlayingCard("2",'C',2,2);
 		hand2.hand[4] = new PlayingCard("3",'D',3,3);
 		hand2.sort();
-		
+
 		HandOfCards hand3 = new HandOfCards(deck);
 		//small stub for creating hands to test
 		hand3.hand[0] = new PlayingCard("8",'H',8,8);
@@ -828,7 +828,7 @@ public class HandOfCards {
 		else if(hand1.isHighHand()){
 			System.out.println("High hand: " + hand1.getGameValue());
 		}
-		
+
 		System.out.println("\nBusted Straight (and a One Pair):");
 		System.out.println(""+hand2);
 		System.out.print(hand2.getDiscardProbability(0) + "% " + hand2.getDiscardProbability(1) + "% " + hand2.getDiscardProbability(2)+ "% " + hand2.getDiscardProbability(3)+ "% " + hand2.getDiscardProbability(4)+ "% \n");
@@ -864,7 +864,7 @@ public class HandOfCards {
 		else if(hand2.isHighHand()){
 			System.out.println("High hand: " + hand2.getGameValue());
 		}
-		
+
 		System.out.println("\nFull House:");
 		System.out.println(""+hand3);
 		System.out.print(hand3.getDiscardProbability(0) + "% " + hand3.getDiscardProbability(1) + "% " + hand3.getDiscardProbability(2)+ "% " + hand3.getDiscardProbability(3)+ "% " + hand3.getDiscardProbability(4)+ "% \n");

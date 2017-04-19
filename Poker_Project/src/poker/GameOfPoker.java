@@ -18,7 +18,7 @@ public class GameOfPoker {
 
 	public void checkGameState(){
 		for(int i=0; i<gamePlayers.size();i++){
-			if(gamePlayers.get(i).chips<=0){
+			if(gamePlayers.get(i).getChips()<=0){
 				gamePlayers.remove(i);
 			}
 			else{

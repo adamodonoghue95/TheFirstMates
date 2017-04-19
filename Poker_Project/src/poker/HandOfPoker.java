@@ -15,64 +15,75 @@ public class HandOfPoker {
 
 	public void printChips() {
 		for (int i = 0; i < pokerPlayers.size(); i++) {
-			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).chips + " chip(s)");
+			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)");
 		}
 	}
-
+	
 	public void roundOfBetting() {
 		lastBet = 0;
-		
-		int lastToRaise = 0;
-
-		for(int i = 0; i < pokerPlayers.size();i++){
+		int lastToRaise = 0; // index of player that raised last
+		int noOfFolds = 0; // Tracks number of folds
+		ArrayList<Integer> currentBets = new ArrayList<Integer>();
+				
+		for (int i = 0; i < pokerPlayers.size(); i++) {
 			PokerPlayer player = pokerPlayers.get(i);
-			if(player.inHand){
-				//first check if the player is going to fold or call
-				if(!player.fold(lastBet)){
-					//player has called the last bet
-					pot += lastBet;
-					//see how many chips the player wants to raise by, if any
-					int chipsBet = player.getChipsToBet(); // gets chips bet by player
-					player.chips -= lastBet;
-					//pokerPlayers.get(i).bet(chipsBet);
-					if(chipsBet > 0){	
-						System.out.println(" and has raised by "  + chipsBet + " chip(s)");
-						lastBet += chipsBet;
-						pot += lastBet;
+			
+			if (i == 0) { // Prints only for human player
+				System.out.println("\nWould you like to fold? (The cost to call is " + lastBet +" chips)");
+			}
+
+			if (player.inHand) {
+				if (!player.fold(lastBet)) { // Gives option to fold
+
+					int chipsRaised = player.getChipsToRaise(); // gets chips raised by player
+					int bet = lastBet + chipsRaised;
+					
+					pot += bet; // Player calls lastBet
+					
+					currentBets.add(bet); // Adds bet to list of bets
+					
+					if (chipsRaised > 0) { // Check for last raise
+						System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)");
 						lastToRaise = i;
 					}
-					// add chips to pot
-					System.out.println("> Pot = " + pot);
-
-				}	
-				else{
-					System.out.println("> " + player.name + " has folded");
-					pokerPlayers.get(i).inHand = false;
-				}
-			}
-		}
-
-		System.out.println("last person to raise = " + lastToRaise);
-		for(int i = 0; i <lastToRaise; i++){
-			PokerPlayer player = pokerPlayers.get(i);
-			if(player.inHand){
-				//first check if the player is going to fold or call
-				if(!player.fold(lastBet)){
-					//player has called the last bet
-					pot += lastBet;
+					else {
+						System.out.println("> " + player.name + " matches " + lastBet + " chip(s)");
+					}
 					
-					// add chips to pot
-					System.out.println("> Pot = " + pot);
-
-				}	
-				else{
-					System.out.println("> " + player.name + " has folded");
+					lastBet = bet; // Update lastBet from current bet
+					player.bet(bet); // Update players chips
+				}
+				else {
+					System.out.println("> " + player.name + " folds");
 					pokerPlayers.get(i).inHand = false;
 				}
 			}
-
 		}
 
+		lastToRaise -= noOfFolds; // Makes sure next loop won't go out of bounds
+		
+		// Loop to match any raises
+		for (int j = 0; j < lastToRaise; j++) {
+			PokerPlayer player = pokerPlayers.get(j);
+			int leftToBet = lastBet - currentBets.get(j); // What is left to match the last raise
+			
+			if (j == 0) { // Prints only for human player
+				System.out.println("\nWould you like to fold? (The cost to call is " + leftToBet +" chips)");
+			}
+
+			if (player.inHand) {				
+				if (!player.fold(lastBet)) { // Gives option to fold
+					player.bet(leftToBet); // Updates players chips
+					pot += leftToBet; // Updates pot
+					System.out.println("> " + player.name + " matches to " + lastBet + " chip(s)");
+				}
+				else{
+					System.out.println("> " + player.name + " has folded");
+					pokerPlayers.get(j).inHand = false;
+				}
+			}
+		}
+				
 	}
 
 	public void discardCards() {
@@ -235,7 +246,7 @@ public class HandOfPoker {
 		}
 
 		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
-		pokerPlayers.get(winningPlayer).chips += pot;
+		pokerPlayers.get(winningPlayer).chipsWon(pot);
 
 
 	}

@@ -9,11 +9,11 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	}
 	
 	// returns amount of chips to bet according to hand held
-	public int getChipsToBet() {
+	public int getChipsToRaise() {
 		// TODO
 		Random rand = new Random();
-		int num = rand.nextInt(2);
-		if (chips > 2 && num == 0) {
+		int num = rand.nextInt(1);
+		if (getChips() > 2 && num == 0) {
 			return 2;
 		}
 		else {
@@ -26,22 +26,13 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 		Random rand = new Random();
 		int num = rand.nextInt(4);
 		// TODO
-		if (chips <= lastBet || num == 0) {
+		if (getChips() <= lastBet || num == 0) {
 			return true;
 		}
 		else {
-			//this.chips -= lastBet;
-			System.out.println(this.name + " has called");
 			return false;
-		}
-		
+		}	
 	}
-	
-	
-	
-	
-	
-	
 	
 	//this is a new method for discarding the cards
 		public void discard(){

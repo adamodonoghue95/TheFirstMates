@@ -1,0 +1,311 @@
+package poker;
+
+import java.util.ArrayList;
+
+public class HandOfPoker {
+
+	protected int lastBet = 0;
+	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
+	protected int pot = 0; // Amount of chips stored in the pot
+
+	public HandOfPoker(ArrayList<PokerPlayer> players) {
+		pokerPlayers = players;
+		System.out.println("New Deal:\n");
+	}
+
+	public void printChips() {
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).chips + " chip(s)");
+		}
+	}
+	
+	public void roundOfBetting() {
+		lastBet = 0;
+		int lastToRaise = 0; // index of player that raised last
+		ArrayList<Integer> currentBets = new ArrayList<Integer>();
+				
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			if (player.inHand) {
+				System.out.println("\nWould you like to fold? (The cost to call is " + lastBet +" chips)");
+
+				if (!player.fold(lastBet)) { // Gives option to fold
+					int chipsRaised = player.getChipsToRaise(); // gets chips raised by player
+					int bet = lastBet + chipsRaised;
+					
+					pot += bet; // Player calls lastBet
+					
+					currentBets.add(bet);
+					
+					if (chipsRaised > 0) { // Check for last raise
+						lastToRaise = i;
+					}
+					
+					lastBet = bet; // Update lastBet from current bet
+					player.chips -= bet; // Update players chips
+					System.out.println("last bet = " + lastBet);
+					System.out.println("bet = " + bet + "\n\n");
+					System.out.println("chips = " + player.chips);
+					System.out.println("chips = " + player.chips + "\n\n");
+					
+
+					
+					System.out.println("pot = " + pot);
+					System.out.println("Luke chips = " + pokerPlayers.get(0).chips);
+					System.out.println("jack chips = " + pokerPlayers.get(1).chips);
+					System.out.println("henry chips = " + pokerPlayers.get(2).chips);
+					System.out.println("ron chips = " + pokerPlayers.get(3).chips);
+
+				}
+				else{
+					System.out.println("> " + player.name + " has folded");
+					pokerPlayers.get(i).inHand = false;
+				}
+			}
+		}
+		System.out.println("last to raise = " + lastToRaise);
+
+		for (int j = 0; j < lastToRaise; j++) {
+			PokerPlayer player = pokerPlayers.get(j);
+			int leftToBet = lastBet - currentBets.get(j); // What is left to match the last raise
+			if (player.inHand) {
+				System.out.println("\nWould you like to fold? (The cost to call is " + leftToBet +" chips)");
+				
+				if (!player.fold(lastBet)) { // Gives option to fold
+					player.chips -= leftToBet; // Updates players chips
+					pot += leftToBet; // Updates pot
+					
+					System.out.println("pot = " + pot);
+					System.out.println("Luke chips = " + pokerPlayers.get(0).chips);
+
+				}
+				else{
+					System.out.println("> " + player.name + " has folded");
+					pokerPlayers.get(j).inHand = false;
+				}
+			}
+		}
+				
+	}
+
+//	public void roundOfBetting() {
+//		lastBet = 0;
+//		
+//		int lastToRaise = 0; // index of player that raised last
+//
+//		for(int i = 0; i < pokerPlayers.size();i++){
+//			PokerPlayer player = pokerPlayers.get(i);
+//			if(player.inHand){
+//				//first check if the player is going to fold or call
+//				if(!player.fold(lastBet)){
+//					//player has called the last bet
+//					pot += lastBet;
+//					//see how many chips the player wants to raise by, if any
+//					int chipsBet = player.getChipsToBet(); // gets chips bet by player
+//					player.chips -= lastBet;
+//					//pokerPlayers.get(i).bet(chipsBet);
+//					if(chipsBet > 0){	
+//						System.out.println(" and has raised by "  + chipsBet + " chip(s)");
+//						lastBet += chipsBet;
+//						pot += lastBet;
+//						lastToRaise = i;
+//					}
+//					// add chips to pot
+//					System.out.println("> Pot = " + pot);
+//
+//				}	
+//				else{
+//					System.out.println("> " + player.name + " has folded");
+//					pokerPlayers.get(i).inHand = false;
+//				}
+//			}
+//		}
+//
+//		System.out.println("last person to raise = " + lastToRaise);
+//		for(int i = 0; i <lastToRaise; i++){
+//			PokerPlayer player = pokerPlayers.get(i);
+//			if(player.inHand){
+//				//first check if the player is going to fold or call
+//				if(!player.fold(lastBet)){
+//					//player has called the last bet
+//					pot += lastBet;
+//					
+//					// add chips to pot
+//					System.out.println("> Pot = " + pot);
+//
+//				}	
+//				else{
+//					System.out.println("> " + player.name + " has folded");
+//					pokerPlayers.get(i).inHand = false;
+//				}
+//			}
+//
+//		}
+//
+//	}
+
+	public void discardCards() {
+
+		// Deals with Automated Player
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			player.discard();
+		}
+	}
+
+	// Removes any players that want to fold
+
+	public void printHumanHand() {
+		HandOfCards hand = pokerPlayers.get(0).playerHand;
+
+		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
+			switch(hand.getCard(i).getGameValue()) {
+			case 14:
+				System.out.print(i + ". Ace of ");
+				break;
+			case 2:
+				System.out.print(i + ". Two of ");
+				break;
+			case 3:
+				System.out.print(i + ". Three of ");
+				break;
+			case 4:
+				System.out.print(i + ". Four of ");
+				break;
+			case 5:
+				System.out.print(i + ". Five of ");
+				break;
+			case 6:
+				System.out.print(i + ". Six of ");
+				break;
+			case 7:
+				System.out.print(i + ". Seven of ");
+				break;
+			case 8:
+				System.out.print(i + ". Eight of ");
+				break;
+			case 9:
+				System.out.print(i + ". Nine of ");
+				break;
+			case 10:
+				System.out.print(i + ". Ten of ");
+				break;
+			case 11:
+				System.out.print(i + ". Jack of ");
+				break;
+			case 12:
+				System.out.print(i + ". Queen of ");
+				break;
+			case 13:
+				System.out.print(i + ". King of ");
+				break;
+			}
+
+			for (int j = 0; j < 4; j++) {
+				if (hand.getCard(i).getSuit() == 'H') {
+					System.out.println("Hearts");
+					break;
+				}
+				else if (hand.getCard(i).getSuit() == 'S') {
+					System.out.println("Spades");
+					break;
+				}
+				else if (hand.getCard(i).getSuit() == 'D') {
+					System.out.println("Diamonds");
+					break;
+				}
+				else if (hand.getCard(i).getSuit() == 'C') {
+					System.out.println("Clubs");
+					break;
+				}
+			}
+		}
+	}
+
+	public void showCards() {
+		for(int z = 0; z < pokerPlayers.size();z++){
+			HandOfCards hand = pokerPlayers.get(z).playerHand;
+			System.out.println("\n\n" + pokerPlayers.get(z).name + " Hand = " + hand.getHandType());
+			System.out.println("SCORE = " + hand.getGameValue());
+			for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
+				switch(hand.getCard(i).getGameValue()) {
+				case 14:
+					System.out.print(i + ". Ace of ");
+					break;
+				case 2:
+					System.out.print(i + ". Two of ");
+					break;
+				case 3:
+					System.out.print(i + ". Three of ");
+					break;
+				case 4:
+					System.out.print(i + ". Four of ");
+					break;
+				case 5:
+					System.out.print(i + ". Five of ");
+					break;
+				case 6:
+					System.out.print(i + ". Six of ");
+					break;
+				case 7:
+					System.out.print(i + ". Seven of ");
+					break;
+				case 8:
+					System.out.print(i + ". Eight of ");
+					break;
+				case 9:
+					System.out.print(i + ". Nine of ");
+					break;
+				case 10:
+					System.out.print(i + ". Ten of ");
+					break;
+				case 11:
+					System.out.print(i + ". Jack of ");
+					break;
+				case 12:
+					System.out.print(i + ". Queen of ");
+					break;
+				case 13:
+					System.out.print(i + ". King of ");
+					break;
+				}
+
+				for (int j = 0; j < 4; j++) {
+					if (hand.getCard(i).getSuit() == 'H') {
+						System.out.println("Hearts");
+						break;
+					}
+					else if (hand.getCard(i).getSuit() == 'S') {
+						System.out.println("Spades");
+						break;
+					}
+					else if (hand.getCard(i).getSuit() == 'D') {
+						System.out.println("Diamonds");
+						break;
+					}
+					else if (hand.getCard(i).getSuit() == 'C') {
+						System.out.println("Clubs");
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	public void decideWinner() {
+		int winningHandScore = 0;
+		int winningPlayer = 0;
+		for(int z = 0; z < pokerPlayers.size();z++){
+			HandOfCards hand = pokerPlayers.get(z).playerHand;
+			if(hand.getGameValue()>winningHandScore){
+				winningHandScore = hand.getGameValue();
+				winningPlayer = z;
+			}
+		}
+
+		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
+		pokerPlayers.get(winningPlayer).chips += pot;
+
+
+	}
+}
