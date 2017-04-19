@@ -22,9 +22,9 @@ public class HandOfPoker {
 	public void roundOfBetting() {
 		lastBet = 0;
 
-		// int numActivePlayers = pokerPlayers.size();
+		//		int numActivePlayers = pokerPlayers.size();
 		// Deals with Automated Players
-		// for (int i = 0; i < pokerPlayers.size(); i++) {
+		//for (int i = 0; i < pokerPlayers.size(); i++) {
 		for(int i = 0; i < pokerPlayers.size();i++){
 			PokerPlayer player = pokerPlayers.get(i);
 			if(player.inHand){

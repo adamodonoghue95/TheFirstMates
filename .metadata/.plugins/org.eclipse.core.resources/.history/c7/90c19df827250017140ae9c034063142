@@ -123,8 +123,9 @@ public class PokerPlayer {
 
 		} while (!correctInput);
 
-		playerHand.discardCards(discard, discard.length);
-		
+		for (int i1 = 0; i1 < discard.length; i1++) {
+			playerHand.discardCards(discard, discard.length);
+		}
 	}
 	
 	public static void main(String [ ] args)

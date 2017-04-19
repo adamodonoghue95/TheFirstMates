@@ -33,6 +33,34 @@ public class PokerPlayer {
 	public void chipsWon(int noOfChips) {
 		chips += noOfChips;
 	}
+
+	//this is a new method for discarding the cards
+//	public int discard(){
+//		//declare a new random number generator
+//		Random rand = new Random();
+//		//variable to store how many cards need to be discarded
+//		int noDiscardCards = 0;
+//		//array for storing the positions of the discarded cards
+//		int [] discardCards = new int [3];
+//		
+//		//Loop which runs the random generator against the discard probability for each card and decides which ones to discard
+//		//I don't need to check that no more than 3 cards will be discarded because my getDiscardProbability() ensures that does not happen.
+//		for(int i = 0; i < HandOfCards.HAND_SIZE; i++){
+//				int randomNumber = rand.nextInt(99) + 1;
+//				// Test Purposes
+//				// System.out.println("Rand = " + randomNumber + "   <  Discard Probability = " + playerHand.getDiscardProbability(i));
+//				if(randomNumber < playerHand.getDiscardProbability(i)){
+//					
+//					discardCards[noDiscardCards] = i;
+//					noDiscardCards++;
+//				}
+//		}
+//		//discard the cards using the HandOfCards method which takes in the array of discarded card indexes
+//		playerHand.discardCards(discardCards, noDiscardCards);
+//		return noDiscardCards;
+//	}
+	
+	
 	
 	public int getChipsToBet() {
 		boolean correctInput = false;
@@ -89,7 +117,6 @@ public class PokerPlayer {
 		int [] discard = new int[cards.length];
 
 		do {
-			boolean inRange = true; // checks if input is an index in hand (e.g between 0-4)
 			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
 			input = prompt();
 			cards = input.split(" ");
@@ -103,18 +130,8 @@ public class PokerPlayer {
 					// Assigns and parses discarded cards to integers
 					for (int i = 0; i < cards.length; i++) {
 						discard[i] = Integer.parseInt(cards[i]);
-						if (discard[i] < 0 || discard[i] > 4) {
-							inRange = false;
-						}
 					}	
-					
-					if (inRange) {
-						correctInput = true;
-					}
-					else {
-						System.out.println("Index enetered is out of range, must be between 0-4");
-						correctInput = false;
-					}
+					correctInput = true;
 				}
 				catch (NumberFormatException e) {
 					System.out.println("Invalid input (must be integers)");
@@ -123,10 +140,15 @@ public class PokerPlayer {
 
 		} while (!correctInput);
 
-		playerHand.discardCards(discard, discard.length);
-		
+		for (int i1 = 0; i1 < discard.length; i1++) {
+			System.out.println(discard[i1]);
+		}
 	}
 	
+	
+	
+	
+
 	public static void main(String [ ] args)
 	{
 		DeckOfCards theDeck = new DeckOfCards();
