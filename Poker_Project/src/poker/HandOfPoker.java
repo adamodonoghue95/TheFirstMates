@@ -43,28 +43,36 @@ public class HandOfPoker {
 					currentBets.add(bet); // Adds bet to list of bets
 					
 					if (chipsRaised > 0) { // Check for last raise
-						System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)");
+						System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)" + player.inHand);
 						lastToRaise = i;
 					}
 					else {
-						System.out.println("> " + player.name + " matches " + lastBet + " chip(s)");
+						System.out.println("> " + player.name + " matches " + lastBet + " chip(s)" + player.inHand);
 					}
 					
 					lastBet = bet; // Update lastBet from current bet
 					player.bet(bet); // Update players chips
 				}
 				else {
-					System.out.println("> " + player.name + " folds");
 					pokerPlayers.get(i).inHand = false;
+					System.out.println("> " + player.name + " folds" + player.inHand);
+					// If player folds after last person that raised, 
+					// that player is not considered in next round of matching
+					if (i < lastToRaise) { 
+						noOfFolds++; // Counts number of people folding
+					}
 				}
 			}
 		}
-
+		System.out.println((lastToRaise-noOfFolds)+ " = " + lastToRaise + " - " + noOfFolds);
 		lastToRaise -= noOfFolds; // Makes sure next loop won't go out of bounds
-		
+		System.out.println("lastToRaise = " + lastToRaise);
 		// Loop to match any raises
 		for (int j = 0; j < lastToRaise; j++) {
 			PokerPlayer player = pokerPlayers.get(j);
+			for (int i = 0; i < currentBets.size(); i++) {
+				System.out.println(i +" bet: " + currentBets.get(i));
+			}
 			int leftToBet = lastBet - currentBets.get(j); // What is left to match the last raise
 			
 			if (j == 0) { // Prints only for human player
@@ -74,12 +82,14 @@ public class HandOfPoker {
 			if (player.inHand) {				
 				if (!player.fold(lastBet)) { // Gives option to fold
 					player.bet(leftToBet); // Updates players chips
+					System.out.println("lastToRaise = " + lastToRaise + ", j = " + j);
 					pot += leftToBet; // Updates pot
 					System.out.println("> " + player.name + " matches to " + lastBet + " chip(s)");
 				}
 				else{
 					System.out.println("> " + player.name + " has folded");
 					pokerPlayers.get(j).inHand = false;
+					lastToRaise--;
 				}
 			}
 		}
