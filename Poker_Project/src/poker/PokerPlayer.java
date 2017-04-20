@@ -129,7 +129,7 @@ public class PokerPlayer {
 	{
 		DeckOfCards theDeck = new DeckOfCards();
 		theDeck.shuffle();
-		HumanPokerPlayer player = new HumanPokerPlayer(theDeck,"Luke");
+		PokerPlayer player = new PokerPlayer(theDeck,"Luke");
 		System.out.println("Hello " + player.name);
 
 		
