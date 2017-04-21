@@ -1,0 +1,79 @@
+package poker;
+
+import java.util.ArrayList;
+
+public class GameOfPoker {
+	private static ArrayList<PokerPlayer> gamePlayers = new ArrayList<PokerPlayer>();
+	private DeckOfCards deck = new DeckOfCards();
+	private int STATUS_ID;
+
+	public GameOfPoker(int numberOfPlayers) {
+		
+		gamePlayers.add(new PokerPlayer(deck,"Luke"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Jack"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Henry"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Ron"));
+
+	}
+
+	public boolean checkGameState(){
+		for(int i=0; i<gamePlayers.size();i++){
+			if(gamePlayers.get(i).getChips()<=0){
+				gamePlayers.remove(i);
+			}
+			else{
+				gamePlayers.get(i).inHand = true;
+			}
+		}
+		if(gamePlayers.size()==1){
+			System.out.println(gamePlayers.get(0).name + " is the winner!");
+			return false;
+		}
+		
+		else return true;
+	}
+
+	public static void main(String [] args) {
+		System.out.println("Welcome to TheFirstMates Poker Game!\n");
+
+		GameOfPoker game = new GameOfPoker(4);
+
+		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
+		while(game.checkGameState()){
+			
+			game.deck.reset();
+			System.out.println(game.deck);
+			System.out.println(gamePlayers);
+			
+			//reset and shuffle the deck
+			
+			
+			HandOfPoker hand = new HandOfPoker(gamePlayers, game.deck);
+			hand.printChips();
+
+			hand.printHumanHand();
+
+
+			// Let players fold and start betting
+			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
+			
+			//Let players discard their cards
+			hand.discardCards();
+			hand.printHumanHand();
+			
+			//Complete second round of betting
+			System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
+
+			//Show Cards
+			hand.showCards();
+			hand.decideWinner();
+		}
+
+		//hand.printChips();
+
+
+	}
+
+}

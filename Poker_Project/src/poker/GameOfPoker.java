@@ -16,7 +16,7 @@ public class GameOfPoker {
 
 	}
 
-	public void checkGameState(){
+	public boolean checkGameState(){
 		for(int i=0; i<gamePlayers.size();i++){
 			if(gamePlayers.get(i).getChips()<=0){
 				gamePlayers.remove(i);
@@ -27,7 +27,10 @@ public class GameOfPoker {
 		}
 		if(gamePlayers.size()==1){
 			System.out.println(gamePlayers.get(0).name + " is the winner!");
+			return false;
 		}
+		
+		else return true;
 	}
 
 	public static void main(String [] args) {
@@ -36,29 +39,34 @@ public class GameOfPoker {
 		GameOfPoker game = new GameOfPoker(4);
 
 		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
-		for(int i = 0;i < 2; i++){
-			System.out.println(gamePlayers);
-			game.checkGameState();
-			HandOfPoker hand = new HandOfPoker(gamePlayers);
+		while(game.checkGameState()){
+			
+//			game.deck.reset();
+//			System.out.println(game.deck);
+//			System.out.println(gamePlayers);
+			
+			//reset and shuffle the deck
+			
+			
+			HandOfPoker hand = new HandOfPoker(gamePlayers, game.deck);
 			hand.printChips();
 
-			System.out.println("\nYour Current Hand: -> " + gamePlayers.get(0).playerHand.getHandType());
 			hand.printHumanHand();
 
-			//hand.showCards();
 
 			// Let players fold and start betting
-			//hand.checkFold();
+			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
 			hand.roundOfBetting();
+			
+			//Let players discard their cards
 			hand.discardCards();
-
-			System.out.println("\nYour Current Hand: -> " + gamePlayers.get(0).playerHand.getHandType());
 			hand.printHumanHand();
+			
 			//Complete second round of betting
+			System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
 			hand.roundOfBetting();
 
 			//Show Cards
-			System.out.println("\nYour Current Hand: -> " + gamePlayers.get(0).playerHand.getHandType());
 			hand.showCards();
 			hand.decideWinner();
 		}

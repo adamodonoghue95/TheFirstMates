@@ -42,7 +42,7 @@ public class HandOfCards {
 
 	public void discardCards(int[] discarded, int noDiscardedCards){
 		for(int i = 0; i<noDiscardedCards;i++){
-			System.out.println("Discarding: " + hand[discarded[i]]);
+			//System.out.println("Discarding: " + hand[discarded[i]]);
 			deck.returnCard(hand[discarded[i]]);
 			hand[discarded[i]] = deck.dealNext();
 		}

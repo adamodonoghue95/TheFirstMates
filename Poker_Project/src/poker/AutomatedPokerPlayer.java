@@ -12,8 +12,9 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	public int getChipsToRaise() {
 		// TODO
 		Random rand = new Random();
-		int num = rand.nextInt(1);
+		int num = rand.nextInt(2);
 		if (getChips() > 2 && num == 0) {
+			this.chips -= 2;
 			return 2;
 		}
 		else {
@@ -22,14 +23,20 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	}
 	
 	// returns whether Bot folds or not
-	public boolean fold(int lastBet) {
+	public boolean fold(int costToCall) {
 		Random rand = new Random();
 		int num = rand.nextInt(4);
 		// TODO
-		if (getChips() <= lastBet || num == 0) {
+		if (num == 0) {
 			return true;
 		}
 		else {
+			if(costToCall > this.chips) {
+				this.chips = 0;
+			}
+			else {
+				this.chips -= costToCall;
+			}
 			return false;
 		}	
 	}
@@ -56,6 +63,7 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 					}
 			}
 			//discard the cards using the HandOfCards method which takes in the array of discarded card indexes
+			System.out.println(this.name + " discards " + noDiscardCards + " cards");
 			playerHand.discardCards(discardCards, noDiscardCards);
 			//return noDiscardCards;
 		}

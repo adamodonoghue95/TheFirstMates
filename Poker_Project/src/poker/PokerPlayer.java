@@ -6,7 +6,7 @@ public class PokerPlayer {
 
 	protected HandOfCards playerHand;
 	protected String name;
-	private int chips;
+	protected int chips;
 	protected boolean inHand = true;
 	protected int lastBet = 0;
 
@@ -16,52 +16,65 @@ public class PokerPlayer {
 		//System.out.println("What is your name?");
 		name = playerName;
 	}
-	
+
 	public String prompt() {
 		Scanner scanner = new Scanner(System.in);
 		return scanner.nextLine();
 	}
-	
-	public void bet(int chipsBet) {
-		if (chips > 0) {
-			chips -= chipsBet;
-		}
-		else {
-			System.out.println("Bankrupt");
-		}
-	}
-	
+
+	//	public void bet(int chipsBet) {
+	//		if (this.chips > 0) {
+	//			this.chips -= chipsBet;
+	//		}
+	//		else {
+	//			System.out.println("Bankrupt");
+	//		}
+	//	}
+
 	public void chipsWon(int noOfChips) {
 		chips += noOfChips;
 	}
-	
+
 	public int getChipsToRaise() {
 		boolean correctInput = false;
 		int chipsBet = 0;
-		do {
-			System.out.println("How much would you like to raise by? (< " + chips + ")");
-			try {
-				chipsBet = Integer.parseInt(prompt());
+		if(chips<1){
+			System.out.println("You do not have any chips to raise with");
+		}
+		else{
+			do {
+				System.out.println("How much would you like to raise by? (< " + chips + ")");
+				try {
+					chipsBet = Integer.parseInt(prompt());
 
-				if (chipsBet > chips) { // Cannot bet more than chips held by player
-					System.out.println("You only have " + chips + " chip(s)");
+					if (chipsBet > chips) { // Cannot bet more than chips held by player
+						System.out.println("You only have " + chips + " chip(s)");
+					}
+					else if (chipsBet < 0) {
+						System.out.println("Must be a positive number!");
+					}
+					else {
+						this.chips -= chipsBet;
+						return chipsBet;
+					}
 				}
-				else if (chipsBet < 0) {
-					System.out.println("Must be a positive number!");
+				catch (NumberFormatException e){ // String entered is not a valid integer
+					System.out.println("Bet must be a number!");
 				}
-				else {
-					return chipsBet;
-				}
-			}
-			catch (NumberFormatException e){ // String entered is not a valid integer
-				System.out.println("Bet must be a number!");
-			}
 
-		} while (!correctInput);
+			} while (!correctInput);
+		}
 		return chipsBet;
 	}
-		
-	public boolean fold(int lastBet) {
+
+	public boolean fold(int costToCall) {
+		if(costToCall >= this.chips){
+			System.out.println("\nWould you like to fold? (To call you must go all in,  " + costToCall  +" chips)");
+		}
+
+		else{
+			System.out.println("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
+		}
 
 		do {
 			String input = prompt();
@@ -69,6 +82,12 @@ public class PokerPlayer {
 				return true;
 			}
 			else if (input.equals("n") || input.equals("N")) {
+				if(costToCall > this.chips) {
+					this.chips = 0;
+				}
+				else {
+					this.chips -= costToCall;
+				}
 				return false;
 			}
 			else {
@@ -76,11 +95,11 @@ public class PokerPlayer {
 			}
 		} while (true);
 	}
-	
+
 	public int getChips() {
 		return chips;
 	}
-	
+
 	public void discard(){
 		// Deals with Human Player
 		boolean correctInput = false;
@@ -107,7 +126,7 @@ public class PokerPlayer {
 							inRange = false;
 						}
 					}	
-					
+
 					if (inRange) {
 						correctInput = true;
 					}
@@ -125,11 +144,11 @@ public class PokerPlayer {
 
 		playerHand.discardCards(discard, discard.length);	
 	}
-	
+
 	public void resetBet(){
 		lastBet = 0;
 	}
-	
+
 	public static void main(String [ ] args)
 	{
 		DeckOfCards theDeck = new DeckOfCards();
@@ -137,7 +156,7 @@ public class PokerPlayer {
 		PokerPlayer player = new PokerPlayer(theDeck,"Luke");
 		System.out.println("Hello " + player.name);
 
-		
+
 		System.out.println(player.playerHand);
 		for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
 			System.out.print(player.playerHand.getDiscardProbability(i) + "% ");
@@ -145,7 +164,7 @@ public class PokerPlayer {
 		System.out.println();
 		player.discard();
 		System.out.println(player.playerHand);
-		
-		
+
+
 	}
 }
