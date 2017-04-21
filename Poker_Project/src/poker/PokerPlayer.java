@@ -126,6 +126,10 @@ public class PokerPlayer {
 		playerHand.discardCards(discard, discard.length);	
 	}
 	
+	public void resetBet(){
+		lastBet = 0;
+	}
+	
 	public static void main(String [ ] args)
 	{
 		DeckOfCards theDeck = new DeckOfCards();
