@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class HandOfPoker {
 
-	protected int lastBet = 0;
+	protected int currentCall = 0;
 	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
 	protected int pot = 0; // Amount of chips stored in the pot
 
@@ -18,73 +18,55 @@ public class HandOfPoker {
 			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)");
 		}
 	}
-	
+
 	public void roundOfBetting() {
-		lastBet = 0;
+		currentCall = 0;
 		int lastToRaise = 0; // index of player that raised last
 		int noOfFolds = 0; // Tracks number of folds
 		ArrayList<Integer> currentBets = new ArrayList<Integer>();
-				
+
 		for (int i = 0; i < pokerPlayers.size(); i++) {
 			PokerPlayer player = pokerPlayers.get(i);
-			
+
 			if (i == 0) { // Prints only for human player
-				System.out.println("\nWould you like to fold? (The cost to call is " + lastBet +" chips)");
+				System.out.println("\nWould you like to fold? (The cost to call is " + currentCall +" chips)");
 			}
 
 			if (player.inHand) {
-				if (!player.fold(lastBet)) { // Gives option to fold
-
-					int chipsRaised = player.getChipsToRaise(); // gets chips raised by player
-					int bet = lastBet + chipsRaised;
-					
-					pot += bet; // Player calls lastBet
-					
-					currentBets.add(bet); // Adds bet to list of bets
-					
+				if (!player.fold(currentCall)) { // Gives option to fold
+					int chipsRaised = player.getChipsToRaise();
+					player.lastBet = currentCall + chipsRaised;
+					currentCall = player.lastBet;
+					pot += player.lastBet;
 					if (chipsRaised > 0) { // Check for last raise
-						System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)" + player.inHand);
+						System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)");
 						lastToRaise = i;
 					}
 					else {
-						System.out.println("> " + player.name + " matches " + lastBet + " chip(s)" + player.inHand);
+						System.out.println("> " + player.name + " called with" + currentCall + " chip(s)" + player.inHand);
 					}
-					
-					lastBet = bet; // Update lastBet from current bet
-					player.bet(bet); // Update players chips
+					System.out.println("POT = " + pot);
 				}
 				else {
 					pokerPlayers.get(i).inHand = false;
-					System.out.println("> " + player.name + " folds" + player.inHand);
-					// If player folds after last person that raised, 
-					// that player is not considered in next round of matching
-					if (i < lastToRaise) { 
-						noOfFolds++; // Counts number of people folding
-					}
+					System.out.println("> " + player.name + " folds" + player.inHand);				
 				}
 			}
 		}
-		System.out.println((lastToRaise-noOfFolds)+ " = " + lastToRaise + " - " + noOfFolds);
-		lastToRaise -= noOfFolds; // Makes sure next loop won't go out of bounds
-		System.out.println("lastToRaise = " + lastToRaise);
-		// Loop to match any raises
+
 		for (int j = 0; j < lastToRaise; j++) {
 			PokerPlayer player = pokerPlayers.get(j);
-			for (int i = 0; i < currentBets.size(); i++) {
-				System.out.println(i +" bet: " + currentBets.get(i));
-			}
-			int leftToBet = lastBet - currentBets.get(j); // What is left to match the last raise
-			
+			int costToCall = currentCall - player.lastBet;
 			if (j == 0) { // Prints only for human player
-				System.out.println("\nWould you like to fold? (The cost to call is " + leftToBet +" chips)");
+				System.out.println("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
 			}
-
 			if (player.inHand) {				
-				if (!player.fold(lastBet)) { // Gives option to fold
-					player.bet(leftToBet); // Updates players chips
+				if (!player.fold(currentCall)) { // Gives option to fold
+					player.bet(costToCall); // Updates players chips
 					System.out.println("lastToRaise = " + lastToRaise + ", j = " + j);
-					pot += leftToBet; // Updates pot
-					System.out.println("> " + player.name + " matches to " + lastBet + " chip(s)");
+					pot += costToCall; // Updates pot
+					System.out.println("> " + player.name + " matches with " + costToCall + " chip(s)");
+					System.out.println("POT = " + pot);
 				}
 				else{
 					System.out.println("> " + player.name + " has folded");
@@ -93,7 +75,79 @@ public class HandOfPoker {
 				}
 			}
 		}
-				
+
+
+		// TEST
+
+//				for (int i = 0; i < pokerPlayers.size(); i++) {
+//					PokerPlayer player = pokerPlayers.get(i);
+//					
+//					if (i == 0) { // Prints only for human player
+//						System.out.println("\nWould you like to fold? (The cost to call is " + currentCall +" chips)");
+//					}
+//		
+//					if (player.inHand) {
+//						if (!player.fold(currentCall)) { // Gives option to fold
+//		
+//							int chipsRaised = player.getChipsToRaise(); // gets chips raised by player
+//							int bet = currentCall + chipsRaised;
+//							
+//							pot += bet; // Player calls lastBet
+//							
+//							currentBets.add(bet); // Adds bet to list of bets
+//							
+//							if (chipsRaised > 0) { // Check for last raise
+//								System.out.println("> " + player.name + " raises " + chipsRaised + " chip(s)" + player.inHand);
+//								lastToRaise = i;
+//							}
+//							else {
+//								System.out.println("> " + player.name + " matches " + currentCall + " chip(s)" + player.inHand);
+//							}
+//							
+//							currentCall = bet; // Update lastBet from current bet
+//							player.bet(bet); // Update players chips
+//						}
+//						else {
+//							pokerPlayers.get(i).inHand = false;
+//							System.out.println("> " + player.name + " folds" + player.inHand);
+//							// If player folds after last person that raised, 
+//							// that player is not considered in next round of matching
+//							if (i < lastToRaise) { 
+//								noOfFolds++; // Counts number of people folding
+//							}
+//						}
+//					}
+//				}
+//				System.out.println((lastToRaise-noOfFolds)+ " = " + lastToRaise + " - " + noOfFolds);
+//				lastToRaise -= noOfFolds; // Makes sure next loop won't go out of bounds
+//				System.out.println("lastToRaise = " + lastToRaise);
+//				// Loop to match any raises
+//				for (int j = 0; j < lastToRaise; j++) {
+//					PokerPlayer player = pokerPlayers.get(j);
+//					for (int i = 0; i < currentBets.size(); i++) {
+//						System.out.println(i +" bet: " + currentBets.get(i));
+//					}
+//					int leftToBet = currentCall - currentBets.get(j); // What is left to match the last raise
+//					
+//					if (j == 0) { // Prints only for human player
+//						System.out.println("\nWould you like to fold? (The cost to call is " + leftToBet +" chips)");
+//					}
+//		
+//					if (player.inHand) {				
+//						if (!player.fold(currentCall)) { // Gives option to fold
+//							player.bet(leftToBet); // Updates players chips
+//							System.out.println("lastToRaise = " + lastToRaise + ", j = " + j);
+//							pot += leftToBet; // Updates pot
+//							System.out.println("> " + player.name + " matches to " + currentCall + " chip(s)");
+//						}
+//						else{
+//							System.out.println("> " + player.name + " has folded");
+//							pokerPlayers.get(j).inHand = false;
+//							lastToRaise--;
+//						}
+//					}
+//				}
+
 	}
 
 	public void discardCards() {
@@ -174,10 +228,16 @@ public class HandOfPoker {
 		}
 	}
 
+	public void resetPlayerBets(){
+		for(PokerPlayer player : pokerPlayers){
+			player.lastBet = 0;
+		}
+	}
+
 	public void showCards() {
 		for(int z = 0; z < pokerPlayers.size(); z++){
 			PokerPlayer player = pokerPlayers.get(z);
-			
+
 			if (player.inHand) {
 				System.out.println("\n\n" + pokerPlayers.get(z).name + " Hand = " + player.playerHand.getHandType());
 				System.out.println("SCORE = " + player.playerHand.getGameValue());
@@ -244,14 +304,14 @@ public class HandOfPoker {
 					}
 				}
 			}
-			
+
 		}
 	}
 
 	public void decideWinner() {
 		int winningHandScore = 0;
 		int winningPlayer = 0;
-		
+
 		for(int z = 0; z < pokerPlayers.size();z++){
 			PokerPlayer player = pokerPlayers.get(z);
 			if(player.playerHand.getGameValue() > winningHandScore && player.inHand){

@@ -12,6 +12,11 @@ public class SL implements StatusListener {
 
 	String username, content; 
 	long tweet_ID;
+	
+	public SL(){
+		
+	}
+	
 
 	public void onException(Exception arg0) {}
 	public void onDeletionNotice(StatusDeletionNotice arg0) {}

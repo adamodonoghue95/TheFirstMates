@@ -8,6 +8,7 @@ public class PokerPlayer {
 	protected String name;
 	private int chips;
 	protected boolean inHand = true;
+	protected int lastBet = 0;
 
 	public PokerPlayer(DeckOfCards cardDeck, String playerName){
 		playerHand = new HandOfCards(cardDeck);
