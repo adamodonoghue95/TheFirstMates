@@ -35,16 +35,7 @@ public class PokerPlayer {
 		chips += noOfChips;
 	}
 	
-	public void returnCards(DeckOfCards deck) {
-		// returns all cards back to the deck
-		for (int i = 0; i < playerHand.HAND_SIZE; i++) {
-			deck.returnCard(playerHand.getCard(i));
-		}
-		
-	}
-	
 	public void newHand(DeckOfCards deck) {
-		// Gives player new hand
 		playerHand = new HandOfCards(deck);
 	}
 

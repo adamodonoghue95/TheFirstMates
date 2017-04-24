@@ -85,10 +85,12 @@ public class HandOfPoker {
 		for (int i = 0; i < pokerPlayers.size(); i++) {
 			PokerPlayer player = pokerPlayers.get(i);
 			if(player.inHand){
-				player.returnCards(handDeck);
+				player.returnCards();
 			}
 		}
 	}
+	
+	
 
 	public void discardCards() {
 

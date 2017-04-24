@@ -49,11 +49,17 @@ public class GameOfPoker {
 
 		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
 		while(game.checkGameState()){
-						
+			
+//			game.deck.reset();
+//			System.out.println(game.deck);
+//			System.out.println(gamePlayers);
+			
+			
 			HandOfPoker hand = new HandOfPoker(gamePlayers, game.deck);
 			hand.printChips();
 
 			hand.printHumanHand();
+
 
 			// Let players fold and start betting
 			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");

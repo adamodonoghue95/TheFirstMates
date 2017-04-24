@@ -43,7 +43,7 @@ public class PokerPlayer {
 		
 	}
 	
-	public void newHand(DeckOfCards deck) {
+	public void newHand() {
 		// Gives player new hand
 		playerHand = new HandOfCards(deck);
 	}

@@ -32,15 +32,6 @@ public class GameOfPoker {
 		
 		else return true;
 	}
-	
-	public void dealNewHands() {
-		for (int i = 0; i < gamePlayers.size(); i++) {
-			PokerPlayer player = gamePlayers.get(i);
-			if(player.inHand){
-				player.newHand(deck);
-			}
-		}
-	}
 
 	public static void main(String [] args) {
 		System.out.println("Welcome to TheFirstMates Poker Game!\n");
@@ -49,11 +40,19 @@ public class GameOfPoker {
 
 		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
 		while(game.checkGameState()){
-						
+			
+//			game.deck.reset();
+//			System.out.println(game.deck);
+//			System.out.println(gamePlayers);
+			
+			//reset and shuffle the deck
+			
+			
 			HandOfPoker hand = new HandOfPoker(gamePlayers, game.deck);
 			hand.printChips();
 
 			hand.printHumanHand();
+
 
 			// Let players fold and start betting
 			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
@@ -70,16 +69,6 @@ public class GameOfPoker {
 			//Show Cards
 			hand.showCards();
 			hand.decideWinner();
-			
-			// Lets players give all cards back and dealt new hands
-			hand.returnHands();
-			
-			// Reset and shuffle deck
-			game.deck.reset();
-			game.deck.shuffle();
-			
-			// Deal new Hands for next round
-			game.dealNewHands();
 		}
 
 		//hand.printChips();
