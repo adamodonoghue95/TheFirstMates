@@ -19,7 +19,9 @@ public class PokerPlayer {
 
 	public String prompt() {
 		Scanner scanner = new Scanner(System.in);
-		return scanner.nextLine();
+		String input = scanner.nextLine();
+		input = input.trim();
+		return input;
 	}
 
 	//	public void bet(int chipsBet) {
@@ -91,6 +93,7 @@ public class PokerPlayer {
 
 		do {
 			String input = prompt();
+			System.out.println("PROMPT =" +input);   //TESTING TRIM FUNCTION IN PROMPT
 			if (input.equals("y") || input.equals("Y")) {
 				return true;
 			}
