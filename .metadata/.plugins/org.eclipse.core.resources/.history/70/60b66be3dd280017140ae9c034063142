@@ -20,13 +20,7 @@ public class HandOfPoker {
 	}
 	
 	public int noOfPlayers() {
-		int noOfPlayers = 0;
-		for (int i = 0; i < pokerPlayers.size(); i++) {
-			if (pokerPlayers.get(i).inHand) {
-				noOfPlayers++;
-			}
-		}
-		return noOfPlayers;
+		return pokerPlayers.size();
 	}
 
 	public void printChips() {

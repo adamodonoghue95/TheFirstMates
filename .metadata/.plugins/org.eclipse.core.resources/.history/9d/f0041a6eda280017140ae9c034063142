@@ -90,7 +90,6 @@ public class DeckOfCards {
 	//reset method joins the deck of cards still available with the discarded cards and shuffles the deck again
 	public void reset(){
 		deck.addAll(discardDeck);
-		discardDeck.clear();
 		shuffle();
 	}
 	

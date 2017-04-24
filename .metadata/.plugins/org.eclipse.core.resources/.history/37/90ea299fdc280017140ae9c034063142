@@ -18,16 +18,6 @@ public class HandOfPoker {
 		//		}
 		System.out.println("New Deal:\n");
 	}
-	
-	public int noOfPlayers() {
-		int noOfPlayers = 0;
-		for (int i = 0; i < pokerPlayers.size(); i++) {
-			if (pokerPlayers.get(i).inHand) {
-				noOfPlayers++;
-			}
-		}
-		return noOfPlayers;
-	}
 
 	public void printChips() {
 		for (int i = 0; i < pokerPlayers.size(); i++) {

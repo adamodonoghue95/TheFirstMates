@@ -61,7 +61,6 @@ public class GameOfPoker {
 				hand.roundOfBetting();
 				
 				// Skips next round of betting if only one player left
-				System.out.println(hand.noOfPlayers());
 				if (hand.noOfPlayers() == 1) break;
 				
 				//Let players discard their cards

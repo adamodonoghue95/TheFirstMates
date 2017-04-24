@@ -25,7 +25,7 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 	// returns whether Bot folds or not
 	public boolean fold(int costToCall) {
 		Random rand = new Random();
-		int num = rand.nextInt(2);
+		int num = rand.nextInt(4);
 		// TODO
 		if (num == 0) {
 			return true;

@@ -53,29 +53,31 @@ public class GameOfPoker {
 			HandOfPoker hand = new HandOfPoker(gamePlayers, game.deck);
 			hand.printChips();
 
-			hand.printHumanHand();
+			//hand.printHumanHand();
+			hand.showCards();
+			
+			System.out.println("deck size: " + game.deck.deckSize());
+			System.out.println("discard deck size: " + game.deck.discardDeckSize());
 
-			do {
-				// Let players fold and start betting
-				System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-				// Skips next round of betting if only one player left
-				System.out.println(hand.noOfPlayers());
-				if (hand.noOfPlayers() == 1) break;
-				
-				//Let players discard their cards
-				hand.discardCards();
-				hand.printHumanHand();
-				
-				//Complete second round of betting
-				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-			} while(false);
+			// Let players fold and start betting
+			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
+			
+			//Let players discard their cards
+			hand.discardCards();
+			//hand.printHumanHand();
+			hand.showCards();
+			System.out.println("deck size: " + game.deck.deckSize());
+			System.out.println("discard deck size: " + game.deck.discardDeckSize());
+			
+			//Complete second round of betting
+			System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
 
 			//Show Cards
 			hand.showCards();
+			System.out.println("deck size: " + game.deck.deckSize());
+			System.out.println("discard deck size: " + game.deck.discardDeckSize());
 			hand.decideWinner();
 			
 			// Lets players give all cards back and dealt new hands

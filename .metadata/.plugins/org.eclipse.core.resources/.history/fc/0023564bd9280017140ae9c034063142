@@ -53,14 +53,6 @@ public class DeckOfCards {
 		this.shuffle();
 		
 	}
-	
-	public int deckSize() {
-		return deck.size();
-	}
-	
-	public int discardDeckSize() {
-		return discardDeck.size();
-	}
 
 	//dealNext method which deals the card at the top of the deck 
 	synchronized public PlayingCard dealNext(){
@@ -90,7 +82,6 @@ public class DeckOfCards {
 	//reset method joins the deck of cards still available with the discarded cards and shuffles the deck again
 	public void reset(){
 		deck.addAll(discardDeck);
-		discardDeck.clear();
 		shuffle();
 	}
 	

@@ -55,24 +55,17 @@ public class GameOfPoker {
 
 			hand.printHumanHand();
 
-			do {
-				// Let players fold and start betting
-				System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-				// Skips next round of betting if only one player left
-				System.out.println(hand.noOfPlayers());
-				if (hand.noOfPlayers() == 1) break;
-				
-				//Let players discard their cards
-				hand.discardCards();
-				hand.printHumanHand();
-				
-				//Complete second round of betting
-				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-			} while(false);
+			// Let players fold and start betting
+			System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
+			
+			//Let players discard their cards
+			hand.discardCards();
+			hand.printHumanHand();
+			
+			//Complete second round of betting
+			System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
+			hand.roundOfBetting();
 
 			//Show Cards
 			hand.showCards();
