@@ -18,7 +18,7 @@ public class HandOfPoker {
 		//		}
 		System.out.println("New Deal:\n");
 	}
-	
+
 	public int noOfPlayers() {
 		int noOfPlayers = 0;
 		for (int i = 0; i < pokerPlayers.size(); i++) {
@@ -55,11 +55,21 @@ public class HandOfPoker {
 					currentCall = player.lastBet; //Update current call to equal last players bet
 					pot += player.lastBet; //Update pot
 					if (chipsRaised > 0) { // Check for last raise
-						System.out.println("> " + player.name + " raises by " + chipsRaised + " chip(s)");
+						if(chipsRaised == player.getChips() +chipsRaised){
+							System.out.println("> " + player.name + " goes all in! " + chipsRaised + " chip(s)");
+						}
+						else{
+							System.out.println("> " + player.name + " raises by " + chipsRaised + " chip(s)");
+						}
 						lastToRaise = i;
 					}
 					else {
-						System.out.println("> " + player.name + " called with " + currentCall + " chip(s)");
+						if(currentCall == currentCall + player.getChips()){
+							System.out.println("> " + player.name + " goes all in! " + currentCall + " chip(s)");
+						}
+						else{
+							System.out.println("> " + player.name + " called with " + currentCall + " chip(s)");
+						}
 					}
 					System.out.println("POT = " + pot);
 				}

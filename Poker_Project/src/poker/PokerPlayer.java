@@ -68,6 +68,7 @@ public class PokerPlayer {
 					else if (chipsBet < 0) {
 						System.out.println("Must be a positive number!");
 					}
+					
 					else {
 						this.chips -= chipsBet;
 						return chipsBet;
@@ -93,11 +94,11 @@ public class PokerPlayer {
 
 		do {
 			String input = prompt();
-			System.out.println("PROMPT =" +input);   //TESTING TRIM FUNCTION IN PROMPT
-			if (input.equals("y") || input.equals("Y")) {
+			System.out.println("PROMPT = " +input);   //TESTING TRIM FUNCTION IN PROMPT
+			if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
 				return true;
 			}
-			else if (input.equals("n") || input.equals("N")) {
+			else if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("no")) {
 				if(costToCall > this.chips) {
 					this.chips = 0;
 				}
@@ -107,7 +108,7 @@ public class PokerPlayer {
 				return false;
 			}
 			else {
-				System.out.println("Wrong input");
+				System.out.println("Wrong input. Please tweet 'yes' or 'no'");
 			}
 		} while (true);
 	}

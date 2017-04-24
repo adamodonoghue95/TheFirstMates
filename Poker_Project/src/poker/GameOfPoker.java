@@ -84,8 +84,11 @@ public class GameOfPoker {
 				hand.roundOfBetting();
 				
 				// Skips next round of betting if only one player left
-				System.out.println(hand.noOfPlayers());
-				if (hand.noOfPlayers() == 1) break;
+				//System.out.println(hand.noOfPlayers());
+				if (hand.noOfPlayers() == 1){
+					System.out.println("Nobody calls");
+					break;
+				}
 				
 				//Let players discard their cards
 				hand.discardCards();
@@ -95,10 +98,13 @@ public class GameOfPoker {
 				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
 				hand.roundOfBetting();
 				
+				//Show cards
+				hand.showCards();
+				
 			} while(false);
 
 			//Show Cards
-			hand.showCards();
+			
 			hand.decideWinner();
 			
 			// Lets players give all cards back and dealt new hands
