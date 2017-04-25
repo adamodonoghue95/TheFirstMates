@@ -92,9 +92,6 @@ public class TwitterBot {
 			e.printStackTrace();
 		}
 	}
-	
-
-
 
 	public static void main(String args[]) throws Exception{
 		TwitterBot tbot = new TwitterBot();

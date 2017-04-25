@@ -12,8 +12,6 @@ import twitter4j.TwitterStreamFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
 
-
-
 public class SL implements StatusListener {
 
 	String username, content; 
@@ -39,16 +37,38 @@ public class SL implements StatusListener {
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
+			System.out.println(playerMap.toString());
+			if (playerMap.containsKey(username)) {
+				tbot.tweet("@"+username+"\nYou are already participating in a game buddy");
+			}
+			else {
+				GameOfPoker gm = new GameOfPoker(4, tbot, username);
+				playerMap.put(username, 0);
+				gm.introSection(username, tweet_ID);
 
-			GameOfPoker gm = new GameOfPoker(4, tbot, username);
-			playerMap.put(username, 0);
-			gm.foldSection(username, tweet_ID);
+				if (playerMap.containsKey(username)) { // Increment player level
+					playerMap.put(username, playerMap.get(username) + 1);
+					System.out.println("level: " + playerMap.get(username));
+				}
+			}	
 		}
 		else if(status.toString().contains(tbot.BOT_ID)){
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
-			tbot.tweet("@"+username+" TEST the at");
+			//tbot.tweet("@"+username+" TEST the at");
+			
+			if (playerMap.get(username) == 1) {
+				// TODO foldSection (do you want to fold?)
+				
+			}
+			else if (playerMap.get(username) == 2) {
+				// TODO initialBetSection ( what do you want to bet/raise? )
+				// print out gameState
+			}
+			else if (playerMap.get(username) == 3) {
+				// TODO 
+			}
 		}
 
 		//		String output = ("@"+username + " Welcome to FM Poker");
@@ -57,6 +77,7 @@ public class SL implements StatusListener {
 	public void onTrackLimitationNotice(int arg0) {}
 	public void onStallWarning(StallWarning arg0) {}
 
+	
 }
 
 

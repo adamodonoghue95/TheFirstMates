@@ -9,8 +9,6 @@ public class GameOfPoker {
 	TwitterBot tbot;
 	String username;
 
-	
-	
 	//CONSTRUCTOR FOR TWITTER BOT
 	public GameOfPoker(int numberOfPlayers, TwitterBot twitterBot, String user) {
 		tbot = twitterBot;
@@ -56,16 +54,17 @@ public class GameOfPoker {
 		}
 	}
 	
-	public void foldSection(String username, long stat_ID){
+	public void introSection(String username, long stat_ID){
 		String firstTweet;
 		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
-		firstTweet+= "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
-		tbot.reply(firstTweet, stat_ID);
-		
-		System.out.println("LENGTH FIRST TWEET =" + firstTweet.length());
-		
+		firstTweet += "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
+		tbot.tweet(firstTweet);
+				
 		HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
-		System.out.println("LENGTH second TWEET =" + hand.printChips(username).length());
+		
+		tbot.tweet("@"+ username + "\n" + hand.printChips(username));
+		tbot.tweet("@"+ username + "\n" + hand.printHumanHand());
+		tbot.tweet("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
 
 		//tbot.reply(hand.printChips(username), stat_ID);
 	}
@@ -90,7 +89,7 @@ public class GameOfPoker {
 //			HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
 //			hand.printChips();
 //
-//			hand.printHumanHand();
+//			hand.printHumanHand()
 //
 //			do {
 //				// Let players fold and start betting

@@ -125,79 +125,100 @@ public class HandOfPoker {
 
 	// Removes any players that want to fold
 
-	public void printHumanHand() {
+	public String printHumanHand() {
+		String handStr = "";
 
-		for( PokerPlayer player : pokerPlayers){
+		for(PokerPlayer player : pokerPlayers){
 			//if human player is still in hand code will execute
 			if(player.getClass().getName().equals("poker.PokerPlayer") && player.inHand){
 				HandOfCards hand = player.playerHand;
-
 				System.out.println("\nYour Current Hand: -> " + hand.getHandType());
-
+				handStr += hand.getHandType() + "\n";
 				for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
 					switch(hand.getCard(i).getGameValue()) {
 					case 14:
-						System.out.print(i + ". Ace of ");
+						//System.out.print(i + ". Ace of ");
+						handStr += i + ". Ace of ";
 						break;
 					case 2:
-						System.out.print(i + ". Two of ");
+						//System.out.print(i + ". Two of ");
+						handStr += i + ". Two of ";
 						break;
 					case 3:
-						System.out.print(i + ". Three of ");
+						//System.out.print(i + ". Three of ");
+						handStr += i + ". Three of ";
+
 						break;
 					case 4:
-						System.out.print(i + ". Four of ");
+						//System.out.print(i + ". Four of ");
+						handStr += i + ". Four of ";
+
 						break;
 					case 5:
-						System.out.print(i + ". Five of ");
+						//System.out.print(i + ". Five of ");
+						handStr += i + ". Five of ";
 						break;
 					case 6:
-						System.out.print(i + ". Six of ");
+						//System.out.print(i + ". Six of ");
+						handStr += i + ". Six of ";
 						break;
 					case 7:
-						System.out.print(i + ". Seven of ");
+						//System.out.print(i + ". Seven of ");
+						handStr += i + ". Seven of ";
 						break;
 					case 8:
-						System.out.print(i + ". Eight of ");
+						//System.out.print(i + ". Eight of ");
+						handStr += i + ". Eight of ";
 						break;
 					case 9:
-						System.out.print(i + ". Nine of ");
+						//System.out.print(i + ". Nine of ");
+						handStr += i + ". Nine of ";
 						break;
 					case 10:
-						System.out.print(i + ". Ten of ");
+						//System.out.print(i + ". Ten of ");
+						handStr += i + ". Ten of ";
 						break;
 					case 11:
-						System.out.print(i + ". Jack of ");
+						//System.out.print(i + ". Jack of ");
+						handStr += i + ". Jack of ";
 						break;
 					case 12:
-						System.out.print(i + ". Queen of ");
+						//System.out.print(i + ". Queen of ");
+						handStr += i + ". Queen of ";
 						break;
 					case 13:
-						System.out.print(i + ". King of ");
+						//System.out.print(i + ". King of ");
+						handStr += i + ". King of ";
 						break;
 					}
 
 					for (int j = 0; j < 4; j++) {
 						if (hand.getCard(i).getSuit() == 'H') {
-							System.out.println("Hearts");
+							//System.out.println("Hearts");
+							handStr += "Hearts\n";
 							break;
 						}
 						else if (hand.getCard(i).getSuit() == 'S') {
-							System.out.println("Spades");
+							//System.out.println("Spades");
+							handStr += "Spades\n";
 							break;
 						}
 						else if (hand.getCard(i).getSuit() == 'D') {
-							System.out.println("Diamonds");
+							//System.out.println("Diamonds");
+							handStr += "Diamonds\n";
 							break;
 						}
 						else if (hand.getCard(i).getSuit() == 'C') {
-							System.out.println("Clubs");
+							//System.out.println("Clubs");
+							handStr += "Clubs\n";
+
 							break;
 						}
 					}
 				}
 			}
 		}
+		return handStr;
 	}
 
 	public void showCards() {
