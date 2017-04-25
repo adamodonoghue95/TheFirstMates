@@ -56,77 +56,91 @@ public class GameOfPoker {
 		}
 	}
 	
-	public void gamePlay(){
+	public void foldSection(String username, long stat_ID){
+		String firstTweet;
+		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
+		firstTweet+= "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
+		tbot.reply(firstTweet, stat_ID);
 		
-		/* First four lines are for the twitter output, need to fix the small game play
-		 * errors first*/
+		System.out.println("LENGTH FIRST TWEET =" + firstTweet.length());
 		
-//		String firstTweet;
-//		String secondTweet;
-//		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
-//		firstTweet+= "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
-//		tbot.tweet(firstTweet);
-		
-		
-		System.out.println("Welcome to TheFirstMates Poker Game!\n");
-		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
-		
-		while(this.checkGameState()){
-						
-			HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
-			hand.printChips();
+		HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
+		System.out.println("LENGTH second TWEET =" + hand.printChips(username).length());
 
-			hand.printHumanHand();
-
-			do {
-				// Let players fold and start betting
-				System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-				// Skips next round of betting if only one player left
-				//System.out.println(hand.noOfPlayers());
-				if (hand.noOfPlayers() == 1){
-					System.out.println("Nobody calls");
-					break;
-				}
-				
-				//Let players discard their cards
-				hand.discardCards();
-				hand.printHumanHand();
-				
-				//Complete second round of betting
-				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
-				hand.roundOfBetting();
-				
-				//Show cards
-				hand.showCards();
-				
-			} while(false);
-
-			//Show Cards
-			
-			hand.decideWinner();
-			
-			// Lets players give all cards back and dealt new hands
-			hand.returnHands();
-			
-			// Reset and shuffle deck
-			this.deck.reset();
-			this.deck.shuffle();
-			
-			// Deal new Hands for next round
-			this.dealNewHands();
-		}
-
-		//hand.printChips();
-
-
+		//tbot.reply(hand.printChips(username), stat_ID);
 	}
+	
+//	public void gamePlay(){
+//		
+//		/* First four lines are for the twitter output, need to fix the small game play
+//		 * errors first*/
+//		
+////		String firstTweet;
+////		String secondTweet;
+////		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
+////		firstTweet+= "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
+////		tbot.tweet(firstTweet);
+//		
+//		
+//		System.out.println("Welcome to TheFirstMates Poker Game!\n");
+//		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
+//		
+//		while(this.checkGameState()){
+//						
+//			HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
+//			hand.printChips();
+//
+//			hand.printHumanHand();
+//
+//			do {
+//				// Let players fold and start betting
+//				System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
+//				hand.roundOfBetting();
+//				
+//				// Skips next round of betting if only one player left
+//				//System.out.println(hand.noOfPlayers());
+//				if (hand.noOfPlayers() == 1){
+//					System.out.println("Nobody calls");
+//					break;
+//				}
+//				
+//				//Let players discard their cards
+//				hand.discardCards();
+//				hand.printHumanHand();
+//				
+//				//Complete second round of betting
+//				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
+//				hand.roundOfBetting();
+//				
+//				//Show cards
+//				hand.showCards();
+//				
+//			} while(false);
+//
+//			//Show Cards
+//			
+//			hand.decideWinner();
+//			
+//			// Lets players give all cards back and dealt new hands
+//			hand.returnHands();
+//			
+//			// Reset and shuffle deck
+//			this.deck.reset();
+//			this.deck.shuffle();
+//			
+//			// Deal new Hands for next round
+//			this.dealNewHands();
+//		}
+//
+//		//hand.printChips();
+//
+//
+//	}
 
 	public static void main(String [] args) {
 
 		GameOfPoker gm = new GameOfPoker(4);
-		gm.gamePlay();
+		//gm.gamePlay();
 
 	}
 

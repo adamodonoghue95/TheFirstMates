@@ -13,6 +13,7 @@ import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -78,6 +79,15 @@ public class TwitterBot {
 		try {
 			this.authentication();
 			twitter.updateStatus(post);
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void reply(String post, long stat_id){
+		try {
+			this.authentication();
+			twitter.updateStatus(new StatusUpdate(post).inReplyToStatusId(stat_id));
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}

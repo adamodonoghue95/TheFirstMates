@@ -29,10 +29,12 @@ public class HandOfPoker {
 		return noOfPlayers;
 	}
 
-	public void printChips() {
+	public String printChips(String username) {
+		String chips="";
 		for (int i = 0; i < pokerPlayers.size(); i++) {
-			System.out.println("> " + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)");
+			chips+="\n" + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)";
 		}
+		return chips;
 	}
 
 	public void roundOfBetting() {

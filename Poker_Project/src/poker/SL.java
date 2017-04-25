@@ -1,5 +1,7 @@
 package poker;
 
+import java.util.HashMap;
+
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -17,6 +19,8 @@ public class SL implements StatusListener {
 	String username, content; 
 	long tweet_ID;
 
+	HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
+
 	public void onException(Exception arg0) {}
 	public void onDeletionNotice(StatusDeletionNotice arg0) {}
 	public void onScrubGeo(long arg0, long arg1) {}
@@ -25,22 +29,30 @@ public class SL implements StatusListener {
 		TwitterBot tbot = new TwitterBot();
 		User user = status.getUser();
 		
-		// gets Username
 		username = status.getUser().getScreenName();
-		System.out.println(username);
-
 		tweet_ID = status.getId(); 
-		System.out.println(tweet_ID);
-
 		content = status.getText();
-		System.out.println(content +"\n");
-		
-		
-		GameOfPoker gm = new GameOfPoker(4, tbot, username);
-		gm.gamePlay();
-		
-//		String output = ("@"+username + " Welcome to FM Poker");
-//		tbot.tweet(output);
+
+		if(status.toString().contains(tbot.HASHTAG)){
+			// gets Username
+			
+			System.out.println(username);
+			System.out.println(tweet_ID);
+			System.out.println(content +"\n");
+
+			GameOfPoker gm = new GameOfPoker(4, tbot, username);
+			playerMap.put(username, 0);
+			gm.foldSection(username, tweet_ID);
+		}
+		else if(status.toString().contains(tbot.BOT_ID)){
+			System.out.println(username);
+			System.out.println(tweet_ID);
+			System.out.println(content +"\n");
+			tbot.tweet("@"+username+" TEST the at");
+		}
+
+		//		String output = ("@"+username + " Welcome to FM Poker");
+		//		tbot.tweet(output);
 	}
 	public void onTrackLimitationNotice(int arg0) {}
 	public void onStallWarning(StallWarning arg0) {}
