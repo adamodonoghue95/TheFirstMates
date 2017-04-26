@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import twitter4j.FilterQuery;
 import twitter4j.ResponseList;
@@ -40,6 +41,7 @@ public class TwitterBot {
 	ConfigurationBuilder builder1;
 
 
+	
 
 	public void authentication() {
 		try{
@@ -77,20 +79,40 @@ public class TwitterBot {
 	}
 	public void tweet(String post){
 		try {
-			this.authentication();
+			try {
+				TimeUnit.SECONDS.sleep(6);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(this.twitter==null){
+				this.authentication();
+			}
 			twitter.updateStatus(post);
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void reply(String post, long stat_id){
+	public long reply(String post, long stat_id){
 		try {
-			this.authentication();
-			twitter.updateStatus(new StatusUpdate(post).inReplyToStatusId(stat_id));
+			try {
+				TimeUnit.SECONDS.sleep(6);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(this.twitter==null){
+				this.authentication();
+			}
+			
+			StatusUpdate reply = new StatusUpdate(post).inReplyToStatusId(stat_id);
+			Status s = twitter.updateStatus(reply);
+			return s.getId();
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
+		return (Long) null;
 	}
 
 	public static void main(String args[]) throws Exception{

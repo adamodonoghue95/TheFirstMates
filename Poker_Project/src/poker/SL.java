@@ -26,14 +26,15 @@ public class SL implements StatusListener {
 	public void onStatus(Status status) {
 		TwitterBot tbot = new TwitterBot();
 		User user = status.getUser();
-		
+		GameOfPoker gm = null;
+
 		username = status.getUser().getScreenName();
 		tweet_ID = status.getId(); 
 		content = status.getText();
 
 		if(status.toString().contains(tbot.HASHTAG)){
 			// gets Username
-			
+
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
@@ -42,9 +43,9 @@ public class SL implements StatusListener {
 				tbot.tweet("@"+username+"\nYou are already participating in a game buddy");
 			}
 			else {
-				GameOfPoker gm = new GameOfPoker(4, tbot, username);
+				gm = new GameOfPoker(4, tbot, username);
 				playerMap.put(username, 0);
-				gm.introSection(username, tweet_ID);
+				gm.welcomeSection(username);
 
 				if (playerMap.containsKey(username)) { // Increment player level
 					playerMap.put(username, playerMap.get(username) + 1);
@@ -52,21 +53,23 @@ public class SL implements StatusListener {
 				}
 			}	
 		}
-		else if(status.toString().contains(tbot.BOT_ID)){
+		if(status.toString().contains(tbot.BOT_ID) || playerMap.get(username) >= 1){
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
 			//tbot.tweet("@"+username+" TEST the at");
-			
+
 			if (playerMap.get(username) == 1) {
-				// TODO foldSection (do you want to fold?)
-				
+				gm.introSection(username, tweet_ID, content);
 			}
 			else if (playerMap.get(username) == 2) {
+				// TODO foldSection (do you want to fold?)
+			}
+			else if (playerMap.get(username) == 3) {
 				// TODO initialBetSection ( what do you want to bet/raise? )
 				// print out gameState
 			}
-			else if (playerMap.get(username) == 3) {
+			else if (playerMap.get(username) == 4) {
 				// TODO 
 			}
 		}
@@ -77,7 +80,7 @@ public class SL implements StatusListener {
 	public void onTrackLimitationNotice(int arg0) {}
 	public void onStallWarning(StallWarning arg0) {}
 
-	
+
 }
 
 

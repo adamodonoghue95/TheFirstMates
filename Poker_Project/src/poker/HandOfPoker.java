@@ -37,7 +37,7 @@ public class HandOfPoker {
 		return chips;
 	}
 
-	public void roundOfBetting() {
+	public void roundOfBetting(TwitterBot tbot, String content) {
 		currentCall = 0;
 		int lastToRaise = 0; // index of player that raised last
 
@@ -50,7 +50,7 @@ public class HandOfPoker {
 			PokerPlayer player = pokerPlayers.get(i);
 			if (player.inHand) {
 
-				if (!player.fold(currentCall)) { // Gives option to fold
+				if (!player.fold(currentCall, tbot, content)) { // Gives option to fold
 
 					int chipsRaised = player.getChipsToRaise();
 					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
@@ -87,7 +87,7 @@ public class HandOfPoker {
 			int costToCall = currentCall - player.lastBet; // Calculates cost of player taking original bet into account
 
 			if (player.inHand) {				
-				if (!player.fold(costToCall)) { // Gives option to fold
+				if (!player.fold(costToCall, tbot, content)) { // Gives option to fold
 					//player.bet(costToCall); // Updates players chips
 					pot += costToCall; // Updates pot
 					System.out.println("> " + player.name + " matches with " + costToCall + " chip(s)");

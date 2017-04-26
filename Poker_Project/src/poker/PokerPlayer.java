@@ -36,15 +36,15 @@ public class PokerPlayer {
 	public void chipsWon(int noOfChips) {
 		chips += noOfChips;
 	}
-	
+
 	public void returnCards(DeckOfCards deck) {
 		// returns all cards back to the deck
 		for (int i = 0; i < playerHand.HAND_SIZE; i++) {
 			deck.returnCard(playerHand.getCard(i));
 		}
-		
+
 	}
-	
+
 	public void newHand(DeckOfCards deck) {
 		// Gives player new hand
 		playerHand = new HandOfCards(deck);
@@ -68,7 +68,7 @@ public class PokerPlayer {
 					else if (chipsBet < 0) {
 						System.out.println("Must be a positive number!");
 					}
-					
+
 					else {
 						this.chips -= chipsBet;
 						return chipsBet;
@@ -83,18 +83,20 @@ public class PokerPlayer {
 		return chipsBet;
 	}
 
-	public boolean fold(int costToCall) {
+	public boolean fold(int costToCall, TwitterBot tbot, String content) {
+		String input = content;
 		if(costToCall >= this.chips){
 			System.out.println("\nWould you like to fold? (To call you must go all in,  " + costToCall  +" chips)");
+			tbot.tweet("\nWould you like to fold? (To call you must go all in,  " + costToCall  +" chips)");
 		}
 
 		else{
 			System.out.println("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
+			tbot.tweet("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
+
 		}
 
 		do {
-			String input = prompt();
-			System.out.println("PROMPT = " +input);   //TESTING TRIM FUNCTION IN PROMPT
 			if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
 				return true;
 			}
