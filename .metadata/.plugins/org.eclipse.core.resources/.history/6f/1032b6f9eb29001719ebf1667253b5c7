@@ -1,0 +1,84 @@
+package poker;
+
+import java.util.HashMap;
+
+import twitter4j.FilterQuery;
+import twitter4j.StallWarning;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
+import twitter4j.User;
+import twitter4j.conf.ConfigurationBuilder;
+
+public class SL implements StatusListener {
+
+	String username, content; 
+	long tweet_ID;
+
+	HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
+
+	public void onException(Exception arg0) {}
+	public void onDeletionNotice(StatusDeletionNotice arg0) {}
+	public void onScrubGeo(long arg0, long arg1) {}
+
+	public void onStatus(Status status) {
+		TwitterBot tbot = new TwitterBot();
+		User user = status.getUser();
+		
+		username = status.getUser().getScreenName();
+		tweet_ID = status.getId(); 
+		content = status.getText();
+
+		if(status.toString().contains(tbot.HASHTAG)){
+			// gets Username
+			
+			System.out.println(username);
+			System.out.println(tweet_ID);
+			System.out.println(content +"\n");
+			System.out.println(playerMap.toString());
+			if (playerMap.containsKey(username)) {
+				tbot.tweet("@"+username+"\nYou are already participating in a game buddy");
+			}
+			else {
+				GameOfPoker gm = new GameOfPoker(4, tbot, username);
+				playerMap.put(username, 0);
+				gm.introSection(username, tweet_ID);
+				// TODO print hand
+				if (playerMap.containsKey(username)) { // Increment player level
+					playerMap.put(username, playerMap.get(username) + 1);
+					System.out.println("level: " + playerMap.get(username));
+				}
+			}	
+
+		}
+		else if(status.toString().contains(tbot.BOT_ID)){
+			System.out.println(username);
+			System.out.println(tweet_ID);
+			System.out.println(content +"\n");
+			//tbot.tweet("@"+username+" TEST the at");
+			
+			if (playerMap.get(username) == 0) {
+				// TODO foldSection (do you want to fold?)
+			}
+			else if (playerMap.get(username) == 1) {
+				// TODO initialBetSection ( what do you want to bet/raise? )
+				// print out gameState
+			}
+			else if (playerMap.get(username) == 1) {
+				// TODO 
+			}
+		}
+
+		//		String output = ("@"+username + " Welcome to FM Poker");
+		//		tbot.tweet(output);
+	}
+	public void onTrackLimitationNotice(int arg0) {}
+	public void onStallWarning(StallWarning arg0) {}
+
+	
+}
+
+
+

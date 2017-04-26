@@ -23,6 +23,13 @@ public class SL implements StatusListener {
 	public void onDeletionNotice(StatusDeletionNotice arg0) {}
 	public void onScrubGeo(long arg0, long arg1) {}
 
+	public void levelUp() {
+		if (playerMap.containsKey(username)) { // Increment player level
+			playerMap.put(username, playerMap.get(username) + 1);
+			System.out.println("level: " + playerMap.get(username));
+		}
+	}
+
 	public void onStatus(Status status) {
 		TwitterBot tbot = new TwitterBot();
 		User user = status.getUser();
@@ -47,10 +54,7 @@ public class SL implements StatusListener {
 				playerMap.put(username, 0);
 				gm.welcomeSection(username);
 
-				if (playerMap.containsKey(username)) { // Increment player level
-					playerMap.put(username, playerMap.get(username) + 1);
-					System.out.println("level: " + playerMap.get(username));
-				}
+				levelUp();
 			}	
 		}
 		if(status.toString().contains(tbot.BOT_ID) || playerMap.get(username) >= 1){
@@ -61,9 +65,12 @@ public class SL implements StatusListener {
 
 			if (playerMap.get(username) == 1) {
 				gm.introSection(username, tweet_ID, content);
+				levelUp();
 			}
 			else if (playerMap.get(username) == 2) {
 				// TODO foldSection (do you want to fold?)
+				gm.foldSection(username, content);
+				levelUp();
 			}
 			else if (playerMap.get(username) == 3) {
 				// TODO initialBetSection ( what do you want to bet/raise? )

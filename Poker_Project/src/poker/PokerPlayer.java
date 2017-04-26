@@ -87,13 +87,10 @@ public class PokerPlayer {
 		String input = content;
 		if(costToCall >= this.chips){
 			System.out.println("\nWould you like to fold? (To call you must go all in,  " + costToCall  +" chips)");
-			tbot.tweet("\nWould you like to fold? (To call you must go all in,  " + costToCall  +" chips)");
 		}
 
 		else{
 			System.out.println("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
-			tbot.tweet("\nWould you like to fold? (The cost to call is " + costToCall  +" chips)");
-
 		}
 
 		do {

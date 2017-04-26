@@ -9,6 +9,8 @@ public class GameOfPoker {
 	TwitterBot tbot;
 	String username;
 	boolean GameState;
+	HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
+
 
 	//CONSTRUCTOR FOR TWITTER BOT
 	public GameOfPoker(int numberOfPlayers, TwitterBot twitterBot, String user) {
@@ -58,41 +60,31 @@ public class GameOfPoker {
 
 	public void welcomeSection(String username){
 		String firstTweet;
-		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
-		firstTweet += "\nLet's Play Poker " + gamePlayers.get(0).name + "!";
+		firstTweet = "@"+username+"\nWelcome to TheFirstMates Poker Game!\n";
+		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!";
 		tbot.tweet(firstTweet);	
 		System.out.println(firstTweet);
 	}
 
 	public void introSection(String username, long stat_ID, String content){
-		
-
-		HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
-
+		hand = new HandOfPoker(gamePlayers, this.deck);
+		// Print chips
 		tbot.tweet("@"+ username + "\n" + hand.printChips(username));
 		System.out.println("@"+ username + "\n" + hand.printChips(username));
 
+		// Print Hand
 		tbot.tweet("@"+ username + "\n" + hand.printHumanHand());
 		System.out.println("@"+ username + "\n" + hand.printHumanHand());
 
-		//		tbot.tweet("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
-		//		System.out.println("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
-		if(content.contains(tbot.BOT_ID)){
-			if(content.contains("yes") || content.contains("Yes")){
-				hand.roundOfBetting(tbot, content);
-			}
-			else if (content.contains("no") || content.contains("No")){
-				hand.roundOfBetting(tbot, content);
-			}
-			else{
-				tbot.tweet("@"+username+" You entered the wrong input, please reply with Yes or No");
-			}
-		}
 		System.out.println("\nFINISH INTRO SECTION");
 	}
 
-	public void foldSection(String username){
-
+	public void foldSection(String username, String content){
+		// Ask to fold
+		tbot.tweet("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
+		System.out.println("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
+		
+		
 	}
 
 	//	public void gamePlay(){

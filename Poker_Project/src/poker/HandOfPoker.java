@@ -36,10 +36,29 @@ public class HandOfPoker {
 		}
 		return chips;
 	}
+	
+	public String firstRoundOfBetting(TwitterBot tbot, String content, String username) {
+		String output = "";
+		if(content.contains(tbot.BOT_ID)){
+			if(content.contains("yes") || content.contains("Yes")){
 
-	public void roundOfBetting(TwitterBot tbot, String content) {
+			}
+			else if (content.contains("no") || content.contains("No")){
+
+			}
+			else{
+				tbot.tweet("@"+username+" You entered the wrong input, please reply with Yes or No");
+			}
+		}
+		
+		return output;
+	}
+	
+
+	public String roundOfBetting(TwitterBot tbot, String content) {
 		currentCall = 0;
 		int lastToRaise = 0; // index of player that raised last
+		String output = "";
 
 		//reset players last bets
 		for(PokerPlayer player : pokerPlayers){
@@ -58,26 +77,27 @@ public class HandOfPoker {
 					pot += player.lastBet; //Update pot
 					if (chipsRaised > 0) { // Check for last raise
 						if(chipsRaised == player.getChips() +chipsRaised){
-							System.out.println("> " + player.name + " goes all in! " + chipsRaised + " chip(s)");
+							lastToRaise = i;
+							output = "> " + player.name + " goes all in! " + chipsRaised + " chip(s)";
 						}
 						else{
-							System.out.println("> " + player.name + " raises by " + chipsRaised + " chip(s)");
+							output = "> " + player.name + " raises by " + chipsRaised + " chip(s)";
 						}
 						lastToRaise = i;
 					}
 					else {
 						if(currentCall == currentCall + player.getChips()){
-							System.out.println("> " + player.name + " goes all in! " + currentCall + " chip(s)");
+							output = "> " + player.name + " goes all in! " + currentCall + " chip(s)";
 						}
 						else{
-							System.out.println("> " + player.name + " called with " + currentCall + " chip(s)");
+							output = "> " + player.name + " called with " + currentCall + " chip(s)";
 						}
 					}
-					System.out.println("POT = " + pot);
+					//System.out.println("POT = " + pot);
 				}
 				else {
 					pokerPlayers.get(i).inHand = false;
-					System.out.println("> " + player.name + " folds");				
+					output = "> " + player.name + " folds";				
 				}
 			}
 		}
@@ -99,7 +119,8 @@ public class HandOfPoker {
 				}
 			}
 		}
-
+		
+		return output;
 	}
 
 	public void returnHands() {
