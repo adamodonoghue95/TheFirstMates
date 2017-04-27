@@ -66,39 +66,32 @@ public class GameOfPoker {
 		System.out.println(firstTweet);
 	}
 
-	public String [] introSection(){
+	public String [] introSection(String username, long stat_ID, String content){
 		hand = new HandOfPoker(gamePlayers, this.deck);
 		String [] tweets = new String[3];
 		// Print chips
-		tweets[0] = hand.printChips(gamePlayers.get(0).name);
-		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printChips(username));
+		tweets[0] = hand.printChips(username);
+		System.out.println("@"+ username + "\n" + hand.printChips(username));
 
 		// Print Hand
-		tweets[1] = hand.printHumanHand();
-		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
+		tweets[1] = hand.toString();
+		System.out.println("@"+ username + "\n" + hand.printHumanHand());
 
 		System.out.println("\nFINISH INTRO SECTION");
 		
 		// Print fold question
 		System.out.println("Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
-		if(hand.currentCall >= gamePlayers.get(0).chips){
-			System.out.println("\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)");
-			tweets[2] = "\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)";
-		}
-		else{
-			System.out.println("\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)");
-			tweets[2] = "\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)";
-		}
+		tweets[2] = "Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")";
 		
 		return tweets;
 	}
 
-	public String inputFold(String content){
+	public void foldSection(String username, String content){
 		// Ask to fold
-		String tweet = "";
-		gamePlayers.get(0).fold(hand.currentCall, content);
-
-		return "";
+		//tbot.tweet("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
+		System.out.println("@"+ username + "\nWould you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
+		
+		
 	}
 
 	//	public void gamePlay(){

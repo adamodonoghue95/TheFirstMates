@@ -73,8 +73,7 @@ public class SL implements StatusListener {
 			else if (playerMap.get(username) == 2) {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO foldSection (do you want to fold?)
-				//gm.foldSection(content);
-				gm.inputFold(content);
+				gm.foldSection(content);
 				levelUp();
 			}
 			else if (playerMap.get(username) == 3) {

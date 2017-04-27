@@ -71,7 +71,7 @@ public class HandOfPoker {
 
 				if (!player.fold(currentCall, content)) { // Gives option to fold
 
-					int chipsRaised = player.getChipsToRaise(output);
+					int chipsRaised = player.getChipsToRaise();
 					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
 					currentCall = player.lastBet; //Update current call to equal last players bet
 					pot += player.lastBet; //Update pot

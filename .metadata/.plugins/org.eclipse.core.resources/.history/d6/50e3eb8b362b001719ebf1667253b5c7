@@ -50,34 +50,36 @@ public class PokerPlayer {
 		playerHand = new HandOfCards(deck);
 	}
 
-	public int getChipsToRaise(String output) {
+	public int getChipsToRaise(String content) {
+		boolean correctInput = false;
 		int chipsBet = 0;
 		if(chips<1){
 			System.out.println("You do not have any chips to raise with");
 			output = "You do not have any chips to raise with";
 		}
 		else{
-			System.out.println("How much would you like to raise by? (< " + chips + ")");
-			output = "How much would you like to raise by? (< " + chips + ")";
-			try {
-				chipsBet = Integer.parseInt(prompt());
+			do {
+				System.out.println("How much would you like to raise by? (< " + chips + ")");
+				try {
+					chipsBet = Integer.parseInt(prompt());
 
-				if (chipsBet > chips) { // Cannot bet more than chips held by player
-					System.out.println("You only have " + chips + " chip(s)");
+					if (chipsBet > chips) { // Cannot bet more than chips held by player
+						System.out.println("You only have " + chips + " chip(s)");
+					}
+					else if (chipsBet < 0) {
+						System.out.println("Must be a positive number!");
+					}
+
+					else {
+						this.chips -= chipsBet;
+						return chipsBet;
+					}
 				}
-				else if (chipsBet < 0) {
-					System.out.println("Must be a positive number!");
+				catch (NumberFormatException e){ // String entered is not a valid integer
+					System.out.println("Bet must be a number!");
 				}
 
-				else {
-					this.chips -= chipsBet;
-					return chipsBet;
-				}
-			}
-			catch (NumberFormatException e){ // String entered is not a valid integer
-				System.out.println("Bet must be a number!");
-			}
-
+			} while (!correctInput);
 		}
 		return chipsBet;
 	}

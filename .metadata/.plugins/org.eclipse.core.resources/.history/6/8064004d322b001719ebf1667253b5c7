@@ -26,6 +26,7 @@ public class SL implements StatusListener {
 	public void levelUp() {
 		if (playerMap.containsKey(username)) { // Increment player level
 			playerMap.put(username, playerMap.get(username) + 1);
+			System.out.println("level: " + playerMap.get(username));
 		}
 	}
 
@@ -63,18 +64,15 @@ public class SL implements StatusListener {
 			//tbot.tweet("@"+username+" TEST the at");
 
 			if (playerMap.get(username) == 1) {
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				String [] tweets = gm.introSection();
+				String [] tweets = gm.introSection(username, tweet_ID, content);
 				for (int i = 0; i < tweets.length; i++) {
 					tbot.tweet("@" + username + "\n" + tweets[i]);
 				}
 				levelUp();
 			}
 			else if (playerMap.get(username) == 2) {
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO foldSection (do you want to fold?)
-				//gm.foldSection(content);
-				gm.inputFold(content);
+				gm.foldSection(username, content);
 				levelUp();
 			}
 			else if (playerMap.get(username) == 3) {

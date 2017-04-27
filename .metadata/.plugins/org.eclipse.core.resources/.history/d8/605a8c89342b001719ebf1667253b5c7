@@ -66,16 +66,16 @@ public class GameOfPoker {
 		System.out.println(firstTweet);
 	}
 
-	public String [] introSection(){
+	public String [] introSection(String username){
 		hand = new HandOfPoker(gamePlayers, this.deck);
 		String [] tweets = new String[3];
 		// Print chips
-		tweets[0] = hand.printChips(gamePlayers.get(0).name);
-		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printChips(username));
+		tweets[0] = hand.printChips(username);
+		System.out.println("@"+ username + "\n" + hand.printChips(username));
 
 		// Print Hand
 		tweets[1] = hand.printHumanHand();
-		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
+		System.out.println("@"+ username + "\n" + hand.printHumanHand());
 
 		System.out.println("\nFINISH INTRO SECTION");
 		
@@ -93,11 +93,13 @@ public class GameOfPoker {
 		return tweets;
 	}
 
-	public String inputFold(String content){
+	public String inputFold(String username, String content){
 		// Ask to fold
 		String tweet = "";
-		gamePlayers.get(0).fold(hand.currentCall, content);
-
+		for (int i = 0; i < hand.noOfPlayers(); i++) {
+			PokerPlayer player = gamePlayers.get(i);
+			
+		}
 		return "";
 	}
 

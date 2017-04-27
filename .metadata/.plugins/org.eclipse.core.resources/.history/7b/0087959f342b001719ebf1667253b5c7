@@ -93,11 +93,13 @@ public class GameOfPoker {
 		return tweets;
 	}
 
-	public String inputFold(String content){
+	public String inputFold(String username, String content){
 		// Ask to fold
 		String tweet = "";
-		gamePlayers.get(0).fold(hand.currentCall, content);
-
+		for (int i = 0; i < hand.noOfPlayers(); i++) {
+			PokerPlayer player = gamePlayers.get(i);
+			
+		}
 		return "";
 	}
 
