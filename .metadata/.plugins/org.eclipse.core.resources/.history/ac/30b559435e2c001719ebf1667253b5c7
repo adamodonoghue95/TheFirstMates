@@ -149,8 +149,6 @@ public class SL implements StatusListener {
 				tweet = introStr + "\n" + tweet;
 				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
-					// TODO
-					tweet += "\n How much would you like raise?" ;
 					tbot.tweet(tweet);
 					setStage(6);
 				}
@@ -187,7 +185,7 @@ public class SL implements StatusListener {
 					tbot.tweet(tweet);
 					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
 					tbot.tweet(tweet);
-					setStage(8);
+					setStage(5);
 					System.out.println("Leveled up to " + playerMap.get(username));
 					System.out.println(playerMap);
 				}
@@ -199,9 +197,7 @@ public class SL implements StatusListener {
 			else if (playerMap.get(username) == 8) {
 				// TODO
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				String tweet = gm.decideWinner();
-				tbot.tweet(tweet);
-				setStage(1); // Restart at level 1
+				
 			}
 		}
 

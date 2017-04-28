@@ -153,15 +153,6 @@ public class GameOfPoker {
 		return tweet;
 	}
 	
-	// LEVEL 8
-	public String decideWinner() {
-		String tweet = "";
-		
-		tweet += hand.showHands();
-		tweet += hand.decideWinner();
-		
-		return tweet;
-	}
 	
 	public int getLastToRaise() {
 		return hand.lastToRaise;

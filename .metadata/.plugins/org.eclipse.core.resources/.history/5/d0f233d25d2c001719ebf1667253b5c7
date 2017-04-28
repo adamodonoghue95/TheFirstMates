@@ -303,7 +303,7 @@ public class HandOfPoker {
 	}
 	
 
-	public String decideWinner() {
+	public void decideWinner() {
 		int winningHandScore = 0;
 		int winningPlayer = 0;
 
@@ -318,6 +318,6 @@ public class HandOfPoker {
 		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
 		pokerPlayers.get(winningPlayer).chipsWon(pot);
 
-		return pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips";
+
 	}
 }
