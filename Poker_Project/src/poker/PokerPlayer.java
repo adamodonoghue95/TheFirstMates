@@ -104,7 +104,7 @@ public class PokerPlayer {
 		return chips;
 	}
 
-	public void discard(){
+	public void discard(String content){
 		// Deals with Human Player
 		boolean correctInput = false;
 		String input = "";
@@ -166,7 +166,7 @@ public class PokerPlayer {
 			System.out.print(player.playerHand.getDiscardProbability(i) + "% ");
 		}
 		System.out.println();
-		player.discard();
+		//player.discard();
 		System.out.println(player.playerHand);
 
 

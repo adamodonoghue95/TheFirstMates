@@ -134,7 +134,7 @@ public class HandOfPoker {
 	public String humanMatch(String content){
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
-		
+
 		if(human.inHand){
 			int costToCall = currentCall - human.lastBet;
 			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
@@ -164,7 +164,7 @@ public class HandOfPoker {
 					//player.bet(costToCall); // Updates players chips
 					pot += costToCall; // Updates pot
 					System.out.println("> " + player.name + " matches with " + costToCall + " chip(s)");
-					output+="> " + player.name + " matches with " + costToCall + " chip(s)";
+					output+="" + player.name + " matches with " + costToCall + " chip(s)\n";
 					System.out.println("POT = " + pot);
 				}
 				else{
@@ -175,6 +175,64 @@ public class HandOfPoker {
 			}
 		}
 
+		return output;
+	}
+
+	// HUMAN:
+	public String discardHumanCards(String content){
+		String output = "";
+		PokerPlayer human = pokerPlayers.get(0);
+
+		if(human.inHand){
+			//System.out.println("In the discard level");
+			//boolean correctInput = true;
+			boolean inRange = true;
+			//String input = "";
+			System.out.println("Content = " + content);
+			String [] cards = content.split(" ");
+			int [] discard = new int[cards.length];
+			
+			if (discard.length > 3) {
+				System.out.println("Maximum cards you can discard is three");
+				output = "@" + human.name + " \nWrong input. Maximum cards you can discard is 3";
+				return output;
+			}
+			
+			else {
+				try {
+					// Assigns and parses discarded cards to integers
+					for (int i = 0; i < cards.length; i++) {
+						System.out.println("Cards = " + cards[i]);
+						
+						discard[i] = Integer.parseInt(cards[i]);
+						
+						System.out.println("Discard = " + discard[i]);
+						
+						if (discard[i] < 0 || discard[i] > 4) {
+							inRange = false;
+							break;
+						}
+					}	
+
+					if (inRange) {
+						human.playerHand.discardCards(discard, discard.length);
+						output = "Discard Successful";
+						return output;
+					}
+					else {
+						System.out.println("Index entered is out of range, must be between 0-4");
+						output = "@" + human.name + " \nWrong input. Index entered is out of range, must be between 0-4";
+						return output;
+						//correctInput = false;
+					}
+				}
+				catch (NumberFormatException e) {
+					System.out.println("Invalid input (must be integers)");
+					output = "@" + human.name + " \nWrong input. Invalid input (must be integers)";
+					return output;
+				}
+			}
+		}
 		return output;
 	}
 
@@ -282,7 +340,7 @@ public class HandOfPoker {
 		for (int i = 0; i < pokerPlayers.size(); i++) {
 			PokerPlayer player = pokerPlayers.get(i);
 			if(player.inHand){
-				player.discard();
+				//player.discard();
 			}
 		}
 	}

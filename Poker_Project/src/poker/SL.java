@@ -110,15 +110,40 @@ public class SL implements StatusListener {
 			}
 			//LEVEL 4: DEALS WITH MATCHING RAISES (IF THERE IS ANY)
 			else if (playerMap.get(username) == 4) {
-				// TODO 
+				// TODO
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				String errorMsg = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
 				String tweet = introStr + "\n" + gm.humanMatchInput(content);
+				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
+					tbot.tweet(tweet);
+					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
+					tbot.tweet(tweet);
+					levelUp();
+					System.out.println("Leveled up to " + playerMap.get(username));
+					System.out.println(playerMap);
+				}
+				else {
+					tbot.tweet(introStr + "\n" + errorMsg);
+				}
+			}
+			
+			//LEVEL 5: DEALS WITH DISCARDING CARDS
+			else if (playerMap.get(username) == 5) {
+				// TODO 
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
+				String errorMsg = "@" + username + " \nWrong input.";
+				String tweet = gm.humanDiscard(content);
+				//update intro message to new discarded hand
+				introStr = "@" + username + " " + gm.returnHumanHand();
+				//add intro message on after discard method so that hand is updated
+				tweet = introStr + "\n" + tweet;
+				//String tweet = introStr + "\n" + content;
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					tbot.tweet(tweet);
 					levelUp();
 				}
 				else {
-					tbot.tweet(introStr + "\n" + errorMsg);
+					tbot.tweet(introStr + "\n" + tweet);
 				}
 			}
 			//LEVEL: 

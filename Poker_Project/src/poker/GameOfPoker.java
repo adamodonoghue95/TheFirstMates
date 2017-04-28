@@ -136,10 +136,22 @@ public class GameOfPoker {
 
 		tweet += hand.humanMatch(content);
 		tweet += hand.automatedMatch();
+		
 		System.out.println(tweet);
 		
 		return tweet;
 	}
+	
+	//LEVEL 5 
+	
+		public String humanDiscard(String content) {
+			String tweet = "";
+			tweet += hand.discardHumanCards(content);
+			//tweet += hand.automatedMatch();
+			System.out.println(tweet);
+			
+			return tweet;
+		}
 
 	//	public void gamePlay(){
 	//		
