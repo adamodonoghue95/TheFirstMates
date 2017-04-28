@@ -53,20 +53,22 @@ public class PokerPlayer {
 	public int getChipsToRaise(String output) {
 		int chipsBet = 0;
 		if(chips<1){
-			System.out.println("You do not have any chips to raise with");
-			output = "You do not have any chips to raise with";
+			//System.out.println("You do not have any chips to raise with");
+			output += "You do not have any chips to raise with";
 		}
 		else{
-			System.out.println("How much would you like to raise by? (< " + chips + ")");
-			output = "How much would you like to raise by? (< " + chips + ")";
+			//System.out.println("How much would you like to raise by? (< " + chips + ")");
+			output += "How much would you like to raise by? (< " + chips + ")";
 			try {
 				chipsBet = Integer.parseInt(prompt());
 
 				if (chipsBet > chips) { // Cannot bet more than chips held by player
-					System.out.println("You only have " + chips + " chip(s)");
+					//System.out.println("You only have " + chips + " chip(s)");
+					output += "You only have " + chips + " chip(s)";
 				}
 				else if (chipsBet < 0) {
-					System.out.println("Must be a positive number!");
+					//System.out.println("Must be a positive number!");
+					output +="Must be a positive number!";
 				}
 
 				else {
@@ -76,6 +78,8 @@ public class PokerPlayer {
 			}
 			catch (NumberFormatException e){ // String entered is not a valid integer
 				System.out.println("Bet must be a number!");
+				output +="Bet must be a number!";
+				
 			}
 
 		}
@@ -83,11 +87,10 @@ public class PokerPlayer {
 	}
 	
 	public boolean fold(int costToCall, String content) {
-		String input = content;
-		if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("yes")) {
+		if (content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes")) {
 			return true;
 		}
-		else if (input.equalsIgnoreCase("n") || input.equalsIgnoreCase("no")) {
+		else if (content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no")) {
 			if(costToCall > this.chips) {
 				this.chips = 0;
 			}
@@ -96,11 +99,7 @@ public class PokerPlayer {
 			}
 			return false;
 		}
-		else {
-			System.out.println("Wrong input. Please tweet 'yes' or 'no'");
-			content = "Wrong input. Please tweet 'yes' or 'no'";
-			return false;
-		}
+		return true;
 	}
 
 	public int getChips() {

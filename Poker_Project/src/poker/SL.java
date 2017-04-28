@@ -16,6 +16,7 @@ public class SL implements StatusListener {
 
 	String username, content; 
 	long tweet_ID;
+	GameOfPoker gm;
 
 	HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
 
@@ -30,56 +31,76 @@ public class SL implements StatusListener {
 	}
 
 	public void onStatus(Status status) {
+		
+		//Initialise Variables
 		TwitterBot tbot = new TwitterBot();
 		User user = status.getUser();
-		GameOfPoker gm = null;
-
 		username = status.getUser().getScreenName();
 		tweet_ID = status.getId(); 
 		content = status.getText();
 
-		if(status.toString().contains(tbot.HASHTAG)){
-			// gets Username
+		//Delete the @FirstMatesPoker and the white space after from content, leaves 
+		// us with just the content of the tweet
+		content = content.substring(tbot.BOT_ID.length()+1); 
 
+
+		//Listener conditions
+		//IF THE BOT HASHTAG IS TWEETED
+		if(status.toString().contains(tbot.HASHTAG)){
+			gm = new GameOfPoker(4, username);
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
 			System.out.println(playerMap.toString());
+
 			if (playerMap.containsKey(username)) {
 				tbot.tweet("@"+username+"\nYou are already participating in a game buddy");
 			}
 			else {
-				gm = new GameOfPoker(4, tbot, username);
+				;
 				playerMap.put(username, 0);
-				gm.welcomeSection(username);
+				tbot.tweet(gm.welcomeSection(username));
 
 				levelUp();
 			}	
 		}
+
+		// IF THE BOTS @ IS TWEETED
 		if(status.toString().contains(tbot.BOT_ID) || playerMap.get(username) >= 1){
 			System.out.println(username);
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
-			//tbot.tweet("@"+username+" TEST the at");
 
+			//LEVEL 1: TWEET THE INTRO TWEETS, ASK WHETHER THEY WANT TO FOLD OR NOT
 			if (playerMap.get(username) == 1) {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				String [] tweets = gm.introSection();
 				for (int i = 0; i < tweets.length; i++) {
+					System.out.println("@" + username + "\n" + tweets[i]);
 					tbot.tweet("@" + username + "\n" + tweets[i]);
 				}
 				levelUp();
 			}
+
+			//LEVEL 2: CHECK THE FOLD INPUT AND ASK HOW MUCH THEY WANT TO RAISE
 			else if (playerMap.get(username) == 2) {
+				String tweet = "";
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO foldSection (do you want to fold?)
-				//gm.foldSection(content);
-				gm.inputFold(content);
-				levelUp();
+				String wrongInputMessage = "Wrong input. Please tweet 'yes' or 'no'";
+				tweet = "@" + username + "\n" + gm.humanInputForFold(content);
+				tbot.tweet(tweet);
+				if(!tweet.contains(wrongInputMessage)){
+					levelUp();
+				}
 			}
+
+			//LEVEL 3: 
 			else if (playerMap.get(username) == 3) {
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
-				// print out gameState
+				System.out.println(gm.humanRaisedInput(content));
+				
 			}
 			else if (playerMap.get(username) == 4) {
 				// TODO 

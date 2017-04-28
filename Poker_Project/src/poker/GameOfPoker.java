@@ -6,15 +6,13 @@ public class GameOfPoker {
 	private static ArrayList<PokerPlayer> gamePlayers = new ArrayList<PokerPlayer>();
 	private DeckOfCards deck = new DeckOfCards();
 	private int STATUS_ID;
-	TwitterBot tbot;
 	String username;
 	boolean GameState;
 	HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
 
 
 	//CONSTRUCTOR FOR TWITTER BOT
-	public GameOfPoker(int numberOfPlayers, TwitterBot twitterBot, String user) {
-		tbot = twitterBot;
+	public GameOfPoker(int numberOfPlayers, String user) {
 		username = user;
 		gamePlayers.add(new PokerPlayer(deck, username));
 		gamePlayers.add(new AutomatedPokerPlayer(deck,"Jack"));
@@ -58,14 +56,18 @@ public class GameOfPoker {
 	}
 
 
-	public void welcomeSection(String username){
+	
+	/* GAME STATE SECTIONS*/
+	
+	//LEVEL 0
+	public String welcomeSection(String username){
 		String firstTweet;
 		firstTweet = "@"+username+"\nWelcome to TheFirstMates Poker Game!\n";
 		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!";
-		tbot.tweet(firstTweet);	
-		System.out.println(firstTweet);
+		return firstTweet;
 	}
 
+	//LEVEL 1
 	public String [] introSection(){
 		hand = new HandOfPoker(gamePlayers, this.deck);
 		String [] tweets = new String[3];
@@ -89,16 +91,40 @@ public class GameOfPoker {
 			System.out.println("\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)");
 			tweets[2] = "\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)";
 		}
-		
 		return tweets;
 	}
-
-	public String inputFold(String content){
-		// Ask to fold
+	
+	//LEVEL 2
+	public String humanInputForFold(String content){
+		
+		/* This method takes in the input to the would you like to fold question
+		 * and checks the input. It then finishes with the appropriate string generated in the 
+		 * player.fold method, whether it be wrong input, player has folded or to progress
+		 * how much would you like to raise*/
+		
 		String tweet = "";
-		gamePlayers.get(0).fold(hand.currentCall, content);
-
-		return "";
+		tweet = hand.checkIfHumanFold(content);
+		System.out.println(hand.checkIfHumanFold(content));
+		return tweet;
+	}
+	
+	
+	//LEVEL3
+	
+	public String[] humanRaisedInput(String content){
+		String[] tweets= new String[2];
+		
+		try {
+			int humanRaise = Integer.parseInt(content);
+			tweets[0] = hand.humanRaiseAndAutomatedCall(humanRaise);
+			System.out.println("TRY TWEET: "+tweets[0]);
+			
+		} catch (NumberFormatException e) {
+			tweets[0] = "Wrong input, please enter a number";
+			e.printStackTrace();
+		}
+		
+		return tweets;
 	}
 
 	//	public void gamePlay(){
