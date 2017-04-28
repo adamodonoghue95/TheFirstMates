@@ -104,23 +104,23 @@ public class GameOfPoker {
 		
 		String tweet = "";
 		tweet = hand.checkIfHumanFold(content);
-		System.out.println(hand.checkIfHumanFold(content));
+		System.out.println(tweet);
 		return tweet;
 	}
 	
 	
 	//LEVEL3
 	
-	public String[] humanRaisedInput(String content){
-		String[] tweets= new String[2];
+	public String humanRaisedInput(String content){
+		String tweets= "";
 		
 		try {
 			int humanRaise = Integer.parseInt(content);
-			tweets[0] = hand.humanRaiseAndAutomatedCall(humanRaise);
-			System.out.println("TRY TWEET: "+tweets[0]);
+			tweets = hand.humanRaiseAndAutomatedCall(humanRaise);
+			System.out.println("TRY TWEET: "+tweets);
 			
 		} catch (NumberFormatException e) {
-			tweets[0] = "Wrong input, please enter a number";
+			tweets = "Wrong input, please enter a number";
 			e.printStackTrace();
 		}
 		

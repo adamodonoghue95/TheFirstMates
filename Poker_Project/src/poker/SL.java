@@ -47,6 +47,9 @@ public class SL implements StatusListener {
 		//Listener conditions
 		//IF THE BOT HASHTAG IS TWEETED
 		if(status.toString().contains(tbot.HASHTAG)){
+//			username = status.getUser().getScreenName();
+//			tweet_ID = status.getId(); 
+//			content = status.getText();
 			gm = new GameOfPoker(4, username);
 			System.out.println(username);
 			System.out.println(tweet_ID);
@@ -100,6 +103,7 @@ public class SL implements StatusListener {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
 				System.out.println(gm.humanRaisedInput(content));
+				tbot.tweet(gm.humanRaisedInput(content));
 				
 			}
 			else if (playerMap.get(username) == 4) {

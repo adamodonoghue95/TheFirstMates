@@ -69,7 +69,7 @@ public class HandOfPoker {
 		pot += human.lastBet;
 
 		System.out.println("POT: "+pot);
-		System.out.println("OUTPUT: "+output);
+		//System.out.println("OUTPUT: "+output);
 
 		output = firstAutomatedCallorRaise();
 		System.out.println("OUTPUT: "+output);
@@ -94,11 +94,11 @@ public class HandOfPoker {
 		for(int i=1;i<pokerPlayers.size();i++){
 			AutomatedPokerPlayer player = (AutomatedPokerPlayer) pokerPlayers.get(i);
 			if(player.inHand){
-				System.out.println(player.name+ "IN HAND OUTPUT: "+output);
-				if(!player.fold(currentCall, output)){
-					System.out.println(player.name+ " DIDN'T FOLD: "+output);
+				//System.out.println(player.name+ "IN HAND OUTPUT: "+output);
+				if(!player.fold(currentCall)){
+					//System.out.println(player.name+ " DIDN'T FOLD: "+output);
 					chipsRaised = player.getChipsToRaise();
-					System.out.println(player.name+" CHIPS RAISED: " + chipsRaised);
+					//System.out.println(player.name+" CHIPS RAISED: " + chipsRaised);
 
 
 					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
@@ -110,28 +110,28 @@ public class HandOfPoker {
 						if(chipsRaised == player.getChips() +chipsRaised){
 							lastToRaise = i;
 							System.out.println(player.name + " goes all in! " + chipsRaised + " chip(s)");
-							output += player.name + " goes all in! " + chipsRaised + " chip(s)";
+							output += player.name + " goes all in! " + chipsRaised + " chip(s)\n";
 						}
 						else{
 							System.out.println(player.name + " raises by " + chipsRaised + " chip(s)");
-							output += player.name + " raises by " + chipsRaised + " chip(s)";
+							output += player.name + " raises by " + chipsRaised + " chip(s)\n";
 						}
 						lastToRaise = i;
 					}
 					else {
 						if(currentCall == currentCall + player.getChips()){
 							System.out.println(player.name + " goes all in! " + currentCall + " chip(s)");
-							output += player.name + " goes all in! " + currentCall + " chip(s)";
+							output += player.name + " goes all in! " + currentCall + " chip(s)\n";
 						}
 						else{
 							System.out.println(player.name + " called with " + currentCall + " chip(s)");
-							output += player.name + " called with " + currentCall + " chip(s)";
+							output += player.name + " called with " + currentCall + " chip(s)\n";
 						}
 					}
 				}
 				else{
-					System.out.println("> " + player.name + " has folded");
-					output+= player.name + " has folded";
+					System.out.println(player.name + " has folded\n");
+					output+= player.name + " has folded\n";
 					pokerPlayers.get(i).inHand = false;
 				}
 			}
