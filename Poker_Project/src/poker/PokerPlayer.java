@@ -99,54 +99,82 @@ public class PokerPlayer {
 		}
 		return true;
 	}
+	
+	public String match(String content, int currentCall){
+		String output = "";
+
+		if(inHand){
+			int costToCall = currentCall - lastBet;
+			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
+				output = "@" + name + " \nWrong input. Please tweet 'yes' or 'no'";
+			}
+			else if (!fold(costToCall, content)){
+				output += name + " matches with " + costToCall + " chip(s)\n";
+			}
+		}
+
+		return output;
+	}
 
 	public int getChips() {
 		return chips;
 	}
+	
+	public String discard(String content){
+		String output = "";
+		//PokerPlayer human = pokerPlayers.get(0);
 
-	public void discard(String content){
-		// Deals with Human Player
-		boolean correctInput = false;
-		String input = "";
-		String [] cards = input.split(" ");
-		int [] discard = new int[cards.length];
-
-		do {
-			boolean inRange = true; // checks if input is an index in hand (e.g between 0-4)
-			System.out.println("What cards would you like to discard? (e.g 0 2 3)");
-			input = prompt();
-			cards = input.split(" ");
-			discard = new int[cards.length];
-
+		if(inHand){
+			//System.out.println("In the discard level");
+			//boolean correctInput = true;
+			boolean inRange = true;
+			//String input = "";
+			System.out.println("Content = " + content);
+			String [] cards = content.split(" ");
+			int [] discard = new int[cards.length];
+			
 			if (discard.length > 3) {
 				System.out.println("Maximum cards you can discard is three");
+				output = "@" + name + " \nWrong input. Maximum cards you can discard is 3";
+				return output;
 			}
+			
 			else {
 				try {
 					// Assigns and parses discarded cards to integers
 					for (int i = 0; i < cards.length; i++) {
+						System.out.println("Cards = " + cards[i]);
+						
 						discard[i] = Integer.parseInt(cards[i]);
+						
+						System.out.println("Discard = " + discard[i]);
+						
 						if (discard[i] < 0 || discard[i] > 4) {
 							inRange = false;
+							break;
 						}
 					}	
 
 					if (inRange) {
-						correctInput = true;
+						playerHand.discardCards(discard, discard.length);
+						output = "Discard Successful";
+						return output;
 					}
 					else {
-						System.out.println("Index enetered is out of range, must be between 0-4");
-						correctInput = false;
+						System.out.println("Index entered is out of range, must be between 0-4");
+						output = "@" + name + " \nWrong input. Index entered is out of range, must be between 0-4";
+						return output;
+						//correctInput = false;
 					}
 				}
 				catch (NumberFormatException e) {
 					System.out.println("Invalid input (must be integers)");
+					output = "@" + name + " \nWrong input. Invalid input (must be integers)";
+					return output;
 				}
 			}
-
-		} while (!correctInput);
-
-		playerHand.discardCards(discard, discard.length);	
+		}
+		return output;
 	}
 
 	public void resetBet(){

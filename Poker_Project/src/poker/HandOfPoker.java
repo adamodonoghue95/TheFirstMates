@@ -129,111 +129,40 @@ public class HandOfPoker {
 		return output;
 
 	}
-
-	// HUMAN:
-	public String humanMatch(String content){
-		String output = "";
+	
+	public String playersMatch(String content) {
+		String tweet = "";
+		
+		// Human player match
 		PokerPlayer human = pokerPlayers.get(0);
+		tweet += human.match(content, currentCall) + "\n"; 
+		pot += (currentCall - human.lastBet); // Updates pot
 
-		if(human.inHand){
-			int costToCall = currentCall - human.lastBet;
-			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
-				//System.out.println("Wrong input. Please tweet 'yes' or 'no'");
-				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
-			}
-			else if (!human.fold(costToCall, content)){
-				pot += costToCall; // Updates pot
-				System.out.println(human.name + " matches with " + costToCall + " chip(s)\n");
-				output+= human.name + " matches with " + costToCall + " chip(s)\n";
-				System.out.println("POT = " + pot);
-			}
+		// Automated players match
+		for (int i = 1; i < lastToRaise; i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			tweet += automatedPlayer.match(lastToRaise, currentCall) + "\n";
+			pot += (currentCall - automatedPlayer.lastBet); // Updates pot
 		}
-
-		return output;
+		
+		return tweet;
 	}
-
-	// AUTOMATED:
-	public String automatedMatch(){
-		String output = "";
-		for (int j = 1; j < lastToRaise; j++) {
-			AutomatedPokerPlayer player = (AutomatedPokerPlayer) pokerPlayers.get(j);
-			int costToCall = currentCall - player.lastBet; // Calculates cost of player taking original bet into account
-
-			if (player.inHand) {				
-				if (!player.fold(costToCall)) { // Gives option to fold
-					//player.bet(costToCall); // Updates players chips
-					pot += costToCall; // Updates pot
-					System.out.println("> " + player.name + " matches with " + costToCall + " chip(s)");
-					output+="" + player.name + " matches with " + costToCall + " chip(s)\n";
-					System.out.println("POT = " + pot);
-				}
-				else{
-					System.out.println("> " + player.name + " has folded");
-					output+= player.name + " has folded";
-					pokerPlayers.get(j).inHand = false;
-				}
-			}
-		}
-
-		return output;
-	}
-
-	// HUMAN:
-	public String discardHumanCards(String content){
-		String output = "";
+	
+	
+	public String discardCards(String content) {
+		String tweet = "";
+		
+		// Human player discard
 		PokerPlayer human = pokerPlayers.get(0);
-
-		if(human.inHand){
-			//System.out.println("In the discard level");
-			//boolean correctInput = true;
-			boolean inRange = true;
-			//String input = "";
-			System.out.println("Content = " + content);
-			String [] cards = content.split(" ");
-			int [] discard = new int[cards.length];
-			
-			if (discard.length > 3) {
-				System.out.println("Maximum cards you can discard is three");
-				output = "@" + human.name + " \nWrong input. Maximum cards you can discard is 3";
-				return output;
-			}
-			
-			else {
-				try {
-					// Assigns and parses discarded cards to integers
-					for (int i = 0; i < cards.length; i++) {
-						System.out.println("Cards = " + cards[i]);
-						
-						discard[i] = Integer.parseInt(cards[i]);
-						
-						System.out.println("Discard = " + discard[i]);
-						
-						if (discard[i] < 0 || discard[i] > 4) {
-							inRange = false;
-							break;
-						}
-					}	
-
-					if (inRange) {
-						human.playerHand.discardCards(discard, discard.length);
-						output = "Discard Successful";
-						return output;
-					}
-					else {
-						System.out.println("Index entered is out of range, must be between 0-4");
-						output = "@" + human.name + " \nWrong input. Index entered is out of range, must be between 0-4";
-						return output;
-						//correctInput = false;
-					}
-				}
-				catch (NumberFormatException e) {
-					System.out.println("Invalid input (must be integers)");
-					output = "@" + human.name + " \nWrong input. Invalid input (must be integers)";
-					return output;
-				}
-			}
+		tweet = human.discard(content);
+		
+		// Automated player discard
+		for (int i = 1; i < pokerPlayers.size(); i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			automatedPlayer.discard();
 		}
-		return output;
+		
+		return tweet;
 	}
 
 
@@ -345,8 +274,6 @@ public class HandOfPoker {
 		}
 	}
 
-	// Removes any players that want to fold
-
 	public String printHumanHand() {
 		String handStr = "";
 
@@ -360,80 +287,21 @@ public class HandOfPoker {
 		}
 		return handStr;
 	}
+	
+	public String showHands() {
+		String handStr = "";
 
-	public void showCards() {
-		for(int z = 0; z < pokerPlayers.size(); z++){
-			PokerPlayer player = pokerPlayers.get(z);
-
+		for(PokerPlayer player : pokerPlayers){
+			//if human player is still in hand code will execute
 			if (player.inHand) {
-				System.out.println("\n\n" + pokerPlayers.get(z).name + " Hand = " + player.playerHand.getHandType());
-				System.out.println("SCORE = " + player.playerHand.getGameValue());
-				for (int i = 0; i < HandOfCards.HAND_SIZE; i++) {
-					switch(player.playerHand.getCard(i).getGameValue()) {
-					case 14:
-						System.out.print(i + ". Ace of ");
-						break;
-					case 2:
-						System.out.print(i + ". Two of ");
-						break;
-					case 3:
-						System.out.print(i + ". Three of ");
-						break;
-					case 4:
-						System.out.print(i + ". Four of ");
-						break;
-					case 5:
-						System.out.print(i + ". Five of ");
-						break;
-					case 6:
-						System.out.print(i + ". Six of ");
-						break;
-					case 7:
-						System.out.print(i + ". Seven of ");
-						break;
-					case 8:
-						System.out.print(i + ". Eight of ");
-						break;
-					case 9:
-						System.out.print(i + ". Nine of ");
-						break;
-					case 10:
-						System.out.print(i + ". Ten of ");
-						break;
-					case 11:
-						System.out.print(i + ". Jack of ");
-						break;
-					case 12:
-						System.out.print(i + ". Queen of ");
-						break;
-					case 13:
-						System.out.print(i + ". King of ");
-						break;
-					}
-
-					for (int j = 0; j < 4; j++) {
-						if (player.playerHand.getCard(i).getSuit() == 'H') {
-							System.out.println("Hearts");
-							break;
-						}
-						else if (player.playerHand.getCard(i).getSuit() == 'S') {
-							System.out.println("Spades");
-							break;
-						}
-						else if (player.playerHand.getCard(i).getSuit() == 'D') {
-							System.out.println("Diamonds");
-							break;
-						}
-						else if (player.playerHand.getCard(i).getSuit() == 'C') {
-							System.out.println("Clubs");
-							break;
-						}
-					}
-				}
+				HandOfCards hand = player.playerHand;
+				handStr += hand.toString() + "\n";
 			}
-
+			
 		}
+		return handStr;
 	}
+	
 
 	public void decideWinner() {
 		int winningHandScore = 0;

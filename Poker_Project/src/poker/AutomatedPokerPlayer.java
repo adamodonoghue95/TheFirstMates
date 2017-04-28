@@ -41,6 +41,26 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 		}	
 	}
 	
+	public String match(int lastToRaise, int currentCall){
+		String output = "";
+		int costToCall = currentCall - lastBet; // Calculates cost of player taking original bet into account
+
+		if (inHand) {				
+			if (!fold(costToCall)) { // Gives option to fold
+				System.out.println("> " + name + " matches with " + costToCall + " chip(s)");
+				output+="" + name + " matches with " + costToCall + " chip(s)\n";
+			}
+			else{
+				System.out.println("> " + name + " has folded");
+				output+= name + " has folded";
+				inHand = false;
+			}
+		}
+
+		return output;
+	}
+
+	
 	//this is a new method for discarding the cards
 		public void discard(){
 			//declare a new random number generator

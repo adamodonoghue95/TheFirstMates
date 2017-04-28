@@ -24,9 +24,9 @@ public class SL implements StatusListener {
 	public void onDeletionNotice(StatusDeletionNotice arg0) {}
 	public void onScrubGeo(long arg0, long arg1) {}
 
-	public void levelUp() {
+	public void setStage(int stage) {
 		if (playerMap.containsKey(username)) { // Increment player level
-			playerMap.put(username, playerMap.get(username) + 1);
+			playerMap.put(username, stage);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class SL implements StatusListener {
 				playerMap.put(username, 0);
 				tbot.tweet(gm.welcomeSection(username));
 
-				levelUp();
+				setStage(1);
 			}	
 		}
 
@@ -82,7 +82,7 @@ public class SL implements StatusListener {
 					System.out.println(introStr + " \n" + tweets[i]);
 					tbot.tweet(introStr + " \n" + tweets[i]);
 				}
-				levelUp();
+				setStage(2);
 			}
 
 			//LEVEL 2: CHECK THE FOLD INPUT AND ASK HOW MUCH THEY WANT TO RAISE
@@ -93,8 +93,9 @@ public class SL implements StatusListener {
 				String wrongInputMessage = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
 				tweet = introStr + "\n" + gm.humanInputForFold(content);
 				tbot.tweet(tweet);
+				
 				if(!tweet.contains(wrongInputMessage)){
-					levelUp();
+					setStage(3);
 				}
 			}
 
@@ -102,23 +103,30 @@ public class SL implements StatusListener {
 			else if (playerMap.get(username) == 3) {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
-				String tweet = introStr + "\n" + gm.humanRaisedInput(content);
+				String tweet = introStr + "\n" + gm.raiseSection(content);
 				System.out.println(tweet);
 				tbot.tweet(tweet);
-				levelUp();
-				
+				// If = 0, no need to match any raise -> increase two stages;
+				if (gm.getLastToRaise() == 0) {
+					setStage(5); // Skip to discardSection
+				}
+				else {
+					setStage(4); // Go to matchSection
+				}
 			}
+			
 			//LEVEL 4: DEALS WITH MATCHING RAISES (IF THERE IS ANY)
 			else if (playerMap.get(username) == 4) {
 				// TODO
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				String errorMsg = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
-				String tweet = introStr + "\n" + gm.humanMatchInput(content);
+				String tweet = introStr + "\n" + gm.matchSection(content);
+				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					tbot.tweet(tweet);
 					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
 					tbot.tweet(tweet);
-					levelUp();
+					setStage(5);
 					System.out.println("Leveled up to " + playerMap.get(username));
 					System.out.println(playerMap);
 				}
@@ -132,21 +140,65 @@ public class SL implements StatusListener {
 				// TODO 
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				String errorMsg = "@" + username + " \nWrong input.";
-				String tweet = gm.humanDiscard(content);
-				//update intro message to new discarded hand
+				String tweet = gm.discardSection(content);
+				
+				// Update intro message to new discarded hand
 				introStr = "@" + username + " " + gm.returnHumanHand();
-				//add intro message on after discard method so that hand is updated
+				
+				// Add intro message on after discard method so that hand is updated
 				tweet = introStr + "\n" + tweet;
-				//String tweet = introStr + "\n" + content;
+				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					tbot.tweet(tweet);
-					levelUp();
+					setStage(6);
 				}
 				else {
+					// Tweets error message and stays on same level
 					tbot.tweet(introStr + "\n" + tweet);
 				}
 			}
-			//LEVEL: 
+			
+			//LEVEL 6: SECOND BETTING STAGE 
+			else if (playerMap.get(username) == 5) {
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
+				// TODO initialBetSection ( what do you want to bet/raise? )
+				String tweet = introStr + "\n" + gm.raiseSection(content);
+				System.out.println(tweet);
+				tbot.tweet(tweet);
+				// If = 0, no need to match any raise -> increase two stages;
+				if (gm.getLastToRaise() == 0) {
+					setStage(8); // Skip to decideWinner
+				}
+				else {
+					setStage(7); // Go to matchSection
+				}
+			}
+			
+			//LEVEL 7: SECOND MATCH STAGE
+			else if (playerMap.get(username) == 7) {
+				// TODO
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
+				String errorMsg = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
+				String tweet = introStr + "\n" + gm.matchSection(content);
+				
+				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
+					tbot.tweet(tweet);
+					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
+					tbot.tweet(tweet);
+					setStage(5);
+					System.out.println("Leveled up to " + playerMap.get(username));
+					System.out.println(playerMap);
+				}
+				else {
+					tbot.tweet(introStr + "\n" + errorMsg);
+				}
+			}
+			//LEVEL 8:
+			else if (playerMap.get(username) == 8) {
+				// TODO
+				System.out.println("level of : " + username + ", " + playerMap.get(username));
+				
+			}
 		}
 
 		//		String output = ("@"+username + " Welcome to FM Poker");

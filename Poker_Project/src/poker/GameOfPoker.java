@@ -54,14 +54,14 @@ public class GameOfPoker {
 			}
 		}
 	}
-	
+
 	public String returnHumanHand() {
 		return hand.printHumanHand();
 	}
 
-	
+
 	/* GAME STATE SECTIONS*/
-	
+
 	//LEVEL 0
 	public String welcomeSection(String username){
 		String firstTweet;
@@ -80,9 +80,9 @@ public class GameOfPoker {
 
 		// Print Hand
 		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
-		
+
 		System.out.println("\nFINISH INTRO SECTION");
-		
+
 		// Print fold question
 		System.out.println("Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
 		if(hand.currentCall >= gamePlayers.get(0).chips){
@@ -95,63 +95,68 @@ public class GameOfPoker {
 		}
 		return tweets;
 	}
-	
+
 	//LEVEL 2
 	public String humanInputForFold(String content){
-		
+
 		/* This method takes in the input to the would you like to fold question
 		 * and checks the input. It then finishes with the appropriate string generated in the 
 		 * player.fold method, whether it be wrong input, player has folded or to progress
 		 * how much would you like to raise*/
-		
+
 		String tweet = " " + hand.toString() + "\n";
 		tweet = hand.checkIfHumanFold(content);
 		System.out.println(tweet);
 		return tweet;
 	}
-	
-	
+
+
 	//LEVEL3
-	
-	public String humanRaisedInput(String content){
+
+	public String raiseSection(String content){
 		String tweets= "";
-		
+
 		try {
 			int humanRaise = Integer.parseInt(content);
 			tweets = hand.humanRaiseAndAutomatedCall(humanRaise);
 			//System.out.println("TRY TWEET: "+tweets);
-			
+
 		} catch (NumberFormatException e) {
 			tweets = "Wrong input, please enter a number";
 			e.printStackTrace();
 		}
-		
+
 		return tweets;
 	}
-	
-	//LEVEL 4 
-	
-	public String humanMatchInput(String content) {
-		String tweet = "";
 
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
+	//LEVEL 4 
+
+	public String matchSection(String content) {
+		String tweet = "";
 		
+		tweet += hand.playersMatch(content);
+
 		System.out.println(tweet);
-		
+
+		return tweet;
+	}
+
+	//LEVEL 5 
+
+	public String discardSection(String content) {
+		String tweet = "";
+		System.out.println(hand.showHands());
+		tweet += hand.discardCards(content);	// Discards human and automated player cards
+		System.out.println("\n" + hand.showHands());
+		System.out.println(tweet);
+
 		return tweet;
 	}
 	
-	//LEVEL 5 
 	
-		public String humanDiscard(String content) {
-			String tweet = "";
-			tweet += hand.discardHumanCards(content);
-			//tweet += hand.automatedMatch();
-			System.out.println(tweet);
-			
-			return tweet;
-		}
+	public int getLastToRaise() {
+		return hand.lastToRaise;
+	}
 
 	//	public void gamePlay(){
 	//		
