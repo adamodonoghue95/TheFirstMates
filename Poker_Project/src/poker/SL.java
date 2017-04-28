@@ -102,8 +102,9 @@ public class SL implements StatusListener {
 			else if (playerMap.get(username) == 3) {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
-				System.out.println(gm.humanRaisedInput(content));
-				tbot.tweet(gm.humanRaisedInput(content));
+				String tweet = gm.humanRaisedInput(content);
+				System.out.println(tweet);
+				tbot.tweet(tweet);
 				
 			}
 			else if (playerMap.get(username) == 4) {

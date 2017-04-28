@@ -60,7 +60,7 @@ public class HandOfPoker {
 	}
 
 	public String humanRaiseAndAutomatedCall(int raise){
-		String output = "OUTPUT";
+		String output = "\nhumanRaiseAndAutomatedCall OUTPUT";
 		PokerPlayer human = pokerPlayers.get(0);
 
 		int chipsRaised = raise;
@@ -69,8 +69,6 @@ public class HandOfPoker {
 		pot += human.lastBet;
 
 		System.out.println("POT: "+pot);
-		//System.out.println("OUTPUT: "+output);
-
 		output = firstAutomatedCallorRaise();
 		System.out.println("OUTPUT: "+output);
 
@@ -85,22 +83,15 @@ public class HandOfPoker {
 	}
 
 	public String firstAutomatedCallorRaise(){
-		String output = "OUTPUT";
-		System.out.println("AUTOMATED RAISE OUTPUT: "+output);
-
-		//CODE REACHING HERE SO FAR
-
-
+		lastToRaise = 0;
+		String output = "";
 		for(int i=1;i<pokerPlayers.size();i++){
 			AutomatedPokerPlayer player = (AutomatedPokerPlayer) pokerPlayers.get(i);
 			if(player.inHand){
-				//System.out.println(player.name+ "IN HAND OUTPUT: "+output);
+
 				if(!player.fold(currentCall)){
-					//System.out.println(player.name+ " DIDN'T FOLD: "+output);
+
 					chipsRaised = player.getChipsToRaise();
-					//System.out.println(player.name+" CHIPS RAISED: " + chipsRaised);
-
-
 					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
 					currentCall = player.lastBet; //Update current call to equal last players bet
 					pot += player.lastBet; //Update pot
@@ -108,7 +99,6 @@ public class HandOfPoker {
 
 					if (chipsRaised > 0) { // Check for last raise
 						if(chipsRaised == player.getChips() +chipsRaised){
-							lastToRaise = i;
 							System.out.println(player.name + " goes all in! " + chipsRaised + " chip(s)");
 							output += player.name + " goes all in! " + chipsRaised + " chip(s)\n";
 						}
@@ -130,17 +120,20 @@ public class HandOfPoker {
 					}
 				}
 				else{
-					System.out.println(player.name + " has folded\n");
+					System.out.println(player.name + " has folded");
 					output+= player.name + " has folded\n";
 					pokerPlayers.get(i).inHand = false;
 				}
 			}
+			System.out.println("POT = "+pot);
+			System.out.println("LAST TO RAISE = "+ lastToRaise);
 		}
+
 
 		return output;
 
 	}
-	
+
 	public String humanSecondCallAndAutomatedCall(String content){
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
@@ -153,7 +146,7 @@ public class HandOfPoker {
 				System.out.println("POT = " + pot);
 			}
 		}
-		
+
 		return output;
 	}
 
@@ -178,7 +171,7 @@ public class HandOfPoker {
 				}
 			}
 		}
-		
+
 		return output;
 	}
 

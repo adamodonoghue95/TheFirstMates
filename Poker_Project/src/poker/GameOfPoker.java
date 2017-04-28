@@ -117,7 +117,7 @@ public class GameOfPoker {
 		try {
 			int humanRaise = Integer.parseInt(content);
 			tweets = hand.humanRaiseAndAutomatedCall(humanRaise);
-			System.out.println("TRY TWEET: "+tweets);
+			//System.out.println("TRY TWEET: "+tweets);
 			
 		} catch (NumberFormatException e) {
 			tweets = "Wrong input, please enter a number";
