@@ -53,7 +53,7 @@ public class HandOfPoker {
 			} else{
 				output = "@"+human.name+" has folded";
 				output += firstAutomatedCallorRaise();
-				//output += secondAutomatedCall();
+				output += secondAutomatedCall();
 			}
 		}
 		return output;
@@ -75,7 +75,7 @@ public class HandOfPoker {
 		if(lastToRaise == 0){
 			return output;
 		}else{
-			output += "Would you like to fold?(Call="+(currentCall- human.lastBet)+")";
+			output += "Would you like to call?(Cost to call is"+(currentCall- human.lastBet)+")";
 		}
 		return output;
 	}
@@ -126,25 +126,21 @@ public class HandOfPoker {
 			System.out.println("POT = "+pot);
 			System.out.println("LAST TO RAISE = "+ lastToRaise);
 		}
+
+
 		return output;
 
 	}
 
-	// HUMAN:
-	public String humanMatch(String content){
+	public String humanSecondCallAndAutomatedCall(String content){
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
-		
 		if(human.inHand){
 			int costToCall = currentCall - human.lastBet;
-			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
-				//System.out.println("Wrong input. Please tweet 'yes' or 'no'");
-				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
-			}
-			else if (!human.fold(costToCall, content)){
+			if(!human.fold(costToCall, content)){
 				pot += costToCall; // Updates pot
-				System.out.println(human.name + " matches with " + costToCall + " chip(s)\n");
-				output+= human.name + " matches with " + costToCall + " chip(s)\n";
+				System.out.println("> " + human.name + " matches with " + costToCall + " chip(s)");
+				output+="> " + human.name + " matches with " + costToCall + " chip(s)";
 				System.out.println("POT = " + pot);
 			}
 		}
@@ -152,8 +148,7 @@ public class HandOfPoker {
 		return output;
 	}
 
-	// AUTOMATED:
-	public String automatedMatch(){
+	public String secondAutomatedCall(){
 		String output = "";
 		for (int j = 1; j < lastToRaise; j++) {
 			AutomatedPokerPlayer player = (AutomatedPokerPlayer) pokerPlayers.get(j);

@@ -75,7 +75,7 @@ public class HandOfPoker {
 		if(lastToRaise == 0){
 			return output;
 		}else{
-			output += "Would you like to fold?(Call="+(currentCall- human.lastBet)+")";
+			output += "Would you like to call?(Cost="+(currentCall- human.lastBet)+")";
 		}
 		return output;
 	}
@@ -143,8 +143,8 @@ public class HandOfPoker {
 			}
 			else if (!human.fold(costToCall, content)){
 				pot += costToCall; // Updates pot
-				System.out.println(human.name + " matches with " + costToCall + " chip(s)\n");
-				output+= human.name + " matches with " + costToCall + " chip(s)\n";
+				System.out.println("> " + human.name + " matches with " + costToCall + " chip(s)");
+				output+="> " + human.name + " matches with " + costToCall + " chip(s)";
 				System.out.println("POT = " + pot);
 			}
 		}

@@ -75,7 +75,7 @@ public class HandOfPoker {
 		if(lastToRaise == 0){
 			return output;
 		}else{
-			output += "Would you like to fold?(Call="+(currentCall- human.lastBet)+")";
+			output += "Would you like to call?(Cost="+(currentCall- human.lastBet)+")";
 		}
 		return output;
 	}
@@ -134,6 +134,16 @@ public class HandOfPoker {
 	public String humanMatch(String content){
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
+		if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
+			//System.out.println("Wrong input. Please tweet 'yes' or 'no'");
+			output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
+		} else if(!human.fold(currentCall, content)){
+			output = "How much would you like to raise by? (< " + human.chips + ")";
+		} else{
+			output = "@"+human.name+" has folded";
+			output += firstAutomatedCallorRaise();
+			//output += secondAutomatedCall();
+		}
 		
 		if(human.inHand){
 			int costToCall = currentCall - human.lastBet;
@@ -143,8 +153,8 @@ public class HandOfPoker {
 			}
 			else if (!human.fold(costToCall, content)){
 				pot += costToCall; // Updates pot
-				System.out.println(human.name + " matches with " + costToCall + " chip(s)\n");
-				output+= human.name + " matches with " + costToCall + " chip(s)\n";
+				System.out.println("> " + human.name + " matches with " + costToCall + " chip(s)");
+				output+="> " + human.name + " matches with " + costToCall + " chip(s)";
 				System.out.println("POT = " + pot);
 			}
 		}

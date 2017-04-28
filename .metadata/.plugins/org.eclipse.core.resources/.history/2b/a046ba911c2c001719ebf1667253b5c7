@@ -128,18 +128,6 @@ public class GameOfPoker {
 		
 		return tweets;
 	}
-	
-	//LEVEL 4 
-	
-	public String humanMatchInput(String content) {
-		String tweet = "";
-
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
-		System.out.println(tweet);
-		
-		return tweet;
-	}
 
 	//	public void gamePlay(){
 	//		

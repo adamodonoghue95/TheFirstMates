@@ -106,7 +106,7 @@ public class SL implements StatusListener {
 				System.out.println(tweet);
 				tbot.tweet(tweet);
 				levelUp();
-				
+		
 			}
 			//LEVEL 4: DEALS WITH MATCHING RAISES (IF THERE IS ANY)
 			else if (playerMap.get(username) == 4) {
@@ -121,7 +121,6 @@ public class SL implements StatusListener {
 					tbot.tweet(introStr + "\n" + errorMsg);
 				}
 			}
-			//LEVEL: 
 		}
 
 		//		String output = ("@"+username + " Welcome to FM Poker");

@@ -133,10 +133,15 @@ public class GameOfPoker {
 	
 	public String humanMatchInput(String content) {
 		String tweet = "";
-
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
-		System.out.println(tweet);
+		
+		try {
+			int humanMatch = Integer.parseInt(content);
+			tweet = hand.humanRaiseAndAutomatedCall(humanMatch);
+			
+		} catch (NumberFormatException e) {
+			tweet = "Wrong input, please enter a number";
+			e.printStackTrace();
+		}
 		
 		return tweet;
 	}

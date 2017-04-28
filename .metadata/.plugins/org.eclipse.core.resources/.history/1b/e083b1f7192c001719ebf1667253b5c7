@@ -65,7 +65,7 @@ public class GameOfPoker {
 	//LEVEL 0
 	public String welcomeSection(String username){
 		String firstTweet;
-		firstTweet = "@" + username + " " + returnHumanHand() + "\nWelcome to TheFirstMates Poker Game!\n";
+		firstTweet = "@"+username + " " + returnHumanHand() + "\nWelcome to TheFirstMates Poker Game!\n";
 		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!" ;
 		return firstTweet;
 	}
@@ -127,18 +127,6 @@ public class GameOfPoker {
 		}
 		
 		return tweets;
-	}
-	
-	//LEVEL 4 
-	
-	public String humanMatchInput(String content) {
-		String tweet = "";
-
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
-		System.out.println(tweet);
-		
-		return tweet;
 	}
 
 	//	public void gamePlay(){

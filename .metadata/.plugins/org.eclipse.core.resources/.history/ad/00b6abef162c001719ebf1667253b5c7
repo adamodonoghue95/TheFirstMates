@@ -54,10 +54,7 @@ public class GameOfPoker {
 			}
 		}
 	}
-	
-	public String returnHumanHand() {
-		return hand.printHumanHand();
-	}
+
 
 	
 	/* GAME STATE SECTIONS*/
@@ -65,8 +62,8 @@ public class GameOfPoker {
 	//LEVEL 0
 	public String welcomeSection(String username){
 		String firstTweet;
-		firstTweet = "@" + username + " " + returnHumanHand() + "\nWelcome to TheFirstMates Poker Game!\n";
-		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!" ;
+		firstTweet = "@"+username+"\nWelcome to TheFirstMates Poker Game!\n";
+		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!";
 		return firstTweet;
 	}
 
@@ -80,7 +77,7 @@ public class GameOfPoker {
 
 		// Print Hand
 		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
-		
+
 		System.out.println("\nFINISH INTRO SECTION");
 		
 		// Print fold question
@@ -127,18 +124,6 @@ public class GameOfPoker {
 		}
 		
 		return tweets;
-	}
-	
-	//LEVEL 4 
-	
-	public String humanMatchInput(String content) {
-		String tweet = "";
-
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
-		System.out.println(tweet);
-		
-		return tweet;
 	}
 
 	//	public void gamePlay(){

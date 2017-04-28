@@ -54,10 +54,7 @@ public class GameOfPoker {
 			}
 		}
 	}
-	
-	public String returnHumanHand() {
-		return hand.printHumanHand();
-	}
+
 
 	
 	/* GAME STATE SECTIONS*/
@@ -65,33 +62,34 @@ public class GameOfPoker {
 	//LEVEL 0
 	public String welcomeSection(String username){
 		String firstTweet;
-		firstTweet = "@" + username + " " + returnHumanHand() + "\nWelcome to TheFirstMates Poker Game!\n";
-		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!" ;
+		firstTweet = "@"+username+"\nWelcome to TheFirstMates Poker Game!\n";
+		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!";
 		return firstTweet;
 	}
 
 	//LEVEL 1
 	public String [] introSection(){
 		hand = new HandOfPoker(gamePlayers, this.deck);
-		String [] tweets = new String[2];
+		String [] tweets = new String[3];
 		// Print chips
 		tweets[0] = hand.printChips(gamePlayers.get(0).name);
 		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printChips(username));
 
 		// Print Hand
+		tweets[1] = hand.printHumanHand();
 		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
-		
+
 		System.out.println("\nFINISH INTRO SECTION");
 		
 		// Print fold question
 		System.out.println("Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
 		if(hand.currentCall >= gamePlayers.get(0).chips){
 			System.out.println("\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)");
-			tweets[1] = "\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)";
+			tweets[2] = "\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)";
 		}
 		else{
 			System.out.println("\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)");
-			tweets[1] = "\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)";
+			tweets[2] = "\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)";
 		}
 		return tweets;
 	}
@@ -104,7 +102,7 @@ public class GameOfPoker {
 		 * player.fold method, whether it be wrong input, player has folded or to progress
 		 * how much would you like to raise*/
 		
-		String tweet = " " + hand.toString() + "\n";
+		String tweet = "";
 		tweet = hand.checkIfHumanFold(content);
 		System.out.println(tweet);
 		return tweet;
@@ -127,18 +125,6 @@ public class GameOfPoker {
 		}
 		
 		return tweets;
-	}
-	
-	//LEVEL 4 
-	
-	public String humanMatchInput(String content) {
-		String tweet = "";
-
-		tweet += hand.humanMatch(content);
-		tweet += hand.automatedMatch();
-		System.out.println(tweet);
-		
-		return tweet;
 	}
 
 	//	public void gamePlay(){
