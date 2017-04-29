@@ -97,7 +97,7 @@ public class GameOfPoker {
 		 * how much would you like to raise*/
 
 		String tweet = " " + hand.toString() + "\n";
-		tweet = hand.humanFold(content);
+		tweet = hand.humanFoldOrBet(content);
 		System.out.println(tweet);
 		return tweet;
 	}

@@ -40,7 +40,7 @@ public class HandOfPoker {
 	}
 
 
-	public String humanFold(String content){
+	public String humanFoldOrBet(String content){
 		currentCall = 0;
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);

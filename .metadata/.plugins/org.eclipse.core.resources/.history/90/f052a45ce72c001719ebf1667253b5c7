@@ -40,25 +40,27 @@ public class HandOfPoker {
 	}
 
 
-	public String humanFold(String content){
+	public String checkIfHumanFold(String content){
 		currentCall = 0;
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
 		if (human.inHand){
 			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
+				//System.out.println("Wrong input. Please tweet 'yes' or 'no'");
 				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
 			} else if(!human.fold(currentCall, content)){
 				output = "How much would you like to raise by? (< " + human.chips + ")";
 			} else{
 				output = "@"+human.name+" has folded";
+				output += firstAutomatedCallorRaise();
 				//output += secondAutomatedCall();
 			}
 		}
 		return output;
 	}
-	
-	public String playersBet(int raise, String content){
-		String output = "";
+
+	public String humanRaiseAndAutomatedCall(int raise){
+		String output = "\nhumanRaiseAndAutomatedCall OUTPUT";
 		PokerPlayer human = pokerPlayers.get(0);
 
 		int chipsRaised = raise;
@@ -66,7 +68,9 @@ public class HandOfPoker {
 		currentCall = human.lastBet;			   //Update currentCall to equal the last players bet
 		pot += human.lastBet;
 
-		output += automatedBet();		// Checks if automated players want to fold, if not call or raise
+		System.out.println("POT: "+pot);
+		output = firstAutomatedCallorRaise();
+		System.out.println("OUTPUT: "+output);
 
 		if(lastToRaise == 0){
 			return output;
@@ -76,7 +80,7 @@ public class HandOfPoker {
 		return output;
 	}
 
-	public String automatedBet(){
+	public String firstAutomatedCallorRaise(){
 		lastToRaise = 0;
 		String output = "";
 		for(int i=1;i<pokerPlayers.size();i++){
@@ -89,27 +93,33 @@ public class HandOfPoker {
 					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
 					currentCall = player.lastBet; //Update current call to equal last players bet
 					pot += player.lastBet; //Update pot
-					
+
+
 					if (chipsRaised > 0) { // Check for last raise
-						if(chipsRaised == player.getChips() + chipsRaised){
+						if(chipsRaised == player.getChips() +chipsRaised){
+							System.out.println(player.name + " goes all in! " + chipsRaised + " chip(s)");
 							output += player.name + " goes all in! " + chipsRaised + " chip(s)\n";
 						}
-						else {
+						else{
+							System.out.println(player.name + " raises by " + chipsRaised + " chip(s)");
 							output += player.name + " raises by " + chipsRaised + " chip(s)\n";
 						}
 						lastToRaise = i;
 					}
 					else {
-						if (currentCall == currentCall + player.getChips()){
+						if(currentCall == currentCall + player.getChips()){
+							System.out.println(player.name + " goes all in! " + currentCall + " chip(s)");
 							output += player.name + " goes all in! " + currentCall + " chip(s)\n";
 						}
 						else{
+							System.out.println(player.name + " called with " + currentCall + " chip(s)");
 							output += player.name + " called with " + currentCall + " chip(s)\n";
 						}
 					}
 				}
 				else{
-					output += player.name + " has folded\n";
+					System.out.println(player.name + " has folded");
+					output+= player.name + " has folded\n";
 					pokerPlayers.get(i).inHand = false;
 				}
 			}

@@ -77,6 +77,9 @@ public class GameOfPoker {
 		// Print chips
 		tweets[0] = hand.printChips(gamePlayers.get(0).name);
 
+		// Print Hand
+		System.out.println("@"+ gamePlayers.get(0).name + "\n" + hand.printHumanHand());
+
 		// Print fold question
 		System.out.println("Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
 		if(hand.currentCall >= gamePlayers.get(0).chips){
@@ -97,7 +100,7 @@ public class GameOfPoker {
 		 * how much would you like to raise*/
 
 		String tweet = " " + hand.toString() + "\n";
-		tweet = hand.humanFold(content);
+		tweet = hand.humanFoldOrBet(content);
 		System.out.println(tweet);
 		return tweet;
 	}

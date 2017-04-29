@@ -7540,3 +7540,94 @@ java.lang.IllegalArgumentException: Cannot set lower sequence number for root (p
 	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
 	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 02:12:02.176
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:12:01.852
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:23:02.612
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:28:06.161
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:36:03.181
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:42:02.743
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.jobs 4 2 2017-04-29 15:47:48.112
+!MESSAGE An internal error occurred during: "Periodic workspace save.".
+!STACK 0
+java.lang.IllegalArgumentException: Cannot set lower sequence number for root (previous: 6, new: 4). Location: /Users/adamodonoghue/Documents/College/Stage 3/Semester 2/Comp30050/TheFirstMates/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+	at org.eclipse.core.runtime.Assert.isLegal(Assert.java:63)
+	at org.eclipse.core.internal.resources.SaveManager.validateMasterTableBeforeSave(SaveManager.java:1622)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1283)
+	at org.eclipse.core.internal.resources.SaveManager.saveMasterTable(SaveManager.java:1275)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1252)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1163)
+	at org.eclipse.core.internal.resources.DelayedSnapshotJob.run(DelayedSnapshotJob.java:52)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)

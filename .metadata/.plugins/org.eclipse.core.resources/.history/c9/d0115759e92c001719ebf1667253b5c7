@@ -103,7 +103,7 @@ public class SL implements StatusListener {
 			else if (playerMap.get(username) == 3) {
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
-				String tweet = introStr + "\n" + gm.betSection(content);
+				String tweet = introStr + "\n" + gm.raiseSection(content);
 				System.out.println(tweet);
 				tbot.tweet(tweet);
 				// If = 0, no need to match any raise -> increase two stages;
@@ -153,10 +153,7 @@ public class SL implements StatusListener {
 					tweet += "\n How much would you like raise?" ;
 					System.out.println("SECOND BETTING STAGE");
 					tbot.tweet(tweet);
-					System.out.println("before: " + playerMap.get(username));
 					setStage(6);
-					System.out.println("after: " + playerMap.get(username));
-
 				}
 				else {
 					// Tweets error message and stays on same level
@@ -165,11 +162,11 @@ public class SL implements StatusListener {
 			}
 			
 			//LEVEL 6: SECOND BETTING STAGE 
-			else if (playerMap.get(username) == 6) {
+			else if (playerMap.get(username) == 5) {
 				System.out.println("******************************************");
 				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				// TODO initialBetSection ( what do you want to bet/raise? )
-				String tweet = introStr + "\n" + gm.betSection(content);
+				String tweet = introStr + "\n" + gm.raiseSection(content);
 				System.out.println(tweet);
 				tbot.tweet(tweet);
 				// If = 0, no need to match any raise -> increase two stages;

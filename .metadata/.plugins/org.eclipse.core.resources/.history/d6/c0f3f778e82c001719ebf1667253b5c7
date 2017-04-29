@@ -40,7 +40,7 @@ public class HandOfPoker {
 	}
 
 
-	public String humanFold(String content){
+	public String checkIfHumanFold(String content){
 		currentCall = 0;
 		String output = "";
 		PokerPlayer human = pokerPlayers.get(0);
@@ -51,32 +51,14 @@ public class HandOfPoker {
 				output = "How much would you like to raise by? (< " + human.chips + ")";
 			} else{
 				output = "@"+human.name+" has folded";
+				output += automatedRaise();
 				//output += secondAutomatedCall();
 			}
 		}
 		return output;
 	}
-	
-	public String playersBet(int raise, String content){
-		String output = "";
-		PokerPlayer human = pokerPlayers.get(0);
 
-		int chipsRaised = raise;
-		human.lastBet = currentCall + chipsRaised; //Updates players last bet to be the call plus what they raise
-		currentCall = human.lastBet;			   //Update currentCall to equal the last players bet
-		pot += human.lastBet;
-
-		output += automatedBet();		// Checks if automated players want to fold, if not call or raise
-
-		if(lastToRaise == 0){
-			return output;
-		}else{
-			output += "Would you like to fold?(Call="+(currentCall- human.lastBet)+")";
-		}
-		return output;
-	}
-
-	public String automatedBet(){
+	public String automatedRaise(){
 		lastToRaise = 0;
 		String output = "";
 		for(int i=1;i<pokerPlayers.size();i++){
