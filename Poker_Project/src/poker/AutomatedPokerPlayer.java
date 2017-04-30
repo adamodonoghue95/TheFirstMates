@@ -48,7 +48,7 @@ public class AutomatedPokerPlayer extends PokerPlayer{
 		if (inHand) {				
 			if (!fold(costToCall)) { // Gives option to fold
 				System.out.println("> " + name + " matches with " + costToCall + " chip(s)");
-				output+="" + name + " matches with " + costToCall + " chip(s)\n";
+				output+="" + name + " matches with " + costToCall + " chip(s)";
 			}
 			else{
 				System.out.println("> " + name + " has folded");

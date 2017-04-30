@@ -1,0 +1,316 @@
+package poker;
+
+import java.util.ArrayList;
+
+public class HandOfPoker {
+
+	protected int currentCall = 0;
+	int chipsRaised = 0;
+	int lastToRaise = 0;
+	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
+	private DeckOfCards handDeck;
+	protected int pot = 0; // Amount of chips stored in the pot
+
+	public HandOfPoker(ArrayList<PokerPlayer> players, DeckOfCards deck) {
+		pokerPlayers = players;
+		handDeck = deck;
+		//attempt to deal
+		//		for(PokerPlayer p : pokerPlayers){
+		//			p.playerHand = new HandOfCards(deck);
+		//		}
+		System.out.println("New Deal:\n");
+	}
+
+	public int noOfPlayers() {
+		int noOfPlayers = 0;
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			if (pokerPlayers.get(i).inHand) {
+				noOfPlayers++;
+			}
+		}
+		return noOfPlayers;
+	}
+
+	public String printChips(String username) {
+		String chips="";
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			chips+="\n" + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)";
+		}
+		return chips;
+	}
+
+
+	public String humanFold(String content){
+		currentCall = 0;
+		String output = "";
+		PokerPlayer human = pokerPlayers.get(0);
+		if (human.inHand){
+			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
+				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
+			} else if(!human.fold(currentCall, content)){
+				output = "How much would you like to raise by? (< " + human.chips + ")";
+			} else{
+				output = "@"+ human.name + " has folded";
+				//output += secondAutomatedCall();
+			}
+		}
+		return output;
+	}
+	
+	public String playersBet(int raise, String content){
+		String output = "";
+		PokerPlayer human = pokerPlayers.get(0);
+
+		// Deals with Human betting
+		int chipsRaised = raise;
+		human.lastBet = currentCall + chipsRaised; //Updates players last bet to be the call plus what they raise
+		currentCall = human.lastBet;			   //Update currentCall to equal the last players bet
+		pot += human.lastBet;
+
+		// Deals with Automated betting
+		output += automatedBet();		// Checks if automated players want to fold, if not call or raise
+
+		// If lastToRaise = 0, skips match section 
+		if(lastToRaise == 0){
+			return output;
+		}else{
+			output += "Would you like to fold?(Call="+(currentCall- human.lastBet)+")";
+		}
+		return output;
+	}
+	
+	public String automatedBet(){
+		lastToRaise = 0;
+		String output = "";
+		for(int i = 1; i < pokerPlayers.size(); i++){
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer) pokerPlayers.get(i);
+			if(automatedPlayer.inHand){
+
+				if(!automatedPlayer.fold(currentCall)){
+
+					chipsRaised = automatedPlayer.getChipsToRaise();
+					automatedPlayer.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
+					currentCall = automatedPlayer.lastBet; //Update current call to equal last players bet
+					pot += automatedPlayer.lastBet; //Update pot
+					
+					if (chipsRaised > 0) { // Check for last raise
+						if(chipsRaised == automatedPlayer.getChips() + chipsRaised){
+							output += automatedPlayer.name + " goes all in! " + chipsRaised + " chip(s)\n";
+						}
+						else {
+							output += automatedPlayer.name + " raises by " + chipsRaised + " chip(s)\n";
+						}
+						lastToRaise = i;
+					}
+					else {
+						if (currentCall == currentCall + automatedPlayer.getChips()){
+							output += automatedPlayer.name + " goes all in! " + currentCall + " chip(s)\n";
+						}
+						else{
+							output += automatedPlayer.name + " called with " + currentCall + " chip(s)\n";
+						}
+					}
+				}
+				else{
+					output += automatedPlayer.name + " has folded\n";
+					pokerPlayers.get(i).inHand = false;
+				}
+			}
+			System.out.println("POT = "+pot);
+			System.out.println("LAST TO RAISE = "+ lastToRaise);
+		}
+		return output;
+
+	}
+	
+	public String playersMatch(String content) {
+		String tweet = "";
+		
+		// Human player match
+		PokerPlayer human = pokerPlayers.get(0);
+		tweet += human.match(content, currentCall) + "\n"; 
+		pot += (currentCall - human.lastBet); // Updates pot
+
+		// Automated players match
+		for (int i = 1; i < lastToRaise; i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			tweet += automatedPlayer.match(lastToRaise, currentCall) + "\n";
+			pot += (currentCall - automatedPlayer.lastBet); // Updates pot
+		}
+		
+		return tweet;
+	}
+	
+	
+	public String discardCards(String content) {
+		String tweet = "";
+		
+		// Human player discard
+		PokerPlayer human = pokerPlayers.get(0);
+		tweet = human.discard(content);
+		
+		// Automated player discard
+		for (int i = 1; i < pokerPlayers.size(); i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			automatedPlayer.discard();
+		}
+		
+		return tweet;
+	}
+
+
+	public String roundOfBetting(String content) {
+		int lastToRaise = 0; // index of player that raised last
+		String output = "";
+		System.out.println("CONTENT: "+content);
+
+		//	String[] tweets = new String[2];
+
+		//
+		//		//reset players last bets
+		//		for(PokerPlayer player : pokerPlayers){
+		//			player.resetBet();
+		//		}
+		//
+		//		for (int i = 0; i < pokerPlayers.size(); i++) {
+		//			PokerPlayer player = pokerPlayers.get(i);
+		//			if (player.inHand) {
+		//
+		//				if (!player.fold(currentCall, content)) { // Gives option to fold
+		//
+		//					int chipsRaised = player.getChipsToRaise(output);
+		//					player.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
+		//					currentCall = player.lastBet; //Update current call to equal last players bet
+		//					pot += player.lastBet; //Update pot
+		//					if (chipsRaised > 0) { // Check for last raise
+		//						if(chipsRaised == player.getChips() +chipsRaised){
+		//							lastToRaise = i;
+		//							output += "> " + player.name + " goes all in! " + chipsRaised + " chip(s)";
+		//						}
+		//						else{
+		//							output += "> " + player.name + " raises by " + chipsRaised + " chip(s)";
+		//						}
+		//						lastToRaise = i;
+		//					}
+		//					else {
+		//						if(currentCall == currentCall + player.getChips()){
+		//							output += "> " + player.name + " goes all in! " + currentCall + " chip(s)";
+		//						}
+		//						else{
+		//							output += "> " + player.name + " called with " + currentCall + " chip(s)";
+		//						}
+		//					}
+		//					//System.out.println("POT = " + pot);
+		//				}
+		//				else if(content.contains("Wrong input. Please tweet 'yes' or 'no'")){
+		//					output+=content;
+		//				}
+		//				else {
+		//					pokerPlayers.get(i).inHand = false;
+		//					output += "> " + player.name + " folds";				
+		//				}
+		//			}
+		//		}
+		//		System.out.println("FIRST OUTPUT: "+ output);
+		//		//tweets[0] = output;
+		//		output = "";
+		//
+		//		if(content.contains("Wrong input. Please tweet 'yes' or 'no'")){
+		//
+		//			for (int j = 0; j < lastToRaise; j++) {
+		//				PokerPlayer player = pokerPlayers.get(j);
+		//				int costToCall = currentCall - player.lastBet; // Calculates cost of player taking original bet into account
+		//
+		//				if (player.inHand) {				
+		//					if (!player.fold(costToCall, content)) { // Gives option to fold
+		//						//player.bet(costToCall); // Updates players chips
+		//						pot += costToCall; // Updates pot
+		//						System.out.println("> " + player.name + " matches with " + costToCall + " chip(s)");
+		//						output+="> " + player.name + " matches with " + costToCall + " chip(s)";
+		//						System.out.println("POT = " + pot);
+		//					}
+		//					else{
+		//						System.out.println("> " + player.name + " has folded");
+		//						output+="> " + player.name + " has folded";
+		//						pokerPlayers.get(j).inHand = false;
+		//					}
+		//				}
+		//			}
+		//		}
+		//		output+="POT = " + pot;
+		//		System.out.println("SECOND OUTPUT: "+output);
+		//		//tweets[1] = output;
+		//
+		//		
+		//		System.out.println("Tweet Length = ");
+		return output;
+	}
+
+	public void returnHands() {
+		// Loop to return all cards from each player
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			if(player.inHand){
+				player.returnCards(handDeck);
+			}
+		}
+	}
+
+	public void discardCards() {
+
+		// Loop to get the discard from each player
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			if(player.inHand){
+				//player.discard();
+			}
+		}
+	}
+
+	public String printHumanHand() {
+		String handStr = "";
+
+		for(PokerPlayer player : pokerPlayers){
+			//if human player is still in hand code will execute
+			if(player.getClass().getName().equals("poker.PokerPlayer") && player.inHand){
+				HandOfCards hand = player.playerHand;
+				System.out.println("\nYour Current Hand: -> " + hand.getHandType());
+				handStr = hand.toString();
+			}
+		}
+		return handStr;
+	}
+	
+	public String showHands() {
+		String handStr = "";
+
+		for(PokerPlayer player : pokerPlayers){
+			//if human player is still in hand code will execute
+			if (player.inHand) {
+				HandOfCards hand = player.playerHand;
+				handStr += hand.toString() + "\n";
+			}
+			
+		}
+		return handStr;
+	}
+	
+
+	public String decideWinner() {
+		int winningHandScore = 0;
+		int winningPlayer = 0;
+
+		for(int z = 0; z < pokerPlayers.size();z++){
+			PokerPlayer player = pokerPlayers.get(z);
+			if(player.playerHand.getGameValue() > winningHandScore && player.inHand){
+				winningHandScore = player.playerHand.getGameValue();
+				winningPlayer = z;
+			}
+		}
+
+		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
+		pokerPlayers.get(winningPlayer).chipsWon(pot);
+
+		return pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips";
+	}
+}

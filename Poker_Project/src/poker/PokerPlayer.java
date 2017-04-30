@@ -50,38 +50,36 @@ public class PokerPlayer {
 		playerHand = new HandOfCards(deck);
 	}
 
-	public int getChipsToRaise(String output) {
+	public String getChipsToRaise(String content) {
+		String output = "";
 		int chipsBet = 0;
-		if(chips<1){
-			//System.out.println("You do not have any chips to raise with");
-			output += "You do not have any chips to raise with";
+		Random rand = new Random();
+		String errorMsg = "Bet error " + rand.nextInt(100) + ": ";
+
+		if(chips == 0){
+			output = "You do not have any chips to raise with";
 		}
 		else{
-			//System.out.println("How much would you like to raise by? (< " + chips + ")");
-			output += "How much would you like to raise by? (< " + chips + ")";
 			try {
-				chipsBet = Integer.parseInt(prompt());
+				chipsBet = Integer.parseInt(content);
 
 				if (chipsBet > chips) { // Cannot bet more than chips held by player
-					//System.out.println("You only have " + chips + " chip(s)");
-					output += "You only have " + chips + " chip(s)";
+					output += errorMsg + "You only have " + chips + " chip(s)";
 				}
 				else if (chipsBet < 0) {
-					//System.out.println("Must be a positive number!");
-					output +="Must be a positive number!";
+					output += errorMsg + "Must be a positive number!";
 				}
 
 				else {
+					output = content;
 					this.chips -= chipsBet;
-					return chipsBet;
 				}
 			}
 			catch (NumberFormatException e){ // String entered is not a valid integer
-				System.out.println("Bet must be a number!");
-				output +="Bet must be a number!";				
+				output += errorMsg + "Bet must be a number!";				
 			}
 		}
-		return chipsBet;
+		return output;
 	}
 	
 	public boolean fold(int costToCall, String content) {
@@ -109,7 +107,7 @@ public class PokerPlayer {
 				output = "@" + name + " \nWrong input. Please tweet 'yes' or 'no'";
 			}
 			else if (!fold(costToCall, content)){
-				output += name + " matches with " + costToCall + " chip(s)\n";
+				output += name + " matches with " + costToCall + " chip(s)";
 			}
 		}
 
@@ -122,20 +120,17 @@ public class PokerPlayer {
 	
 	public String discard(String content){
 		String output = "";
-		//PokerPlayer human = pokerPlayers.get(0);
+		Random rand = new Random();
+		String errorMsg = "Discard error " + rand.nextInt(100) + ": ";
 
 		if(inHand){
-			//System.out.println("In the discard level");
-			//boolean correctInput = true;
 			boolean inRange = true;
-			//String input = "";
 			System.out.println("Content = " + content);
 			String [] cards = content.split(" ");
 			int [] discard = new int[cards.length];
 			
 			if (discard.length > 3) {
-				System.out.println("Maximum cards you can discard is three");
-				output = "@" + name + " \nWrong input. Maximum cards you can discard is 3";
+				output = errorMsg + "Wrong input. Maximum cards you can discard is 3";
 				return output;
 			}
 			
@@ -161,15 +156,13 @@ public class PokerPlayer {
 						return output;
 					}
 					else {
-						System.out.println("Index entered is out of range, must be between 0-4");
-						output = "@" + name + " \nWrong input. Index entered is out of range, must be between 0-4";
+						output = errorMsg + "Wrong input. Index entered is out of range, must be between 0-4";
 						return output;
 						//correctInput = false;
 					}
 				}
 				catch (NumberFormatException e) {
-					System.out.println("Invalid input (must be integers)");
-					output = "@" + name + " \nWrong input. Invalid input (must be integers)";
+					output = errorMsg + "Invalid input (must be integers)";
 					return output;
 				}
 			}

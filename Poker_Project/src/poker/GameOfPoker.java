@@ -47,6 +47,7 @@ public class GameOfPoker {
 	}
 
 	public void dealNewHands() {
+		deck.reset();
 		for (int i = 0; i < gamePlayers.size(); i++) {
 			PokerPlayer player = gamePlayers.get(i);
 			if(player.inHand){
@@ -89,7 +90,7 @@ public class GameOfPoker {
 	}
 
 	//LEVEL 2
-	public String humanInputForFold(String content){
+	public String foldSection(String content){
 
 		/* This method takes in the input to the would you like to fold question
 		 * and checks the input. It then finishes with the appropriate string generated in the 
@@ -102,27 +103,28 @@ public class GameOfPoker {
 		return tweet;
 	}
 
-
 	//LEVEL3
-
 	public String betSection(String content){
 		String tweets= "";
+		
+		PokerPlayer human = gamePlayers.get(0);
+		
+		// Deals with Human betting
+		tweets = hand.humanBet(content);
 
-		try {
-			int humanRaise = Integer.parseInt(content);
-			tweets = hand.playersBet(humanRaise, content);
-			System.out.println(tweets);
-
-		} catch (NumberFormatException e) {
-			tweets = "Wrong input, please enter a number";
-			e.printStackTrace();
+		// Deals with Automated betting
+		if (!tweets.contains("Bet error")) { // Only adds automated players if no error has occured
+			tweets += hand.automatedBet();		// Checks if automated players want to fold, if not call or raise
+		}
+		// If lastToRaise = 0, skips match section 
+		if(hand.lastToRaise != 0){
+			tweets += "Would you like to fold?(Call="+(hand.currentCall- human.lastBet)+")";
 		}
 
 		return tweets;
 	}
 
 	//LEVEL 4 
-
 	public String matchSection(String content) {
 		String tweet = "";
 		
@@ -134,7 +136,6 @@ public class GameOfPoker {
 	}
 
 	//LEVEL 5 
-
 	public String discardSection(String content) {
 		String tweet = "";
 		System.out.println(hand.showHands());
@@ -158,6 +159,11 @@ public class GameOfPoker {
 	public int getLastToRaise() {
 		return hand.lastToRaise;
 	}
+	
+	public int noOfPlayers() {
+		return gamePlayers.size();
+	}
+
 
 	//	public void gamePlay(){
 	//		

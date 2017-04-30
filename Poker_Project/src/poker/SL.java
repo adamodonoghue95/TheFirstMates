@@ -1,6 +1,7 @@
 package poker;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
@@ -38,6 +39,8 @@ public class SL implements StatusListener {
 		username = status.getUser().getScreenName();
 		tweet_ID = status.getId(); 
 		content = status.getText();
+		
+		Random rand = new Random();
 
 		//Delete the @FirstMatesPoker and the white space after from content, leaves 
 		// us with just the content of the tweet
@@ -76,7 +79,6 @@ public class SL implements StatusListener {
 
 			//LEVEL 1: TWEET THE INTRO TWEETS, ASK WHETHER THEY WANT TO FOLD OR NOT
 			if (playerMap.get(username) == 1) {
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
 				String [] tweets = gm.introSection();
 				for (int i = 0; i < tweets.length; i++) {
 					System.out.println(introStr + " \n" + tweets[i]);
@@ -88,58 +90,68 @@ public class SL implements StatusListener {
 			//LEVEL 2: CHECK THE FOLD INPUT AND ASK HOW MUCH THEY WANT TO RAISE
 			else if (playerMap.get(username) == 2) {
 				String tweet = "";
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				// TODO foldSection (do you want to fold?)
-				String wrongInputMessage = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
-				tweet = introStr + "\n" + gm.humanInputForFold(content);
-				tbot.tweet(tweet);
+
+				String errorMsg = "Wrong input. Please tweet 'yes' or 'no'";
+				tweet = introStr + "\n" + gm.foldSection(content);
 				
-				if(!tweet.contains(wrongInputMessage)){
+				if (gm.noOfPlayers() == 1) { // Only one player left
+					setStage(9);	// Jump to decide winner
+				}
+				
+				if(!tweet.contains(errorMsg)){
+					tbot.tweet(tweet);
 					setStage(3);
+				}
+				else {
+					int num = rand.nextInt(100);
+					System.out.println();
+					tbot.tweet(introStr + "\nError " + num + ": "  + errorMsg);
 				}
 			}
 
 			//LEVEL 3: ASKS HUMAN FOR INITIAL BET AND PRINT PLAYERS ACTIONS
 			else if (playerMap.get(username) == 3) {
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				// TODO initialBetSection ( what do you want to bet/raise? )
 				String tweet = introStr + "\n" + gm.betSection(content);
-				System.out.println(tweet);
-				tbot.tweet(tweet);
+				String errorMsg = "Bet error";
+				System.out.println(tweet + "\nlastRaise " + gm.getLastToRaise());
+				
+				// Error handling
+				if (tweet.contains(errorMsg)) {
+					tbot.tweet(tweet);
+				}
 				// If = 0, no need to match any raise -> increase two stages;
-				if (gm.getLastToRaise() == 0) {
+				else if (gm.getLastToRaise() == 0) {
+					tweet += "\nWhich cards would you like to discard? (e.g 0 2)";
+					tbot.tweet(tweet);
 					setStage(5); // Skip to discardSection
 				}
 				else {
+					tbot.tweet(tweet);
 					setStage(4); // Go to matchSection
 				}
+				
 			}
 			
 			//LEVEL 4: DEALS WITH MATCHING RAISES (IF THERE IS ANY)
 			else if (playerMap.get(username) == 4) {
-				// TODO
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				String errorMsg = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
-				String tweet = introStr + "\n" + gm.matchSection(content);
+				String errorMsg = "Wrong input. Please tweet 'yes' or 'no'";
+				String tweet = introStr + gm.matchSection(content);
 				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					tbot.tweet(tweet);
 					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
 					tbot.tweet(tweet);
 					setStage(5);
-					System.out.println("Leveled up to " + playerMap.get(username));
-					System.out.println(playerMap);
 				}
 				else {
-					tbot.tweet(introStr + "\n" + errorMsg);
+					int num = rand.nextInt(100);
+					tbot.tweet(introStr + "\nError " + num + ": "  + tweet);
 				}
 			}
 			
 			//LEVEL 5: DEALS WITH DISCARDING CARDS
 			else if (playerMap.get(username) == 5) {
-				// TODO 
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				String errorMsg = "@" + username + " \nWrong input.";
+				String errorMsg = "Discard error";
 				String tweet = gm.discardSection(content);
 				
 				// Update intro message to new discarded hand
@@ -150,68 +162,82 @@ public class SL implements StatusListener {
 				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					// TODO
-					tweet += "\n How much would you like raise?" ;
-					System.out.println("SECOND BETTING STAGE");
+					tweet += "\nWould you like to fold?";
 					tbot.tweet(tweet);
-					System.out.println("before: " + playerMap.get(username));
 					setStage(6);
-					System.out.println("after: " + playerMap.get(username));
-
 				}
 				else {
-					// Tweets error message and stays on same level
-					tbot.tweet(introStr + "\n" + tweet);
+					// Error handling
+					int num = rand.nextInt(100);
+					tweet += "\nWhich cards would you like to discard? (e.g 0 2)";
+					tbot.tweet(introStr + "\nError " + num + ": "  + tweet);				
 				}
 			}
 			
-			//LEVEL 6: SECOND BETTING STAGE 
+			//LEVEL 6: CHECK THE FOLD INPUT AND ASK HOW MUCH THEY WANT TO RAISE
 			else if (playerMap.get(username) == 6) {
-				System.out.println("******************************************");
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				// TODO initialBetSection ( what do you want to bet/raise? )
+				String tweet = "";
+
+				String errorMsg = "Wrong input. Please tweet 'yes' or 'no'";
+				tweet = introStr + "\n" + gm.foldSection(content);
+				
+				if (gm.noOfPlayers() == 1) { // Only one player left
+					setStage(8);	// Jump to decide winner
+				}
+				
+				if(!tweet.contains(errorMsg)){
+					tbot.tweet(tweet);
+					setStage(7);
+				}
+				else {
+					int num = rand.nextInt(100);
+					System.out.println();
+					tbot.tweet(introStr + "\nError " + num + ": "  + errorMsg);
+				}
+			}
+			
+			//LEVEL 7: SECOND BETTING STAGE 
+			else if (playerMap.get(username) == 7) {
+
 				String tweet = introStr + "\n" + gm.betSection(content);
 				System.out.println(tweet);
 				tbot.tweet(tweet);
 				// If = 0, no need to match any raise -> increase two stages;
-				if (gm.getLastToRaise() == 0) {
-					setStage(8); // Skip to decideWinner
+				if (gm.getLastToRaise() == 0 || gm.noOfPlayers() == 1) {
+					setStage(9); // Skip to decideWinner
 				}
 				else {
-					setStage(7); // Go to matchSection
+					setStage(8); // Go to matchSection
 				}
 			}
 			
-			//LEVEL 7: SECOND MATCH STAGE
-			else if (playerMap.get(username) == 7) {
-				// TODO
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
-				String errorMsg = "@" + username + " \nWrong input. Please tweet 'yes' or 'no'";
+			//LEVEL 8: SECOND MATCH STAGE
+			else if (playerMap.get(username) == 8) {
+
+				String errorMsg = "Wrong input. Please tweet 'yes' or 'no'";
 				String tweet = introStr + "\n" + gm.matchSection(content);
 				
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
 					tbot.tweet(tweet);
-					tweet = introStr + "\n" + "Which cards would you like to discard? (e.g 0 2)";
-					tbot.tweet(tweet);
-					setStage(8);
-					System.out.println("Leveled up to " + playerMap.get(username));
-					System.out.println(playerMap);
+					setStage(9);
 				}
 				else {
-					tbot.tweet(introStr + "\n" + errorMsg);
+					int num = rand.nextInt(100);
+					tbot.tweet(introStr + "\nError " + num + ": "  + tweet);
 				}
 			}
-			//LEVEL 8:
-			else if (playerMap.get(username) == 8) {
-				// TODO
-				System.out.println("level of : " + username + ", " + playerMap.get(username));
+			
+			//LEVEL 9:
+			else if (playerMap.get(username) == 9) {
+
 				String tweet = gm.decideWinner();
 				tbot.tweet(tweet);
-				setStage(1); // Restart at level 1
+								
+				gm.dealNewHands(); // Deal new hands for all players
+				setStage(1); // Restart new hand at level 1
 			}
 		}
 
-		//		String output = ("@"+username + " Welcome to FM Poker");
-		//		tbot.tweet(output);
 	}
 	public void onTrackLimitationNotice(int arg0) {}
 	public void onStallWarning(StallWarning arg0) {}
