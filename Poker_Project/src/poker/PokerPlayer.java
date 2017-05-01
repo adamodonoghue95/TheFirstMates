@@ -12,7 +12,7 @@ public class PokerPlayer {
 
 	public PokerPlayer(DeckOfCards cardDeck, String playerName){
 		playerHand = new HandOfCards(cardDeck);
-		chips = 20;
+		chips = 10;
 		//System.out.println("What is your name?");
 		name = playerName;
 	}
@@ -129,7 +129,10 @@ public class PokerPlayer {
 			String [] cards = content.split(" ");
 			int [] discard = new int[cards.length];
 			
-			if (discard.length > 3) {
+			if (content.contains("x")) {
+				output = "Discarded 0 cards";
+			}
+			else if (discard.length > 3) {
 				output = errorMsg + "Wrong input. Maximum cards you can discard is 3";
 				return output;
 			}
@@ -141,9 +144,7 @@ public class PokerPlayer {
 						System.out.println("Cards = " + cards[i]);
 						
 						discard[i] = Integer.parseInt(cards[i]);
-						
-						System.out.println("Discard = " + discard[i]);
-						
+												
 						if (discard[i] < 0 || discard[i] > 4) {
 							inRange = false;
 							break;
@@ -152,7 +153,7 @@ public class PokerPlayer {
 
 					if (inRange) {
 						playerHand.discardCards(discard, discard.length);
-						output = "Discard Successful";
+						output = "Discarded " + discard.length + " cards";
 						return output;
 					}
 					else {

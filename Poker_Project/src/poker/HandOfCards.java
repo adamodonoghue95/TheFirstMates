@@ -7,16 +7,16 @@ public class HandOfCards {
 	static public final int HAND_SIZE = 5;
 	//Array to hold the playing card objects representing the hand
 
-	static private final int ROYAL_FLUSH = 9000000;
-	static private final int STRAIGHT_FLUSH = 8000000;
-	static private final int FOUR_OF_A_KIND = 7000000;
-	static private final int FULL_HOUSE = 6000000;
-	static private final int FLUSH = 5000000;
-	static private final int STRAIGHT = 4000000;
-	static private final int THREE_OF_A_KIND = 3000000;
-	static private final int TWO_PAIR = 2000000;
-	static private final int ONE_PAIR = 1000000;
-	static private final int HIGH_HAND = 0;
+	static final int ROYAL_FLUSH = 9000000;
+	static final int STRAIGHT_FLUSH = 8000000;
+	static final int FOUR_OF_A_KIND = 7000000;
+	static final int FULL_HOUSE = 6000000;
+	static final int FLUSH = 5000000;
+	static final int STRAIGHT = 4000000;
+	static final int THREE_OF_A_KIND = 3000000;
+	static final int TWO_PAIR = 2000000;
+	static final int ONE_PAIR = 1000000;
+	static final int HIGH_HAND = 0;
 	static private final int PRIORITY0 = (int)Math.pow(14, 4);
 	static private final int PRIORITY1 = (int)Math.pow(14, 3);
 	static private final int PRIORITY2 = (int)Math.pow(14, 2);
@@ -41,8 +41,7 @@ public class HandOfCards {
 	}
 
 	public void discardCards(int[] discarded, int noDiscardedCards){
-		for(int i = 0; i<noDiscardedCards;i++){
-			//System.out.println("Discarding: " + hand[discarded[i]]);
+		for(int i = 0; i < noDiscardedCards; i++){
 			deck.returnCard(hand[discarded[i]]);
 			hand[discarded[i]] = deck.dealNext();
 		}

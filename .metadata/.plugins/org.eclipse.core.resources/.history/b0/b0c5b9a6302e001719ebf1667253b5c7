@@ -1,0 +1,174 @@
+package poker;
+
+import java.util.ArrayList;
+
+public class GameOfPoker {
+	private static ArrayList<PokerPlayer> gamePlayers = new ArrayList<PokerPlayer>();
+	private DeckOfCards deck = new DeckOfCards();
+	private int STATUS_ID;
+	String username;
+	boolean GameState;
+	HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
+
+
+	//CONSTRUCTOR FOR TWITTER BOT
+	public GameOfPoker(int numberOfPlayers, String user) {
+		username = user;
+		gamePlayers.add(new PokerPlayer(deck, username));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Jack"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Henry"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Ron"));
+
+	}
+
+	// CONSTRUCTOR FOR TESTIGN GAMEPLAY
+	public GameOfPoker(int numberOfPlayers){
+		gamePlayers.add(new PokerPlayer(deck,"Luke"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Jack"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Henry"));
+		gamePlayers.add(new AutomatedPokerPlayer(deck,"Ron"));
+	}
+	
+	public boolean checkGameState(TwitterBot tbot, long stat_id){
+		for(int i=0; i<gamePlayers.size();i++){
+			if(gamePlayers.get(i).getChips()<=0){
+				gamePlayers.get(i).inHand =false;
+				gamePlayers.remove(i);
+			}
+			else{
+				gamePlayers.get(i).inHand = true;
+			}
+		}
+		if(gamePlayers.size()==1){
+			System.out.println(gamePlayers.get(0).name + " is the winner!")
+			tbot.reply(gamePlayers.get(0).name + " is the winner!"), stat_id);
+			return false;
+		}
+		
+		else return true;
+	}
+
+	public void dealNewHands() {
+		deck.reset();
+		for (int i = 0; i < gamePlayers.size(); i++) {
+			PokerPlayer player = gamePlayers.get(i);
+			if(player.inHand){
+				player.newHand(deck);
+			}
+		}
+	}
+
+	public String returnHumanHand() {
+		return hand.printHumanHand();
+	}
+
+
+	/* GAME STATE SECTIONS*/
+
+	//LEVEL 0
+	public String welcomeSection(String username){
+		String firstTweet;
+		firstTweet = "@" + username + " " + returnHumanHand() + "\nWelcome to TheFirstMates Poker Game!\n";
+		firstTweet += "Let's Play Poker " + gamePlayers.get(0).name + "!" ;
+		return firstTweet;
+	}
+
+	//LEVEL 1
+	public String [] introSection(){
+		hand = new HandOfPoker(gamePlayers, this.deck);
+		String [] tweets = new String[2];
+		// Print chips
+		tweets[0] = hand.printChips(gamePlayers.get(0).name);
+
+		// Print fold question
+		if(hand.currentCall >= gamePlayers.get(0).chips){
+			tweets[1] = "\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)";
+		}
+		else{
+			tweets[1] = "\nWould you like to fold? (The cost to call is " + hand.currentCall  +" chips)";
+		}
+		return tweets;
+	}
+
+	//LEVEL 2
+	public String foldSection(String content){
+
+		/* This method takes in the input to the would you like to fold question
+		 * and checks the input. It then finishes with the appropriate string generated in the 
+		 * player.fold method, whether it be wrong input, player has folded or to progress
+		 * how much would you like to raise*/
+
+		String tweet = " " + hand.toString() + "\n";
+		tweet = hand.humanFold(content);
+
+		return tweet;
+	}
+
+	//LEVEL3
+	public String betSection(String content){
+		String tweets= "";
+		
+		PokerPlayer human = gamePlayers.get(0);
+		
+		// Deals with Human betting
+		tweets = hand.humanBet(content);
+
+		// Deals with Automated betting
+		if (!tweets.contains("Bet error")) { // Only adds automated players if no error has occured
+			tweets += hand.automatedBet();		// Checks if automated players want to fold, if not call or raise
+		}
+		// If lastToRaise = 0, skips match section 
+		if(hand.lastToRaise != 0){
+			tweets += "Would you like to fold?(Call="+(hand.currentCall- human.lastBet)+")";
+		}
+
+		return tweets;
+	}
+
+	//LEVEL 4 
+	public String matchSection(String content) {
+		String tweet = "";
+		
+		tweet += hand.playersMatch(content);
+
+		return tweet;
+	}
+
+	//LEVEL 5 
+	public String discardSection(String content) {
+		String tweet = "";
+
+		tweet += hand.discardCards(content);	// Discards human and automated player cards
+
+		return tweet;
+	}
+	
+	// LEVEL 8
+	public String decideWinner() {
+		String tweet = "\n";
+		
+		tweet += hand.showHands();
+		tweet += hand.decideWinner();
+		
+		hand.returnHands();
+		deck.reset();
+		
+		return tweet;
+	}
+	
+	public int getLastToRaise() {
+		return hand.lastToRaise;
+	}
+	
+	public int noOfPlayers() {
+		return gamePlayers.size();
+	}
+
+	public static void main(String [] args) {
+
+		GameOfPoker gm = new GameOfPoker(4);
+		//gm.gamePlay();
+
+	}
+
+}

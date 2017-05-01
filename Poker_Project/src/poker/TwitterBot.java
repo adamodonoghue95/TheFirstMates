@@ -35,6 +35,7 @@ public class TwitterBot {
 	 static String ACCESS_TOKEN_SECRET = "w36Xh2cpskF5bLHjLbK9rIBEVINXQX9qYB9IfRYeJn3F7";
 	
 	static String HASHTAG = "#DealMeInFMPoker";
+	static String EXIT_HASHTAG = "DealMeOutFMPoker";
 	static String BOT_ID = "@FirstMatesPoker";
 	Twitter twitter;
 	ConfigurationBuilder builder;

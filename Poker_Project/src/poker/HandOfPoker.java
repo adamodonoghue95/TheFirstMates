@@ -14,10 +14,12 @@ public class HandOfPoker {
 	public HandOfPoker(ArrayList<PokerPlayer> players, DeckOfCards deck) {
 		pokerPlayers = players;
 		handDeck = deck;
-		//attempt to deal
-		//		for(PokerPlayer p : pokerPlayers){
-		//			p.playerHand = new HandOfCards(deck);
-		//		}
+		
+		// Set every players inHand boolean to true
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).inHand = true;
+		}
+	
 		System.out.println("New Deal:\n");
 	}
 
@@ -59,6 +61,7 @@ public class HandOfPoker {
 		String output = "";
 		int chipsRaised = 0;
 		PokerPlayer human = pokerPlayers.get(0);
+		System.out.println("** noOfPlayers = " + pokerPlayers.size());
 		
 		try {
 			// returns integer
@@ -78,9 +81,10 @@ public class HandOfPoker {
 	public String automatedBet(){
 		lastToRaise = 0;
 		String output = "";
+
 		for(int i = 1; i < pokerPlayers.size(); i++){
 			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer) pokerPlayers.get(i);
-			if(automatedPlayer.inHand){
+			if(automatedPlayer.inHand && automatedPlayer.chips > 0){
 
 				if(!automatedPlayer.fold(currentCall)){
 
@@ -122,14 +126,18 @@ public class HandOfPoker {
 		
 		// Human player match
 		PokerPlayer human = pokerPlayers.get(0);
-		tweet += "\n" + human.match(content, currentCall) + "\n"; 
-		pot += (currentCall - human.lastBet); // Updates pot
+		tweet += "\n" + human.match(content, currentCall) + "\n";
+		if (human.inHand) {
+			pot += (currentCall - human.lastBet); // Updates pot
+		}
 
 		// Automated players match
 		for (int i = 1; i < lastToRaise; i++) {
 			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
 			tweet += automatedPlayer.match(lastToRaise, currentCall) + "\n";
-			pot += (currentCall - automatedPlayer.lastBet); // Updates pot
+			if (automatedPlayer.inHand) {
+				pot += (currentCall - automatedPlayer.lastBet); // Updates pot
+			}
 		}
 		
 		return tweet;
@@ -140,12 +148,12 @@ public class HandOfPoker {
 		
 		// Human player discard
 		PokerPlayer human = pokerPlayers.get(0);
-		tweet = human.discard(content);
+		if (human.inHand) tweet = human.discard(content);
 		
 		// Automated player discard
 		for (int i = 1; i < pokerPlayers.size(); i++) {
 			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
-			automatedPlayer.discard();
+			if (automatedPlayer.inHand) automatedPlayer.discard();
 		}
 		
 		return tweet;
@@ -177,8 +185,9 @@ public class HandOfPoker {
 	public String showHands() {
 		String handStr = "";
 
-		for(PokerPlayer player : pokerPlayers){
-			//if human player is still in hand code will execute
+		// Only returns automated hands, Human hand will be printed beside handle name
+		for(int i = 1; i < pokerPlayers.size(); i++){
+			PokerPlayer player = pokerPlayers.get(i);
 			if (player.inHand) {
 				HandOfCards hand = player.playerHand;
 				handStr += player.name + ": " + hand.toString() + "\n";
@@ -188,7 +197,6 @@ public class HandOfPoker {
 		return handStr;
 	}
 	
-
 	public String decideWinner() {
 		int winningHandScore = 0;
 		int winningPlayer = 0;
@@ -201,7 +209,7 @@ public class HandOfPoker {
 			}
 		}
 
-		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
+		System.out.println("\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
 		pokerPlayers.get(winningPlayer).chipsWon(pot);
 
 		return pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips";

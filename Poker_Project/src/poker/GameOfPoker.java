@@ -28,10 +28,11 @@ public class GameOfPoker {
 		gamePlayers.add(new AutomatedPokerPlayer(deck,"Henry"));
 		gamePlayers.add(new AutomatedPokerPlayer(deck,"Ron"));
 	}
-
-	public boolean checkGameState(){
+	
+	public boolean checkGameState(TwitterBot tbot, long stat_id){
 		for(int i=0; i<gamePlayers.size();i++){
 			if(gamePlayers.get(i).getChips()<=0){
+				gamePlayers.get(i).inHand =false;
 				gamePlayers.remove(i);
 			}
 			else{
@@ -40,9 +41,10 @@ public class GameOfPoker {
 		}
 		if(gamePlayers.size()==1){
 			System.out.println(gamePlayers.get(0).name + " is the winner!");
+			tbot.reply(gamePlayers.get(0).name + " is the winner!", stat_id);
 			return false;
 		}
-
+		
 		else return true;
 	}
 
@@ -79,7 +81,6 @@ public class GameOfPoker {
 		tweets[0] = hand.printChips(gamePlayers.get(0).name);
 
 		// Print fold question
-		System.out.println("Would you like to fold? (y/ n to call, cost to call:" + hand.currentCall + ")");
 		if(hand.currentCall >= gamePlayers.get(0).chips){
 			tweets[1] = "\nWould you like to fold? (To call you must go all in,  " + hand.currentCall  +" chips)";
 		}
@@ -99,7 +100,7 @@ public class GameOfPoker {
 
 		String tweet = " " + hand.toString() + "\n";
 		tweet = hand.humanFold(content);
-		System.out.println(tweet);
+
 		return tweet;
 	}
 
@@ -130,28 +131,27 @@ public class GameOfPoker {
 		
 		tweet += hand.playersMatch(content);
 
-		System.out.println(tweet);
-
 		return tweet;
 	}
 
 	//LEVEL 5 
 	public String discardSection(String content) {
 		String tweet = "";
-		System.out.println(hand.showHands());
+
 		tweet += hand.discardCards(content);	// Discards human and automated player cards
-		System.out.println("\n" + hand.showHands());
-		System.out.println(tweet);
 
 		return tweet;
 	}
 	
 	// LEVEL 8
 	public String decideWinner() {
-		String tweet = "";
+		String tweet = "\n";
 		
 		tweet += hand.showHands();
 		tweet += hand.decideWinner();
+		
+		hand.returnHands();
+		deck.reset();
 		
 		return tweet;
 	}
@@ -163,74 +163,6 @@ public class GameOfPoker {
 	public int noOfPlayers() {
 		return gamePlayers.size();
 	}
-
-
-	//	public void gamePlay(){
-	//		
-	//		/* First four lines are for the twitter output, need to fix the small game play
-	//		 * errors first*/
-	//		
-	////		String firstTweet;
-	////		String secondTweet;
-	////		firstTweet = "@"+username+" Welcome to TheFirstMates Poker Game!\n";
-	////		firstTweet+= "\nLet's Play Poker " + gamePlayers.get(0).name + "!";		
-	////		tbot.tweet(firstTweet);
-	//		
-	//		
-	//		System.out.println("Welcome to TheFirstMates Poker Game!\n");
-	//		System.out.println("\nLet's Play Poker " + gamePlayers.get(0).name + "!");
-	//		
-	//		while(this.checkGameState()){
-	//						
-	//			HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
-	//			hand.printChips();
-	//
-	//			hand.printHumanHand()
-	//
-	//			do {
-	//				// Let players fold and start betting
-	//				System.out.println("\nFIRST ROUND OF BETTING\n-----------------");
-	//				hand.roundOfBetting();
-	//				
-	//				// Skips next round of betting if only one player left
-	//				//System.out.println(hand.noOfPlayers());
-	//				if (hand.noOfPlayers() == 1){
-	//					System.out.println("Nobody calls");
-	//					break;
-	//				}
-	//				
-	//				//Let players discard their cards
-	//				hand.discardCards();
-	//				hand.printHumanHand();
-	//				
-	//				//Complete second round of betting
-	//				System.out.println("\nSECOND ROUND OF BETTING\n-----------------");
-	//				hand.roundOfBetting();
-	//				
-	//				//Show cards
-	//				hand.showCards();
-	//				
-	//			} while(false);
-	//
-	//			//Show Cards
-	//			
-	//			hand.decideWinner();
-	//			
-	//			// Lets players give all cards back and dealt new hands
-	//			hand.returnHands();
-	//			
-	//			// Reset and shuffle deck
-	//			this.deck.reset();
-	//			this.deck.shuffle();
-	//			
-	//			// Deal new Hands for next round
-	//			this.dealNewHands();
-	//		}
-	//
-	//		//hand.printChips();
-	//
-	//
-	//	}
 
 	public static void main(String [] args) {
 

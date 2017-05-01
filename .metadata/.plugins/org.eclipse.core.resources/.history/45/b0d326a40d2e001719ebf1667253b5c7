@@ -1,0 +1,221 @@
+package poker;
+
+import java.util.ArrayList;
+
+public class HandOfPoker {
+
+	protected int currentCall = 0;
+	int chipsRaised = 0;
+	int lastToRaise = 0;
+	private ArrayList<PokerPlayer> pokerPlayers = new ArrayList<PokerPlayer>();
+	private DeckOfCards handDeck;
+	protected int pot = 0; // Amount of chips stored in the pot
+
+	public HandOfPoker(ArrayList<PokerPlayer> players, DeckOfCards deck) {
+		pokerPlayers = players;
+		handDeck = deck;
+		
+		// Set every players inHand boolean to true
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).inHand = true;
+		}
+	
+		System.out.println("New Deal:\n");
+	}
+
+	public int noOfPlayers() {
+		int noOfPlayers = 0;
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			if (pokerPlayers.get(i).inHand) {
+				noOfPlayers++;
+			}
+		}
+		return noOfPlayers;
+	}
+
+	public String printChips(String username) {
+		String chips="";
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			chips+="\n" + pokerPlayers.get(i).name + " has " + pokerPlayers.get(i).getChips() + " chip(s)";
+		}
+		return chips;
+	}
+
+	public String humanFold(String content){
+		currentCall = 0;
+		String output = "";
+		PokerPlayer human = pokerPlayers.get(0);
+		if (human.inHand){
+			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
+				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
+			} else if(!human.fold(currentCall, content)){
+				output = "How much would you like to raise by? (< " + human.chips + ")";
+			} else{
+				output = "@"+ human.name + " has folded";
+			}
+		}
+		return output;
+	}
+	
+	public String humanBet(String content) {
+		String output = "";
+		int chipsRaised = 0;
+		PokerPlayer human = pokerPlayers.get(0);
+		System.out.println("** noOfPlayers = " + pokerPlayers.size());
+		
+		try {
+			// returns integer
+			chipsRaised = Integer.parseInt(human.getChipsToRaise(content));
+			human.lastBet = currentCall + chipsRaised; // Updates players last bet to be the call plus what they raise
+			currentCall = human.lastBet;			   // Update currentCall to equal the last players bet
+			pot += human.lastBet;
+			System.out.println("POT = " + pot);
+		}
+		catch (NumberFormatException e) {
+			// returns string (error message)
+			output = human.getChipsToRaise(content);
+		}	
+		
+		return output;
+	}
+	
+	public String automatedBet(){
+		lastToRaise = 0;
+		String output = "";
+		System.out.println("** noOfPlayers = " + pokerPlayers.size());
+
+		for(int i = 1; i < pokerPlayers.size(); i++){
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer) pokerPlayers.get(i);
+			if(automatedPlayer.inHand){
+
+				if(!automatedPlayer.fold(currentCall)){
+
+					chipsRaised = automatedPlayer.getChipsToRaise();
+					automatedPlayer.lastBet = currentCall + chipsRaised; // Updates players last bet to be call plus their raise
+					currentCall = automatedPlayer.lastBet; //Update current call to equal last players bet
+					pot += automatedPlayer.lastBet; //Update pot
+					System.out.println("POT = " + pot);
+
+					
+					if (chipsRaised > 0) { // Check for last raise
+						if(chipsRaised == automatedPlayer.getChips() + chipsRaised){
+							output += automatedPlayer.name + " goes all in! " + chipsRaised + " chip(s)\n";
+						}
+						else {
+							output += automatedPlayer.name + " raises by " + chipsRaised + " chip(s)\n";
+						}
+						lastToRaise = i;
+					}
+					else {
+						if (currentCall == currentCall + automatedPlayer.getChips()){
+							output += automatedPlayer.name + " goes all in! " + currentCall + " chip(s)\n";
+						}
+						else{
+							output += automatedPlayer.name + " called with " + currentCall + " chip(s)\n";
+						}
+					}
+				}
+				else{
+					output += automatedPlayer.name + " has folded\n";
+					pokerPlayers.get(i).inHand = false;
+				}
+			}
+		}
+		return output;
+
+	}
+	
+	public String playersMatch(String content) {
+		String tweet = "";
+		
+		// Human player match
+		PokerPlayer human = pokerPlayers.get(0);
+		tweet += "\n" + human.match(content, currentCall) + "\n"; 
+		pot += (currentCall - human.lastBet); // Updates pot
+		System.out.println("POT = " + pot);
+
+		// Automated players match
+		for (int i = 1; i < lastToRaise; i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			tweet += automatedPlayer.match(lastToRaise, currentCall) + "\n";
+			pot += (currentCall - automatedPlayer.lastBet); // Updates pot
+			System.out.println("POT = " + pot);
+
+		}
+		
+		return tweet;
+	}	
+	
+	public String discardCards(String content) {
+		String tweet = "";
+		
+		// Human player discard
+		PokerPlayer human = pokerPlayers.get(0);
+		tweet = human.discard(content);
+		
+		// Automated player discard
+		for (int i = 1; i < pokerPlayers.size(); i++) {
+			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer)pokerPlayers.get(i);
+			automatedPlayer.discard();
+		}
+		
+		return tweet;
+	}
+
+	public void returnHands() {
+		// Loop to return all cards from each player
+		for (int i = 0; i < pokerPlayers.size(); i++) {
+			PokerPlayer player = pokerPlayers.get(i);
+			if(player.inHand){
+				player.returnCards(handDeck);
+			}
+		}
+	}
+
+	public String printHumanHand() {
+		String handStr = "";
+
+		for(PokerPlayer player : pokerPlayers){
+			//if human player is still in hand code will execute
+			if(player.getClass().getName().equals("poker.PokerPlayer") && player.inHand){
+				HandOfCards hand = player.playerHand;
+				handStr = hand.toString();
+			}
+		}
+		return handStr;
+	}
+	
+	public String showHands() {
+		String handStr = "";
+
+		// Only returns automated hands, Human hand will be printed beside handle name
+		for(int i = 1; i < pokerPlayers.size(); i++){
+			PokerPlayer player = pokerPlayers.get(i);
+			if (player.inHand) {
+				HandOfCards hand = player.playerHand;
+				handStr += player.name + ": " + hand.toString() + "\n";
+			}
+			
+		}
+		return handStr;
+	}
+	
+
+	public String decideWinner() {
+		int winningHandScore = 0;
+		int winningPlayer = 0;
+
+		for(int z = 0; z < pokerPlayers.size();z++){
+			PokerPlayer player = pokerPlayers.get(z);
+			if(player.playerHand.getGameValue() > winningHandScore && player.inHand){
+				winningHandScore = player.playerHand.getGameValue();
+				winningPlayer = z;
+			}
+		}
+
+		System.out.println("\n\n" + pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips");
+		pokerPlayers.get(winningPlayer).chipsWon(pot);
+
+		return pokerPlayers.get(winningPlayer).name + " wins the pot: " + pot + " chips";
+	}
+}

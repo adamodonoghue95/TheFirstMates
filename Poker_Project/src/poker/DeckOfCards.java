@@ -65,7 +65,6 @@ public class DeckOfCards {
 	//dealNext method which deals the card at the top of the deck 
 	synchronized public PlayingCard dealNext(){
 		
-		
 		//Check to see if the deck is empty and no more cards are available to be dealt
 		if (deck.isEmpty()){
 			System.out.println("Deck is empty please reset or reshuffle the deck deal another card");
