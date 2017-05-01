@@ -3,13 +3,17 @@ package poker;
 import java.util.HashMap;
 import java.util.Random;
 
+import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 import twitter4j.User;
+import twitter4j.conf.ConfigurationBuilder;
 
-public class SL implements StatusListener {
+public class SL implements StatusListener, Runnable {
 
 	String username, content; 
 	long tweet_ID;
@@ -39,7 +43,7 @@ public class SL implements StatusListener {
 
 		Random rand = new Random();
 
-		// Delete the @FirstMatesPoker and the white space after from content, leaves 
+		//Delete the @FirstMatesPoker and the white space after from content, leaves 
 		// us with just the content of the tweet
 		content = content.substring(tbot.BOT_ID.length()+1); 
 
@@ -53,12 +57,13 @@ public class SL implements StatusListener {
 			System.out.println(tweet_ID);
 			System.out.println(content +"\n");
 			System.out.println(playerMap.toString());
+			//gm = new GameOfPoker(4, username);
 
 			if (playerMap.containsKey(username)) {
 				tweet_ID = tbot.reply("@"+username+"\nYou are already participating in a game buddy",tweet_ID);
 			}
 			else {
-				gm = new GameOfPoker(username);
+				gm = new GameOfPoker(4, username);
 				playerGames.put(username, gm);
 				playerMap.put(username, 0);
 				tweet_ID = tbot.reply(gm.welcomeSection(username), tweet_ID);
@@ -165,6 +170,7 @@ public class SL implements StatusListener {
 				tweet = introStr + "\n" + tweet;
 
 				if (!tweet.contains(errorMsg)) { // Obtained correct input -> levelUP 
+					// TODO
 					tweet += "\nWould you like to fold? (yes/no)";
 					tweet_ID = tbot.reply(tweet, tweet_ID);
 					setStage(6);
@@ -269,6 +275,13 @@ public class SL implements StatusListener {
 	}
 	public void onTrackLimitationNotice(int arg0) {}
 	public void onStallWarning(StallWarning arg0) {}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+	}
+
 
 }
 

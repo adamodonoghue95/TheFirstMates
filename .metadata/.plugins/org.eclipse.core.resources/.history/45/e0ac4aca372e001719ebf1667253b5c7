@@ -24,6 +24,15 @@ public class PokerPlayer {
 		return input;
 	}
 
+	public void bet(int chipsBet) {
+		if (this.chips > 0) {
+			this.chips -= chipsBet;
+		}
+		else {
+			System.out.println("Bankrupt");
+		}
+	}
+
 	public void chipsWon(int noOfChips) {
 		chips += noOfChips;
 	}

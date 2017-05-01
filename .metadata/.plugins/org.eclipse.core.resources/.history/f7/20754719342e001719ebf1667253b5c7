@@ -24,6 +24,15 @@ public class PokerPlayer {
 		return input;
 	}
 
+	//	public void bet(int chipsBet) {
+	//		if (this.chips > 0) {
+	//			this.chips -= chipsBet;
+	//		}
+	//		else {
+	//			System.out.println("Bankrupt");
+	//		}
+	//	}
+
 	public void chipsWon(int noOfChips) {
 		chips += noOfChips;
 	}
@@ -72,7 +81,7 @@ public class PokerPlayer {
 		}
 		return output;
 	}
-
+	
 	public boolean fold(int costToCall, String content) {
 		if (content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes")) {
 			return true;
@@ -88,7 +97,7 @@ public class PokerPlayer {
 		}
 		return true;
 	}
-
+	
 	public String match(String content, int currentCall){
 		String output = "";
 
@@ -108,7 +117,7 @@ public class PokerPlayer {
 	public int getChips() {
 		return chips;
 	}
-
+	
 	public String discard(String content){
 		String output = "";
 		Random rand = new Random();
@@ -119,7 +128,7 @@ public class PokerPlayer {
 			System.out.println("Content = " + content);
 			String [] cards = content.split(" ");
 			int [] discard = new int[cards.length];
-
+			
 			if (content.contains("x")) {
 				output = "Discarded 0 cards";
 			}
@@ -127,15 +136,15 @@ public class PokerPlayer {
 				output = errorMsg + "Wrong input. Maximum cards you can discard is 3";
 				return output;
 			}
-
+			
 			else {
 				try {
 					// Assigns and parses discarded cards to integers
 					for (int i = 0; i < cards.length; i++) {
 						System.out.println("Cards = " + cards[i]);
-
+						
 						discard[i] = Integer.parseInt(cards[i]);
-
+												
 						if (discard[i] < 0 || discard[i] > 4) {
 							inRange = false;
 							break;

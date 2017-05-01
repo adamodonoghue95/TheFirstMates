@@ -5,13 +5,14 @@ import java.util.ArrayList;
 public class GameOfPoker {
 	private static ArrayList<PokerPlayer> gamePlayers = new ArrayList<PokerPlayer>();
 	private DeckOfCards deck = new DeckOfCards();
+	private int STATUS_ID;
 	String username;
 	boolean GameState;
 	HandOfPoker hand = new HandOfPoker(gamePlayers, this.deck);
 
 
 	//CONSTRUCTOR FOR TWITTER BOT
-	public GameOfPoker(String user) {
+	public GameOfPoker(int numberOfPlayers, String user) {
 		username = user;
 		gamePlayers.add(new PokerPlayer(deck, username));
 		gamePlayers.add(new AutomatedPokerPlayer(deck,"Jack"));
@@ -58,7 +59,7 @@ public class GameOfPoker {
 	}
 
 	public String returnHumanHand() {
-		return hand.getHumanHand();
+		return hand.printHumanHand();
 	}
 
 

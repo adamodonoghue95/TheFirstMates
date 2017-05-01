@@ -49,7 +49,7 @@ public class HandOfPoker {
 			if(!(content.equalsIgnoreCase("y") || content.equalsIgnoreCase("yes") || content.equalsIgnoreCase("n") || content.equalsIgnoreCase("no"))) {
 				output = "@" + human.name + " \nWrong input. Please tweet 'yes' or 'no'";
 			} else if(!human.fold(currentCall, content)){
-				output = "How much would you like to raise by? (< " + human.getChips() + ")";
+				output = "How much would you like to raise by? (< " + human.chips + ")";
 			} else{
 				output = "@"+ human.name + " has folded";
 			}
@@ -84,7 +84,7 @@ public class HandOfPoker {
 
 		for(int i = 1; i < pokerPlayers.size(); i++){
 			AutomatedPokerPlayer automatedPlayer = (AutomatedPokerPlayer) pokerPlayers.get(i);
-			if(automatedPlayer.inHand && automatedPlayer.getChips() > 0){
+			if(automatedPlayer.inHand && automatedPlayer.chips > 0){
 
 				if(!automatedPlayer.fold(currentCall)){
 
@@ -169,7 +169,7 @@ public class HandOfPoker {
 		}
 	}
 
-	public String getHumanHand() {
+	public String printHumanHand() {
 		String handStr = "";
 
 		for(PokerPlayer player : pokerPlayers){

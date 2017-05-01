@@ -169,7 +169,7 @@ public class HandOfPoker {
 		}
 	}
 
-	public String getHumanHand() {
+	public String printHumanHand() {
 		String handStr = "";
 
 		for(PokerPlayer player : pokerPlayers){

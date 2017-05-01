@@ -169,18 +169,6 @@ public class HandOfPoker {
 		}
 	}
 
-	public String getHumanHand() {
-		String handStr = "";
-
-		for(PokerPlayer player : pokerPlayers){
-			//if human player is still in hand code will execute
-			if(player.getClass().getName().equals("poker.PokerPlayer") && player.inHand){
-				HandOfCards hand = player.playerHand;
-				handStr = hand.toString();
-			}
-		}
-		return handStr;
-	}
 	
 	public String showHands() {
 		String handStr = "";
